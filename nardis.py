@@ -24,7 +24,6 @@
     # Элементы
     # Отображение данных инициализации
 # Запуск окна
-# (admin-пароль: 000)
 
 from os         import remove
 from pickle     import dump, load

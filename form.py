@@ -1,219 +1,87 @@
 # Константы и списки
 # Создание элементов формы
-    # Обыкновенные надписи                                      getSimpleLs
-        # Текст надписей
-        # Размер текста
-    # Текстовые поля                                            getEs
-        # Ширина полей
-        # Размер и цвет текста
-        # Значения по умолчанию
-        # Отключение полей
-        # Обработчики событий
-    # Интерактивные надписи                                     getSmartLs
-        # Текст надписей
-        # Размер, подчёркивание и цвет текста
-        # Реакция на указатель мыши
-        # Добавление варианта
-        # Замена варианта
-        # "Умное" добавление варианта
-        # "Умная" замена варианта
-    # Выпадающие списки                                         getOMs
-    # Флажки                                                    getCBs
+#     Обыкновенные надписи                                      getSimpleLs
+#         Текст надписей
+#         Размер текста
+#     Текстовые поля                                            getEs
+#         Ширина полей
+#         Размер и цвет текста
+#         Значения по умолчанию
+#         Отключение полей
+#         Обработчики событий
+#     Интерактивные надписи                                     getSmartLs
+#         Текст надписей
+#         Размер, подчёркивание и цвет текста
+#         Реакция на указатель мыши
+#         Добавление варианта
+#         Замена варианта
+#         "Умное" добавление варианта
+#         "Умная" замена варианта
+#     Выпадающие списки                                         getOMs
+#     Флажки                                                    getCBs
 # Размещение элементов формы                                    Place
-    # I. Паспортная часть
-    # II. Общие данные
-    # III. Объективный осмотр
-    # IV. Данные освидетельствования
+#     I. Паспортная часть
+#     II. Общие данные
+#     III. Объективный осмотр
+#     IV. Данные освидетельствования
 # Вывод индексации списков                                      WriteIndexes
 # Работа с элементаци формы
-    # Проверка данных формы                                     Check
-        # I. Паспортная часть
-        # IV. Данные освидетельствования
-        # Последовательность событий
-    # Чтение данных из формы                                    getDataLines
-    # Запись данных в форму                                     setDataLines
-    # Подготовка данных к печати                                getPrintData
+#     Проверка данных формы                                     Check
+#         I. Паспортная часть
+#         IV. Данные освидетельствования
+#         Последовательность событий
+#     Чтение данных из формы                                    getDataLines
+#     Запись данных в форму                                     setDataLines
+#     Подготовка данных к печати                                getPrintData
 
+
+from popup import PopupTag
+from data import get_entries_width, get_simple_labels_text
 from time import strftime, strptime
 from tkinter import (Checkbutton, END, Entry, IntVar,
                      Label, OptionMenu, StringVar)
-from popup import PopupTag
+
 
 # Константы и списки
-dX         =  8  # шаг сетки по X
-dY         = 28  # шаг сетки по Y
-N          = 18  # Количество пунктов в форме акта
-minus      = '«-»'
-plus       = '«+»'
-simple_Ls  = []
+dX = 8  # шаг сетки по X
+dY = 28  # шаг сетки по Y
+N = 18  # Количество пунктов в форме акта
+minus = '«-»'
+plus = '«+»'
+simple_Ls = []
 E_defaults = []
-Es         = []
-smart_Ls   = []
-OM_notes   = []
-SVs        = []
-OMs        = []
-CB_texts   = []
-IVs        = []
-CBs        = []
+Es = []
+smart_Ls = []
+OM_notes = []
+SVs = []
+OMs = []
+CB_texts = []
+IVs = []
+CBs = []
 
 # Создание элементов формы
- # Обыкновенные надписи
+## Обыкновенные надписи
 def getSimpleLs(LFs, init):
     for i in range(N):
         simple_Ls.append([])
     # Текст надписей
-    lines = (
-'1. Сведения об освидетельствуемом лице',
-'Сведения об освидетельствуемом лице заполнены на основании',
-'2. Основание для медицинского освидетельствования',
-'6. Внешний вид освидетельствуемого',
-'7. Жалобы освидетельствуемого на своё состояние',
-'8. Изменения психической деятельности освидетельствуемого',
-'ориентировка в месте, времени, ситуации',
-'9. Вегетативно-сосудистые реакции освидетельствуемого',
-'10. Двигательная сфера освидетельствуемого',
-'точность выполнения координационных проб',
-'11. Наличие заболеваний нервной системы, психических расстройств,',
-'перенесённых травм (со слов освидетельствуемого)',
-'12. Сведения о последнем употреблении алкоголя, лекарственных средств,',
-'наркотических средств и психотропных веществ (со слов освидетельствуемого)',
-'13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого',
-'14. Время отбора биологического объекта',
-'Результаты химико-токсикологических исследований',
-'16. Окончание освидетельствования')
-    simple_Ls[ 0].append(Label(LFs[0], text='Акт №'))
-    simple_Ls[ 0].append(Label(LFs[0], text=strftime('/%y')))
-    simple_Ls[ 1].append(Label(LFs[0], text=lines[0]))
-    simple_Ls[ 1].append(Label(LFs[0], text='Дата рождения'))
-    simple_Ls[ 1].append(Label(LFs[0], text='Фамилия, имя, отчество'))
-    simple_Ls[ 1].append(Label(LFs[0], text='Адрес места жительства'))
-    simple_Ls[ 1].append(Label(LFs[0], text=lines[1]))
-    simple_Ls[ 2].append(Label(LFs[0], text=lines[2]))
-    simple_Ls[ 2].append(Label(LFs[0], text='Кем направлен (ФИО)'))
-    simple_Ls[ 4].append(Label(LFs[0], text='4. Начало освидетельствования'))
-    simple_Ls[ 4].append(Label(LFs[0], text='Дата'))
-    simple_Ls[ 4].append(Label(LFs[0], text='Время'))
-    simple_Ls[ 5].append(Label(LFs[0], text='5. Кем освидетельствован'))
-    simple_Ls[ 6].append(Label(LFs[1], text=lines[3]))
-    simple_Ls[ 7].append(Label(LFs[1], text=lines[4]))
-    simple_Ls[ 8].append(Label(LFs[1], text=lines[5]))
-    simple_Ls[ 8].append(Label(LFs[1], text='состояние сознания'))
-    simple_Ls[ 8].append(Label(LFs[1], text='поведение'))
-    simple_Ls[ 8].append(Label(LFs[1], text=lines[6]))
-    simple_Ls[ 8].append(Label(LFs[1], text='результат пробы Шульте'))
-    simple_Ls[ 8].append(Label(LFs[1], text='сек.'))
-    simple_Ls[ 9].append(Label(LFs[2], text=lines[7]))
-    simple_Ls[ 9].append(Label(LFs[2], text='зрачки'))
-    simple_Ls[ 9].append(Label(LFs[2], text='реакция на свет'))
-    simple_Ls[ 9].append(Label(LFs[2], text='склеры'))
-    simple_Ls[ 9].append(Label(LFs[2], text='нистагм'))
-    simple_Ls[10].append(Label(LFs[2], text=lines[8]))
-    simple_Ls[10].append(Label(LFs[2], text='речь'))
-    simple_Ls[10].append(Label(LFs[2], text='походка'))
-    simple_Ls[10].append(Label(LFs[2], text='устойчивость в позе Ромберга'))
-    simple_Ls[10].append(Label(LFs[2], text=lines[9]))
-    simple_Ls[10].append(Label(LFs[2], text='результат пробы Ташена'))
-    simple_Ls[10].append(Label(LFs[2], text='сек.'))
-    simple_Ls[11].append(Label(LFs[2], text=lines[10]))
-    simple_Ls[11].append(Label(LFs[2], text=lines[11]))
-    simple_Ls[12].append(Label(LFs[2], text=lines[12]))
-    simple_Ls[12].append(Label(LFs[2], text=lines[13]))
-    simple_Ls[13].append(Label(LFs[3], text=lines[14]))
-    simple_Ls[13].append(Label(LFs[3], text='13.1. Первое исследование'))
-    simple_Ls[13].append(Label(LFs[3], text='Время'))
-    simple_Ls[13].append(Label(LFs[3], text='Результат'))
-    simple_Ls[13].append(Label(LFs[3], text='мг/л'))
-    simple_Ls[13].append(Label(LFs[3], text='техническое средство'))
-    simple_Ls[13].append(Label(LFs[3], text='13.2. Второе исследование'))
-    simple_Ls[13].append(Label(LFs[3], text='Время'))
-    simple_Ls[13].append(Label(LFs[3], text='Результат'))
-    simple_Ls[13].append(Label(LFs[3], text='мг/л'))
-    simple_Ls[13].append(Label(LFs[3], text='техническое средство'))
-    simple_Ls[14].append(Label(LFs[3], text=lines[15]))
-    simple_Ls[14].append(Label(LFs[3], text='среда'))
-    simple_Ls[14].append(Label(LFs[3], text='метод исследования'))
-    simple_Ls[14].append(Label(LFs[3], text=lines[16]))
-    simple_Ls[14].append(Label(LFs[3], text='номер справки'))
-    simple_Ls[14].append(Label(LFs[3], text=strftime('/%y')))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 0]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 1]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 2]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 3]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 4]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 5]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 6]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 7]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 8]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][ 9]))
-    simple_Ls[14].append(Label(LFs[3], text=init['Вещества'][10]))
-    simple_Ls[15].append(Label(LFs[3], text='15. Другие данные'))
-    simple_Ls[16].append(Label(LFs[0], text=lines[17]))
-    simple_Ls[16].append(Label(LFs[0], text='Дата'))
-    simple_Ls[16].append(Label(LFs[0], text='Время'))
-    simple_Ls[17].append(Label(LFs[3], text='17. Заключение'))
-    simple_Ls[17].append(Label(LFs[3], text='Дата'))
+    for item in get_simple_labels_text(init['Вещества']):
+        simple_Ls[item[0]].append(Label(LFs[item[1]], text=item[2]))
     # Размер текста
     for i_item in simple_Ls:
         for j_item in i_item:
             j_item.config(font='-size 10')
- # Текстовые поля
+## Текстовые поля
 def getEs(LFs):
     for i in range(N):
         Es.append([])
     # Ширина полей
-    Es[0 ].append(Entry(LFs[0], width= 4))
-    Es[1 ].append(Entry(LFs[0], width=38))
-    Es[1 ].append(Entry(LFs[0], width=10))
-    Es[1 ].append(Entry(LFs[0], width=73))
-    Es[1 ].append(Entry(LFs[0], width=36))
-    Es[2 ].append(Entry(LFs[0], width=73))
-    Es[2 ].append(Entry(LFs[0], width=52))
-    Es[4 ].append(Entry(LFs[0], width=10))
-    Es[4 ].append(Entry(LFs[0], width= 5))
-    Es[6 ].append(Entry(LFs[1], width=73))
-    Es[7 ].append(Entry(LFs[1], width=73))
-    Es[8 ].append(Entry(LFs[1], width=10))
-    Es[8 ].append(Entry(LFs[1], width=73))
-    Es[8 ].append(Entry(LFs[1], width=23))
-    Es[8 ].append(Entry(LFs[1], width= 2))
-    Es[9 ].append(Entry(LFs[2], width=28))
-    Es[9 ].append(Entry(LFs[2], width=28))
-    Es[9 ].append(Entry(LFs[2], width=28))
-    Es[9 ].append(Entry(LFs[2], width=28))
-    Es[10].append(Entry(LFs[2], width=73))
-    Es[10].append(Entry(LFs[2], width=73))
-    Es[10].append(Entry(LFs[2], width=15))
-    Es[10].append(Entry(LFs[2], width=15))
-    Es[10].append(Entry(LFs[2], width= 3))
-    Es[11].append(Entry(LFs[2], width=73))
-    Es[12].append(Entry(LFs[2], width=44))
-    Es[13].append(Entry(LFs[3], width= 5))
-    Es[13].append(Entry(LFs[3], width= 4))
-    Es[13].append(Entry(LFs[3], width= 5))
-    Es[13].append(Entry(LFs[3], width= 4))
-    Es[14].append(Entry(LFs[3], width= 5))
-    Es[14].append(Entry(LFs[3], width= 5))
-    Es[14].append(Entry(LFs[3], width= 5))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[14].append(Entry(LFs[3], width= 3))
-    Es[15].append(Entry(LFs[3], width=73))
-    Es[16].append(Entry(LFs[0], width=10))
-    Es[16].append(Entry(LFs[0], width= 5))
-    Es[17].append(Entry(LFs[3], width=44))
-    Es[17].append(Entry(LFs[3], width=10))
+    for item in get_entries_width():
+        Es[item[0]].append(Entry(LFs[item[1]], width=item[2]))
     # Размер и цвет текста
-    for i_item in Es:
-        for j_item in i_item:
-            j_item.config(font='-size 10', fg='#800000')
+    for item in Es:
+        for jtem in item:
+            jtem.config(font='-size 10', fg='#800000')
     # Значения по умолчанию
     for i in range(N):
         E_defaults.append([])
@@ -296,7 +164,7 @@ def getEs(LFs):
     Es[16][0].bind('<KeyRelease>', cbKeyReleaseDate)
     Es[16][1].bind('<KeyRelease>', cbKeyReleaseTime)
     Es[17][1].bind('<KeyRelease>', cbKeyReleaseDate)
- # Интерактивные надписи
+## Интерактивные надписи
 def getSmartLs(LFs):
     for i in range(N):
         smart_Ls.append([])
@@ -623,7 +491,7 @@ def getSmartLs(LFs):
     smart_Ls[14][20].bind('<Button-1>', cbSmartReplace)
     smart_Ls[14][21].bind('<Button-1>', cbSmartReplace)
     smart_Ls[14][22].bind('<Button-1>', cbSmartReplace)
- # Выпадающие списки
+## Выпадающие списки
 def getOMs(LFs, init, cur_user):
     if cur_user == 'admin':
         user_list = list(init['Врачи'].values())
@@ -651,7 +519,7 @@ def getOMs(LFs, init, cur_user):
         item.config(font='-size 10', fg='#800000')
     if cur_user != 'admin':
         SVs[0].set(user_list[0])
- # Флажки
+## Флажки
 def getCBs(LFs):
     CB_texts = ('фальсификация выдоха',
                 'отказ от сдачи пробы биологического объекта (мочи)',
@@ -897,7 +765,7 @@ def WriteIndexes():
     f.close()
 
 # Работа с элементаци формы
- # Проверка данных формы
+## Проверка данных формы
 def need():
     for i in range(11):
         if Es[14][i + 3].get():
@@ -1049,7 +917,7 @@ def Check():
             temp = False
     except: pass
     return temp
- # Чтение данных из формы
+## Чтение данных из формы
 def getDataLines():
     lines = []
     for i in range(58):
@@ -1108,7 +976,7 @@ def getDataLines():
     lines[56] =        Es[17][ 0].get()
     lines[57] =        Es[17][ 1].get()
     return lines
- # Запись данных в форму
+## Запись данных в форму
 def setLine(entry, line):
     temp = entry.cget('state') == 'disabled'
     if temp:
@@ -1173,7 +1041,7 @@ def setDataLines(lines):
     setLine(Es[16][ 1],          lines[55])
     setLine(Es[17][ 0],          lines[56])
     setLine(Es[17][ 1],          lines[57])
- # Подготовка данных к печати
+## Подготовка данных к печати
 def getMonth(n):
     if n ==  1: return 'января'
     if n ==  2: return 'февраля'

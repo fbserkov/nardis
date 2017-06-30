@@ -36,8 +36,8 @@ from tkinter import (Button, END, Entry, Frame, LabelFrame, OptionMenu,
 from tkinter.messagebox import askyesno
 
 from buffer import getLB, ReadInit, WriteInit
-from form import (Check, dX, dY, Es,
-                  getSimpleLs, getEs, getSmartLs, getOMs, getCBs,
+from form import (Check, dX, dY, entries,
+                  get_simple_labels, get_entries, getSmartLs, getOMs, getCBs,
                   Place, WriteIndexes,
                   getDataLines, setDataLines, getPrintData)
 from popup import dat_name, exe_name, pdf_name, PopupName
@@ -155,14 +155,15 @@ for item in LFs:
 F = Frame(height=23*dY - 7, width=67*dX)
 
 # Создание и размещение элементов формы и списка актов
-getSimpleLs(LFs, init)
-getEs(LFs)
+get_simple_labels(LFs, init)
+get_entries(LFs)
 getSmartLs(LFs)
 getOMs(LFs, init, current['user'])
 getCBs(LFs)
 LB, LB_entry = getLB(F)
 Place()
-#WriteIndexes()
+if False:
+    WriteIndexes()
  # Указание следующего номера акта
 if current['year'] not in base.keys():
     base[current['year']] = []
@@ -170,9 +171,9 @@ if base[current['year']]:
     temp = int(base[current['year']][len(base[current['year']]) - 1][0])
 else:
     temp = 0
-Es[0][0].config(state='normal')
-Es[0][0].insert(0, str(temp + 1))
-Es[0][0].config(state='disabled')
+entries[0][0].config(state='normal')
+entries[0][0].insert(0, str(temp + 1))
+entries[0][0].config(state='disabled')
 save = getDataLines()
  # Функция поиска (заполнение списка актов)
 def Find(temp=''):
@@ -351,7 +352,7 @@ if current['user'] == 'admin':
     bDel = Button(F, width=7, font='-size 10',
                   text='Удалить', command=cbDel)
     bDel.place(x=25*dX, y=0*dY)
-    Es[0][0].config(state='normal')
+    entries[0][0].config(state='normal')
 
 # Запуск окна
 Show(0)

@@ -55,7 +55,7 @@ def init_entries(label_frames):
     bind_entries_events(entries)
 
 
-def getSmartLs(label_frames):   # ЗАКЛАДКА
+def getSmartLs(label_frames):       # ЗАКЛАДКА
     for i in range(form_length):
         smart_labels.append([])
     # Текст надписей

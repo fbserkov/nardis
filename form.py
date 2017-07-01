@@ -1,18 +1,16 @@
-from data import get_entries_data, get_simple_labels_data
-from events import bind_entries_events
-from popup import popup_tag
-from time import strftime, strptime
+from const import *
+from data import *
+from event import *
+from popup import *
+from time import strptime
 from tkinter import (Checkbutton, END, Entry, IntVar,
                      Label, OptionMenu, StringVar)
 
 
-form_length = 18
 simple_labels = []
 entries = []
 entries_default = []
 smart_labels = []
-minus = '«-»'
-plus = '«+»'
 
 
 def init_simple_labels(label_frames, init):
@@ -31,15 +29,13 @@ def init_simple_labels(label_frames, init):
 
 def init_entries(label_frames):
 
-    ed = get_entries_data()
     entries_state = []
-
     for i in range(form_length):
         entries.append([])
         entries_default.append([])
         entries_state.append([])
 
-    for item in ed:
+    for item in get_entries_data():
         entries[item[0]].append(
             Entry(label_frames[item[1]], width=item[2],
                   font='-size 10', fg='#800000'))
@@ -55,335 +51,23 @@ def init_entries(label_frames):
     bind_entries_events(entries)
 
 
-def getSmartLs(label_frames):           # ЗАКЛАДКА
+def init_smart_labels(label_frames):
+
     for i in range(form_length):
         smart_labels.append([])
-    # Текст надписей
-    lines = (
-'протокол о направлении на медицинское освидетельствование',
-'письменное направление работодателя',
-'от медицинского освидетельствования отказался',
-'состояние опьянения не установлено')
-    smart_labels[ 1].append(Label(label_frames[0], text='Хабаровский край'))
-    smart_labels[ 1].append(Label(label_frames[0], text='Комсомольский район'))
-    smart_labels[ 1].append(Label(label_frames[0], text='г. Комсомольск-на-Амуре'))
-    smart_labels[ 1].append(Label(label_frames[0], text='протокола'))
-    smart_labels[ 1].append(Label(label_frames[0], text='водительского удостоверения'))
-    smart_labels[ 1].append(Label(label_frames[0], text='паспорта'))
-    smart_labels[ 2].append(Label(label_frames[0], text=lines[0]))
-    smart_labels[ 2].append(Label(label_frames[0], text=lines[1]))
-    smart_labels[ 2].append(Label(label_frames[0], text='личное заявление'))
-    smart_labels[ 8].append(Label(label_frames[1], text='ясное'))
-    smart_labels[ 8].append(Label(label_frames[1], text='оглушение'))
-    smart_labels[ 8].append(Label(label_frames[1], text='сопор'))
-    smart_labels[ 8].append(Label(label_frames[1], text='кома'))
-    smart_labels[ 8].append(Label(label_frames[1], text='напряжён'))
-    smart_labels[ 8].append(Label(label_frames[1], text='замкнут'))
-    smart_labels[ 8].append(Label(label_frames[1], text='раздражён'))
-    smart_labels[ 8].append(Label(label_frames[1], text='возбуждён'))
-    smart_labels[ 8].append(Label(label_frames[1], text='агрессивен'))
-    smart_labels[ 8].append(Label(label_frames[1], text='эйфоричен'))
-    smart_labels[ 8].append(Label(label_frames[1], text='болтлив'))
-    smart_labels[ 8].append(Label(label_frames[1], text='суетлив'))
-    smart_labels[ 8].append(Label(label_frames[1], text='настроение неустойчиво'))
-    smart_labels[ 8].append(Label(label_frames[1], text='сонлив'))
-    smart_labels[ 8].append(Label(label_frames[1], text='заторможен'))
-    smart_labels[ 8].append(Label(label_frames[1], text='ориентирован'))
-    smart_labels[ 8].append(Label(label_frames[1], text='ориентация снижена'))
-    smart_labels[ 8].append(Label(label_frames[1], text='дезориентирован'))
-    smart_labels[ 9].append(Label(label_frames[2], text='сужены'))
-    smart_labels[ 9].append(Label(label_frames[2], text='расширены'))
-    smart_labels[ 9].append(Label(label_frames[2], text='вялая'))
-    smart_labels[ 9].append(Label(label_frames[2], text='инъекция сосудов конъюнктивы'))
-    smart_labels[ 9].append(Label(label_frames[2], text='есть'))
-    smart_labels[10].append(Label(label_frames[2], text='нарушение артикуляции'))
-    smart_labels[10].append(Label(label_frames[2], text='смазанность речи'))
-    smart_labels[10].append(Label(label_frames[2], text='речь бессвязная'))
-    smart_labels[10].append(Label(label_frames[2], text='шатающаяся'))
-    smart_labels[10].append(Label(label_frames[2], text='пошатывание при поворотах'))
-    smart_labels[10].append(Label(label_frames[2], text='устойчив'))
-    smart_labels[10].append(Label(label_frames[2], text='неустойчив'))
-    smart_labels[10].append(Label(label_frames[2], text='падает'))
-    smart_labels[10].append(Label(label_frames[2], text='выполняет точно'))
-    smart_labels[10].append(Label(label_frames[2], text='промахивание'))
-    smart_labels[10].append(Label(label_frames[2], text='не выполняет'))
-    smart_labels[12].append(Label(label_frames[2], text='отрицает'))
-    smart_labels[12].append(Label(label_frames[2], text='употреблял спиртное'))
-    smart_labels[14].append(Label(label_frames[3], text='кровь'))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[14].append(Label(label_frames[3], text=minus))
-    smart_labels[14].append(Label(label_frames[3], text=plus))
-    smart_labels[17].append(Label(label_frames[3], text=lines[2]))
-    smart_labels[17].append(Label(label_frames[3], text='установлено состояние опьянения'))
-    smart_labels[17].append(Label(label_frames[3], text=lines[3]))
-    # Размер, подчёркивание и цвет текста
+
+    for item in get_smart_labels_data():
+        smart_labels[item[0]].append(
+            Label(label_frames[item[1]], text=item[2]))
+
     for i in range(form_length):
         for item in smart_labels[i]:
             item.config(font='-size 10 -underline true', fg='#000080')
-    # Реакция на указатель мыши
-    def cbEnter(event):
-        event.widget['font'] = '-size 10 -underline false'
-    def cbLeave(event):
-        event.widget['font'] = '-size 10 -underline true'
-    for i in range(form_length):
-        for item in smart_labels[i]:
-            item.bind('<Enter>', cbEnter)
-            item.bind('<Leave>', cbLeave)
-    # Добавление варианта
-    def cbAdd(event):
-        if entries[1][2].get().find(event.widget['text']) == -1:
-            entries[1][2].insert(END, event.widget['text'] + ', ')
-    smart_labels[1][0].bind('<Button-1>', cbAdd)
-    smart_labels[1][1].bind('<Button-1>', cbAdd)
-    smart_labels[1][2].bind('<Button-1>', cbAdd)
-    # Замена варианта
-    def replace(entry, label):
-        entry.delete(0, END)
-        entry.insert(0, label['text'])
-    def cbReplace(event):
-        if event.widget == smart_labels[1][ 3]: entry = entries[ 1][3]
-        if event.widget == smart_labels[1][ 4]: entry = entries[ 1][3]
-        if event.widget == smart_labels[1][ 5]: entry = entries[ 1][3]
-        if event.widget == smart_labels[2][ 0]: entry = entries[ 2][0]
-        if event.widget == smart_labels[2][ 1]: entry = entries[ 2][0]
-        if event.widget == smart_labels[2][ 2]: entry = entries[ 2][0]
-        if event.widget == smart_labels[8][ 0]: entry = entries[ 8][0]
-        if event.widget == smart_labels[8][ 1]: entry = entries[ 8][0]
-        if event.widget == smart_labels[8][ 2]: entry = entries[ 8][0]
-        if event.widget == smart_labels[8][ 3]: entry = entries[ 8][0]
-        if event.widget == smart_labels[8][15]: entry = entries[ 8][2]
-        if event.widget == smart_labels[8][16]: entry = entries[ 8][2]
-        if event.widget == smart_labels[8][17]: entry = entries[ 8][2]
-        if event.widget == smart_labels[12][0]: entry = entries[12][0]
-        if event.widget == smart_labels[12][1]: entry = entries[12][0]
-        replace(entry, event.widget)
-    def cbReplacePlus(event):
-        entries[17][0].config(state='normal')
-        replace(entries[17][0], event.widget)
-        entries[17][0].config(state='disabled')
-        if not entries[17][1].get():
-            entries[17][1].insert(0, strftime('%d.%m.%Y'))
-    smart_labels[ 1][ 3].bind('<Button-1>', cbReplace)
-    smart_labels[ 1][ 4].bind('<Button-1>', cbReplace)
-    smart_labels[ 1][ 5].bind('<Button-1>', cbReplace)
-    smart_labels[ 2][ 0].bind('<Button-1>', cbReplace)
-    smart_labels[ 2][ 1].bind('<Button-1>', cbReplace)
-    smart_labels[ 2][ 2].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][ 0].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][ 1].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][ 2].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][ 3].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][15].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][16].bind('<Button-1>', cbReplace)
-    smart_labels[ 8][17].bind('<Button-1>', cbReplace)
-    smart_labels[12][ 0].bind('<Button-1>', cbReplace)
-    smart_labels[12][ 1].bind('<Button-1>', cbReplace)
-    smart_labels[17][ 0].bind('<Button-1>', cbReplacePlus)
-    smart_labels[17][ 1].bind('<Button-1>', cbReplacePlus)
-    smart_labels[17][ 2].bind('<Button-1>', cbReplacePlus)
-    # "Умное" добавление варианта
-    def smartAdd(entry, label, default):
-        entry.config(state='normal')
-        i = entry.get().find(label['text'])
-        if entry.get() == default:
-            entry.delete(0, END)
-            entry.insert(0, label['text'])
-        elif i == -1:
-            entry.insert(END, ', ' + label['text'])
-        else:
-            entry.delete(i, i + len(label['text']) + 2)
-        temp = entry.get().rstrip(', ')
-        entry.delete(0, END)
-        entry.insert(0, temp)
-        if entry.get() == '':
-            entry.insert(0, default)
-        entry.config(state='disabled')
-    def cbSmartAdd(event):
-        if event.widget == smart_labels[ 8][ 4]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][ 5]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][ 6]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][ 7]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][ 8]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][ 9]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][10]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][11]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][12]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][13]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[ 8][14]:
-            entry, default = entries[ 8][1], entries_default[ 8][1]
-        if event.widget == smart_labels[10][ 0]:
-            entry, default = entries[10][0], entries_default[10][0]
-        if event.widget == smart_labels[10][ 1]:
-            entry, default = entries[10][0], entries_default[10][0]
-        if event.widget == smart_labels[10][ 2]:
-            entry, default = entries[10][0], entries_default[10][0]
-        if event.widget == smart_labels[10][ 3]:
-            entry, default = entries[10][1], entries_default[10][1]
-        if event.widget == smart_labels[10][ 4]:
-            entry, default = entries[10][1], entries_default[10][1]
-        smartAdd(entry, event.widget, default)
-    smart_labels[ 8][ 4].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][ 5].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][ 6].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][ 7].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][ 8].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][ 9].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][10].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][11].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][12].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][13].bind('<Button-1>', cbSmartAdd)
-    smart_labels[ 8][14].bind('<Button-1>', cbSmartAdd)
-    smart_labels[10][ 0].bind('<Button-1>', cbSmartAdd)
-    smart_labels[10][ 1].bind('<Button-1>', cbSmartAdd)
-    smart_labels[10][ 2].bind('<Button-1>', cbSmartAdd)
-    smart_labels[10][ 3].bind('<Button-1>', cbSmartAdd)
-    smart_labels[10][ 4].bind('<Button-1>', cbSmartAdd)
-    # "Умная" замена варианта
-    def smartReplace(entry, label, default):
-        entry.config(state='normal')
-        if entry.get() == label['text']:
-            entry.delete(0, END)
-            entry.insert(0, default)
-        else:
-            entry.delete(0, END)
-            entry.insert(0, label['text'])
-        entry.config(state='disabled')
-    def cbSmartReplace(event):
-        if event.widget == smart_labels[ 9][ 0]:
-            entry, default = entries[ 9][ 0], entries_default[ 9][0]
-        if event.widget == smart_labels[ 9][ 1]:
-            entry, default = entries[ 9][ 0], entries_default[ 9][0]
-        if event.widget == smart_labels[ 9][ 2]:
-            entry, default = entries[ 9][ 1], entries_default[ 9][1]
-        if event.widget == smart_labels[ 9][ 3]:
-            entry, default = entries[ 9][ 2], entries_default[ 9][2]
-        if event.widget == smart_labels[ 9][ 4]:
-            entry, default = entries[ 9][ 3], entries_default[ 9][3]
-        if event.widget == smart_labels[10][ 5]:
-            entry, default = entries[10][ 2], entries_default[10][2]
-        if event.widget == smart_labels[10][ 6]:
-            entry, default = entries[10][ 2], entries_default[10][2]
-        if event.widget == smart_labels[10][ 7]:
-            entry, default = entries[10][ 2], entries_default[10][2]
-        if event.widget == smart_labels[10][ 8]:
-            entry, default = entries[10][ 3], entries_default[10][3]
-        if event.widget == smart_labels[10][ 9]:
-            entry, default = entries[10][ 3], entries_default[10][3]
-        if event.widget == smart_labels[10][10]:
-            entry, default = entries[10][ 3], entries_default[10][3]
-        if event.widget == smart_labels[14][ 0]:
-            entry, default = entries[14][ 1], entries_default[14][1]
-        if event.widget == smart_labels[14][ 1]:
-            entry, default = entries[14][ 3], ''
-        if event.widget == smart_labels[14][ 2]:
-            entry, default = entries[14][ 3], ''
-        if event.widget == smart_labels[14][ 3]:
-            entry, default = entries[14][ 4], ''
-        if event.widget == smart_labels[14][ 4]:
-            entry, default = entries[14][ 4], ''
-        if event.widget == smart_labels[14][ 5]:
-            entry, default = entries[14][ 5], ''
-        if event.widget == smart_labels[14][ 6]:
-            entry, default = entries[14][ 5], ''
-        if event.widget == smart_labels[14][ 7]:
-            entry, default = entries[14][ 6], ''
-        if event.widget == smart_labels[14][ 8]:
-            entry, default = entries[14][ 6], ''
-        if event.widget == smart_labels[14][ 9]:
-            entry, default = entries[14][ 7], ''
-        if event.widget == smart_labels[14][10]:
-            entry, default = entries[14][ 7], ''
-        if event.widget == smart_labels[14][11]:
-            entry, default = entries[14][ 8], ''
-        if event.widget == smart_labels[14][12]:
-            entry, default = entries[14][ 8], ''
-        if event.widget == smart_labels[14][13]:
-            entry, default = entries[14][ 9], ''
-        if event.widget == smart_labels[14][14]:
-            entry, default = entries[14][ 9], ''
-        if event.widget == smart_labels[14][15]:
-            entry, default = entries[14][10], ''
-        if event.widget == smart_labels[14][16]:
-            entry, default = entries[14][10], ''
-        if event.widget == smart_labels[14][17]:
-            entry, default = entries[14][11], ''
-        if event.widget == smart_labels[14][18]:
-            entry, default = entries[14][11], ''
-        if event.widget == smart_labels[14][19]:
-            entry, default = entries[14][12], ''
-        if event.widget == smart_labels[14][20]:
-            entry, default = entries[14][12], ''
-        if event.widget == smart_labels[14][21]:
-            entry, default = entries[14][13], ''
-        if event.widget == smart_labels[14][22]:
-            entry, default = entries[14][13], ''
-        smartReplace(entry, event.widget, default)
-    smart_labels[ 9][ 0].bind('<Button-1>', cbSmartReplace)
-    smart_labels[ 9][ 1].bind('<Button-1>', cbSmartReplace)
-    smart_labels[ 9][ 2].bind('<Button-1>', cbSmartReplace)
-    smart_labels[ 9][ 3].bind('<Button-1>', cbSmartReplace)
-    smart_labels[ 9][ 4].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][ 5].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][ 6].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][ 7].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][ 8].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][ 9].bind('<Button-1>', cbSmartReplace)
-    smart_labels[10][10].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 0].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 1].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 2].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 3].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 4].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 5].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 6].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 7].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 8].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][ 9].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][10].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][11].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][12].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][13].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][14].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][15].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][16].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][17].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][18].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][19].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][20].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][21].bind('<Button-1>', cbSmartReplace)
-    smart_labels[14][22].bind('<Button-1>', cbSmartReplace)
+
+    bind_smart_labels_events(smart_labels, entries, entries_default)
 
 
-# Создание выпадающих списков.
+# ЗАКЛАДКА
 string_vars = []
 option_menus = []
 option_menus_note = []

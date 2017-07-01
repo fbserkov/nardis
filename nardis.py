@@ -37,7 +37,7 @@ from tkinter.messagebox import askyesno
 
 from buffer import getLB, ReadInit, WriteInit
 from form import (Check, dX, dY, entries,
-                  init_simple_labels, init_entries, getSmartLs, getOMs, getCBs,
+                  init_simple_labels, init_entries, init_smart_labels, getOMs, getCBs,
                   Place, WriteIndexes,
                   getDataLines, setDataLines, getPrintData)
 from popup import dat_name, exe_name, pdf_name, PopupName
@@ -159,7 +159,7 @@ F = Frame(height=23*dY - 7, width=67*dX)
 # Создание и размещение элементов формы и списка актов
 init_simple_labels(LFs, init)
 init_entries(LFs)
-getSmartLs(LFs)
+init_smart_labels(LFs)
 getOMs(LFs, init, current['user'])
 getCBs(LFs)
 LB, LB_entry = getLB(F)

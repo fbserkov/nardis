@@ -1,175 +1,62 @@
-# Создание обыкновенных надписей
-#     Текст надписей
-#     Размер текста
-# Создание текстовых полей
-#     Ширина полей
-#     Размер и цвет текста
-#     Значения по умолчанию
-#     Отключение полей
-#     Обработчики событий
-# Создание интерактивных надписей
-#     Текст надписей
-#     Размер, подчёркивание и цвет текста
-#     Реакция на указатель мыши
-#     Добавление варианта
-#     Замена варианта
-#     "Умное" добавление варианта
-#     "Умная" замена варианта
-# Создание выпадающих списков
-# Создание флажков
-#
-# Размещение элементов формы                                    Place
-#     I. Паспортная часть
-#     II. Общие данные
-#     III. Объективный осмотр
-#     IV. Данные освидетельствования
-#
-# Вывод индексации списков                                      WriteIndexes
-#
-# Работа с элементаци формы
-#     Проверка данных формы                                     Check
-#         I. Паспортная часть
-#         IV. Данные освидетельствования
-#         Последовательность событий
-#     Чтение данных из формы                                    getDataLines
-#     Запись данных в форму                                     setDataLines
-#     Подготовка данных к печати                                getPrintData
-
-
-from popup import PopupTag                                  # ЗАКЛАДКА
-from data import get_entries_width, get_simple_labels_text
+from data import get_entries_data, get_simple_labels_data
+from events import bind_entries_events
+from popup import popup_tag
 from time import strftime, strptime
 from tkinter import (Checkbutton, END, Entry, IntVar,
                      Label, OptionMenu, StringVar)
 
 
-# Количество пунктов в форме акта
-N = 18
-
-
-# Создание обыкновенных надписей
+form_length = 18
 simple_labels = []
-
-
-def get_simple_labels(label_frames, init):
-    for i in range(N):
-        simple_labels.append([])
-    # Текст надписей
-    for item in get_simple_labels_text(init['Вещества']):
-        simple_labels[item[0]].append(Label(label_frames[item[1]], text=item[2]))
-    # Размер текста
-    for i_item in simple_labels:
-        for j_item in i_item:
-            j_item.config(font='-size 10')
-
-
-# Создание текстовых полей
-entries_default = []
 entries = []
-
-
-def get_entries(label_frames):
-    for i in range(N):
-        entries.append([])
-    # Ширина полей
-    for item in get_entries_width():
-        entries[item[0]].append(Entry(label_frames[item[1]], width=item[2]))
-    # Размер и цвет текста
-    for item in entries:
-        for jtem in item:
-            jtem.config(font='-size 10', fg='#800000')
-    # Значения по умолчанию
-    for i in range(N):
-        entries_default.append([])
-        for j in range(len(entries[i])):
-            entries_default[i].append('')
-    line = \
-       'внешний вид и кожные покровы без особенностей, видимых повреждений нет'
-    entries_default[ 4][0] = strftime('%d.%m.%Y')
-    entries_default[ 4][1] = strftime('%H:%M')
-    entries_default[ 6][0] = line
-    entries_default[ 7][0] = 'не предъявляет'
-    entries_default[ 8][1] = 'без особенностей'
-    entries_default[ 9][0] = 'в норме'
-    entries_default[ 9][1] = 'живая'
-    entries_default[ 9][2] = 'обычные'
-    entries_default[ 9][3] = 'нет'
-    entries_default[10][0] = 'речевая способность сохранена'
-    entries_default[10][1] = 'уверенная'
-    entries_default[10][2] = 'не проводилось'
-    entries_default[10][3] = 'не проводилось'
-    entries_default[11][0] = 'нет'
-    entries_default[13][0] = strftime('%H:%M')
-    entries_default[14][1] = 'моча'
-    entries_default[15][0] = 'нет'
-    entries_default[16][0] = strftime('%d.%m.%Y')
-    entries_default[16][1] = strftime('%H:%M')
-    for i in range(N):
-        for j in range(len(entries[i])):
-            if entries_default[i][j]:
-                entries[i][j].insert(0, entries_default[i][j])
-    # Отключение полей
-    entries[ 0][ 0].config(state='disabled', disabledforeground='#800000')
-    entries[ 8][ 1].config(state='disabled', disabledforeground='#800000')
-    entries[ 9][ 0].config(state='disabled', disabledforeground='#800000')
-    entries[ 9][ 1].config(state='disabled', disabledforeground='#800000')
-    entries[ 9][ 2].config(state='disabled', disabledforeground='#800000')
-    entries[ 9][ 3].config(state='disabled', disabledforeground='#800000')
-    entries[10][ 0].config(state='disabled', disabledforeground='#800000')
-    entries[10][ 1].config(state='disabled', disabledforeground='#800000')
-    entries[10][ 2].config(state='disabled', disabledforeground='#800000')
-    entries[10][ 3].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 1].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 3].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 4].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 5].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 6].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 7].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 8].config(state='disabled', disabledforeground='#800000')
-    entries[14][ 9].config(state='disabled', disabledforeground='#800000')
-    entries[14][10].config(state='disabled', disabledforeground='#800000')
-    entries[14][11].config(state='disabled', disabledforeground='#800000')
-    entries[14][12].config(state='disabled', disabledforeground='#800000')
-    entries[14][13].config(state='disabled', disabledforeground='#800000')
-    entries[17][ 0].config(state='disabled', disabledforeground='#800000')
-    # Обработчики событий
-    #def cbKeyReleaseNum(event):
-    #    n = len(event.widget.get())
-    #    if n > 4: event.widget.delete(4, END)
-    def cbKeyReleaseDate(event):
-        n = len(event.widget.get())
-        if n == 2 or n == 5: event.widget.insert(END, '.')
-        if n > 10:           event.widget.delete(10, END)
-    def cbKeyReleaseTime(event):
-        n = len(event.widget.get())
-        if n == 2: event.widget.insert(END, ':')
-        if n > 5:  event.widget.delete(5, END)
-    def cbKeyReleaseResult(event):
-        n = len(event.widget.get())
-        if n == 1: event.widget.insert(END, '.')
-        if n > 4:  event.widget.delete(4, END)
-    #Es[ 0][0].bind('<KeyRelease>', cbKeyReleaseNum)
-    entries[ 1][1].bind('<KeyRelease>', cbKeyReleaseDate)
-    entries[ 4][0].bind('<KeyRelease>', cbKeyReleaseDate)
-    entries[ 4][1].bind('<KeyRelease>', cbKeyReleaseTime)
-    entries[13][0].bind('<KeyRelease>', cbKeyReleaseTime)
-    entries[13][1].bind('<KeyRelease>', cbKeyReleaseResult)
-    entries[13][2].bind('<KeyRelease>', cbKeyReleaseTime)
-    entries[13][3].bind('<KeyRelease>', cbKeyReleaseResult)
-    entries[14][0].bind('<KeyRelease>', cbKeyReleaseTime)
-    entries[16][0].bind('<KeyRelease>', cbKeyReleaseDate)
-    entries[16][1].bind('<KeyRelease>', cbKeyReleaseTime)
-    entries[17][1].bind('<KeyRelease>', cbKeyReleaseDate)
-
-
-# Создание интерактивных надписей
+entries_default = []
 smart_labels = []
 minus = '«-»'
 plus = '«+»'
 
 
-def getSmartLs(label_frames):
-    for i in range(N):
+def init_simple_labels(label_frames, init):
+
+    for i in range(form_length):
+        simple_labels.append([])
+
+    for item in get_simple_labels_data(init['Вещества']):
+        simple_labels[item[0]].append(
+            Label(label_frames[item[1]], text=item[2]))
+
+    for i_item in simple_labels:
+        for j_item in i_item:
+            j_item.config(font='-size 10')
+
+
+def init_entries(label_frames):
+
+    ed = get_entries_data()
+    entries_state = []
+
+    for i in range(form_length):
+        entries.append([])
+        entries_default.append([])
+        entries_state.append([])
+
+    for item in ed:
+        entries[item[0]].append(
+            Entry(label_frames[item[1]], width=item[2],
+                  font='-size 10', fg='#800000'))
+        entries_default[item[0]].append(item[4])
+        entries_state[item[0]].append(item[3])
+
+    for i in range(form_length):
+        for j in range(len(entries[i])):
+            entries[i][j].insert(0, entries_default[i][j])
+            if not entries_state[i][j]:
+                entries[i][j].config(state='disabled', disabledforeground='#800000')
+
+    bind_entries_events(entries)
+
+
+def getSmartLs(label_frames):   # ЗАКЛАДКА
+    for i in range(form_length):
         smart_labels.append([])
     # Текст надписей
     lines = (
@@ -249,7 +136,7 @@ def getSmartLs(label_frames):
     smart_labels[17].append(Label(label_frames[3], text='установлено состояние опьянения'))
     smart_labels[17].append(Label(label_frames[3], text=lines[3]))
     # Размер, подчёркивание и цвет текста
-    for i in range(N):
+    for i in range(form_length):
         for item in smart_labels[i]:
             item.config(font='-size 10 -underline true', fg='#000080')
     # Реакция на указатель мыши
@@ -257,7 +144,7 @@ def getSmartLs(label_frames):
         event.widget['font'] = '-size 10 -underline false'
     def cbLeave(event):
         event.widget['font'] = '-size 10 -underline true'
-    for i in range(N):
+    for i in range(form_length):
         for item in smart_labels[i]:
             item.bind('<Enter>', cbEnter)
             item.bind('<Leave>', cbLeave)
@@ -496,7 +383,7 @@ def getSmartLs(label_frames):
     smart_labels[14][22].bind('<Button-1>', cbSmartReplace)
 
 
-# Создание выпадающих списков
+# Создание выпадающих списков.
 string_vars = []
 option_menus = []
 option_menus_note = []
@@ -531,7 +418,7 @@ def getOMs(label_frames, init, cur_user):
         string_vars[0].set(user_list[0])
 
 
-# Создание флажков
+# Создание флажков.
 checkbuttons_text = []
 int_vars = []
 checkbuttons = []
@@ -548,7 +435,7 @@ def getCBs(label_frames):
         checkbuttons[i].config(text=CB_texts[i], onvalue=1, offvalue=0)
 
 
-# Размещение элементов формы
+# Размещение элементов формы.
 dX = 8      # шаг сетки по X
 dY = 28     # шаг сетки по Y
 def Place():
@@ -755,22 +642,22 @@ def Place():
     simple_labels[17][ 1].place(x=41*dX, y=21*dY)
     entries       [17][ 1].place(x=46 * dX, y=21 * dY + 1)
 
-# Вывод индексации списков
+# Вывод индексации списков.
 def WriteIndexes():
     f = open('index.txt', 'w')
     f.write('simple_labels\n')
-    for i in range(N):
+    for i in range(form_length):
         for j in range(len(simple_labels[i])):
             f.write('%d\t%d\t%s\n' % (i, j, simple_labels[i][j].cget('text')))
     f.write('\n')
     f.write('Es\n')
-    for i in range(N):
+    for i in range(form_length):
         for j in range(len(entries[i])):
             f.write('%d\t%d\t%d\t%s\n' %
                     (i, j, entries[i][j].cget('width'), entries_default[i][j]))
     f.write('\n')
     f.write('smart_Ls\n')
-    for i in range(N):
+    for i in range(form_length):
         for j in range(len(smart_labels[i])):
             f.write('%d\t%d\t%s\n' %
                     (i, j, smart_labels[i][j].cget('text')))
@@ -784,7 +671,7 @@ def WriteIndexes():
         f.write('%d\t%s\n' % (i, checkbuttons[i].cget('text')))
     f.close()
 
-# Работа с элементаци формы
+# Работа с элементаци формы.
 #  Проверка данных формы
 def need():
     for i in range(11):
@@ -796,53 +683,53 @@ def Check():
     # I. Паспортная часть
     if entries[0][0].get():
         if not entries[0][0].get().isnumeric():
-            PopupTag(simple_labels, 'format', (0, 0))
+            popup_tag(simple_labels, 'format', (0, 0))
             temp = False
     else:
-        PopupTag(simple_labels, 'enter', (0, 0))
+        popup_tag(simple_labels, 'enter', (0, 0))
         temp = False
     if not entries[1][0].get():
-        PopupTag(simple_labels, 'enter', (1, 0), (1, 2))
+        popup_tag(simple_labels, 'enter', (1, 0), (1, 2))
         temp = False
     if entries[4][0].get():
         try: strptime(entries[4][0].get(), '%d.%m.%Y')
         except:
-            PopupTag(simple_labels, 'format', (4, 0), (4, 1))
+            popup_tag(simple_labels, 'format', (4, 0), (4, 1))
             temp = False
     else:
-        PopupTag(simple_labels, 'enter', (4, 0), (4, 1))
+        popup_tag(simple_labels, 'enter', (4, 0), (4, 1))
         temp = False
     if entries[4][1].get():
         try: strptime(entries[4][1].get(), '%H:%M')
         except:
-            PopupTag(simple_labels, 'format', (4, 0), (4, 2))
+            popup_tag(simple_labels, 'format', (4, 0), (4, 2))
             temp = False
     else:
-        PopupTag(simple_labels, 'enter', (4, 0), (4, 2))
+        popup_tag(simple_labels, 'enter', (4, 0), (4, 2))
         temp = False
     if entries[16][0].get():
         try: strptime(entries[16][0].get(), '%d.%m.%Y')
         except:
-            PopupTag(simple_labels, 'format', (16, 0), (16, 1))
+            popup_tag(simple_labels, 'format', (16, 0), (16, 1))
             temp = False
     else:
-        PopupTag(simple_labels, 'enter', (16, 0), (16, 1))
+        popup_tag(simple_labels, 'enter', (16, 0), (16, 1))
         temp = False
     if entries[16][1].get():
         try: strptime(entries[16][1].get(), '%H:%M')
         except:
-            PopupTag(simple_labels, 'format', (16, 0), (16, 2))
+            popup_tag(simple_labels, 'format', (16, 0), (16, 2))
             temp = False
     else:
-        PopupTag(simple_labels, 'enter', (16, 0), (16, 2))
+        popup_tag(simple_labels, 'enter', (16, 0), (16, 2))
         temp = False
     if entries[1][1].get():
         try: strptime(entries[1][1].get(), '%d.%m.%Y')
         except:
-            PopupTag(simple_labels, 'format', (1, 0), (1, 1))
+            popup_tag(simple_labels, 'format', (1, 0), (1, 1))
             temp = False
     if not string_vars[0].get():
-        PopupTag(simple_labels, 'select', (5, 0))
+        popup_tag(simple_labels, 'select', (5, 0))
         temp = False
     # IV. Данные освидетельствования
     if not int_vars[0].get():
@@ -850,63 +737,63 @@ def Check():
             try:
                 float(entries[13][1].get())
             except:
-                PopupTag(simple_labels, 'format', (13, 1), (13, 3))
+                popup_tag(simple_labels, 'format', (13, 1), (13, 3))
                 temp = False
             if entries[13][0].get():
                 try:
                     strptime(entries[13][0].get(), '%H:%M')
                 except:
-                    PopupTag(simple_labels, 'format', (13, 1), (13, 2))
+                    popup_tag(simple_labels, 'format', (13, 1), (13, 2))
                     temp = False
             else:
-                PopupTag(simple_labels, 'enter', (13, 1), (13, 2))
+                popup_tag(simple_labels, 'enter', (13, 1), (13, 2))
                 temp = False
             if not string_vars[1].get():
-                PopupTag(simple_labels, 'select', (13, 1), (13, 5))
+                popup_tag(simple_labels, 'select', (13, 1), (13, 5))
                 temp = False
         if entries[13][3].get():
             try:
                 float(entries[13][3].get())
             except:
-                PopupTag(simple_labels, 'format', (13, 6), (13, 8))
+                popup_tag(simple_labels, 'format', (13, 6), (13, 8))
                 temp = False
             if entries[13][2].get():
                 try:
                     strptime(entries[13][2].get(), '%H:%M')
                 except:
-                    PopupTag(simple_labels, 'format', (13, 6), (13, 7))
+                    popup_tag(simple_labels, 'format', (13, 6), (13, 7))
                     temp = False
             else:
-                PopupTag(simple_labels, 'enter', (13, 6), (13, 7))
+                popup_tag(simple_labels, 'enter', (13, 6), (13, 7))
                 temp = False
             if not string_vars[2].get():
-                PopupTag(simple_labels, 'select', (13, 6), (13, 10))
+                popup_tag(simple_labels, 'select', (13, 6), (13, 10))
                 temp = False
     if entries[14][0].get():
         try: strptime(entries[14][0].get(), '%H:%M')
         except:
-            PopupTag(simple_labels, 'format', (14, 0))
+            popup_tag(simple_labels, 'format', (14, 0))
             temp = False
         if not string_vars[3].get():
-            PopupTag(simple_labels, 'enter', (14, 0), (14, 2))
+            popup_tag(simple_labels, 'enter', (14, 0), (14, 2))
             temp = False
         if not entries[14][2].get() and need():
-            PopupTag(simple_labels, 'enter', (14, 0), (14, 4))
+            popup_tag(simple_labels, 'enter', (14, 0), (14, 4))
             temp = False
     if entries[17][1].get():
         try: strptime(entries[17][1].get(), '%d.%m.%Y')
         except:
-            PopupTag(simple_labels, 'format', (17, 0), (17, 1))
+            popup_tag(simple_labels, 'format', (17, 0), (17, 1))
             temp = False
     elif entries[17][0].get():
-        PopupTag(simple_labels, 'enter', (17, 0), (17, 1))
+        popup_tag(simple_labels, 'enter', (17, 0), (17, 1))
         temp = False
     # Последовательность событий
     try:
         temp1 = strptime(entries[ 4][0].get() + entries[ 4][1].get(), '%d.%m.%Y%H:%M')
         temp2 = strptime(entries[16][0].get() + entries[16][1].get(), '%d.%m.%Y%H:%M')
         if not temp1 < temp2:
-            PopupTag(simple_labels, 'ratio', (4, 0), (16, 0))
+            popup_tag(simple_labels, 'ratio', (4, 0), (16, 0))
             temp = False
     except: pass
     try:
@@ -916,14 +803,14 @@ def Check():
             temp3 = temp1.tm_hour + temp1.tm_min/60
             temp4 = temp2.tm_hour + temp2.tm_min/60
             if temp1 > temp2 and temp3 - temp4 < 23:
-                PopupTag(simple_labels, 'ratio', (13, 1), (16, 0))
+                popup_tag(simple_labels, 'ratio', (13, 1), (16, 0))
                 temp = False
         if entries[13][3].get():
             temp1 = strptime(entries[13][2].get(), '%H:%M')
             temp3 = temp1.tm_hour + temp1.tm_min/60
             temp4 = temp2.tm_hour + temp2.tm_min/60
             if temp1 > temp2 and temp3 - temp4 < 23:
-                PopupTag(simple_labels, 'ratio', (13, 6), (16, 0))
+                popup_tag(simple_labels, 'ratio', (13, 6), (16, 0))
                 temp = False
     except: pass
     try:
@@ -933,7 +820,7 @@ def Check():
         temp4 = temp2.tm_hour*60 + temp2.tm_min
         if ((temp4 - temp3 < 15 or temp4 - temp3 > 20) and
             (temp4 - temp3 + 1440 < 15 or temp4 - temp3 + 1440 > 20)):
-            PopupTag(simple_labels, 'ratio', (13, 1), (13, 6))
+            popup_tag(simple_labels, 'ratio', (13, 1), (13, 6))
             temp = False
     except: pass
     return temp

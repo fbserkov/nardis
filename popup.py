@@ -25,7 +25,7 @@ def PopupName(name, line=''):
         #dqRoot()
         #raise SystemExit
 
-def PopupTag(simple_Ls, tag, item1, item2 = None):
+def popup_tag(simple_Ls, tag, item1, item2 = None):
     # Предупреждения
     lineA, lineB = simple_Ls[item1[0]][item1[1]]['text'], ''
     if item2:

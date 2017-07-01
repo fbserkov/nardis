@@ -37,7 +37,7 @@ from tkinter.messagebox import askyesno
 
 from buffer import getLB, ReadInit, WriteInit
 from form import (Check, dX, dY, entries,
-                  get_simple_labels, get_entries, getSmartLs, getOMs, getCBs,
+                  init_simple_labels, init_entries, getSmartLs, getOMs, getCBs,
                   Place, WriteIndexes,
                   getDataLines, setDataLines, getPrintData)
 from popup import dat_name, exe_name, pdf_name, PopupName
@@ -123,16 +123,18 @@ om.place(x=0*dX - 1, y=0*dY - 2)
 e.place (x=0*dX    , y=1*dY + 1)
 b.place (x=0*dX    , y=2*dY)
 def cbff(event):
-    if event.keycode == 13:
-        cbf()
+    #print(event.keycode)
+    #if event.keycode == 13:     # Enter
+    cbf()
 def cbf():
     if e.get() in init['Врачи'].keys():
         current['user'] = init['Врачи'][e.get()].partition(',')[0]
         current['year'] = int(sv.get())
         tl_psw.destroy()
         tl_psw.quit()
-e.bind('<KeyRelease>', cbff)
+e.bind('<Key-Return>', cbff)
 b.config(command=cbf)
+e.focus()
  # Модальность
 tl_psw.transient(root)
 tl_psw.grab_set()
@@ -155,8 +157,8 @@ for item in LFs:
 F = Frame(height=23*dY - 7, width=67*dX)
 
 # Создание и размещение элементов формы и списка актов
-get_simple_labels(LFs, init)
-get_entries(LFs)
+init_simple_labels(LFs, init)
+init_entries(LFs)
 getSmartLs(LFs)
 getOMs(LFs, init, current['user'])
 getCBs(LFs)

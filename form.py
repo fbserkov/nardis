@@ -1,4 +1,3 @@
-from const import *
 from data import *
 from event import *
 from popup import *
@@ -7,10 +6,21 @@ from tkinter import (Checkbutton, END, Entry, IntVar,
                      Label, OptionMenu, StringVar)
 
 
+form_length = 18
+
 simple_labels = []
+
 entries = []
 entries_default = []
+
 smart_labels = []
+
+string_vars = []
+option_menus = []
+option_menus_note = []
+
+int_vars = []
+checkbuttons = []
 
 
 def init_simple_labels(label_frames, init):
@@ -67,13 +77,8 @@ def init_smart_labels(label_frames):
     bind_smart_labels_events(smart_labels, entries, entries_default)
 
 
-# ЗАКЛАДКА
-string_vars = []
-option_menus = []
-option_menus_note = []
-
-
-def getOMs(label_frames, init, cur_user):
+def init_option_menus(label_frames, init, cur_user):
+    user_list = []
     if cur_user == 'admin':
         user_list = list(init['Врачи'].values())
         user_list.remove('admin')
@@ -82,16 +87,20 @@ def getOMs(label_frames, init, cur_user):
             if item.find(cur_user) != -1:
                 user_list = [item]
                 break
-    option_menus_note.append(simple_labels[ 5][ 0].cget('text'))
-    option_menus_note.append(simple_labels[13][ 5].cget('text'))
+    option_menus_note.append(simple_labels[5][0].cget('text'))
+    option_menus_note.append(simple_labels[13][5].cget('text'))
     option_menus_note.append(simple_labels[13][10].cget('text'))
-    option_menus_note.append(simple_labels[14][ 2].cget('text'))
+    option_menus_note.append(simple_labels[14][2].cget('text'))
     for i in [0, 3, 3, 3]:
         string_vars.append(StringVar(label_frames[i]))
-    option_menus.append(OptionMenu(label_frames[0], string_vars[0], *user_list))
-    option_menus.append(OptionMenu(label_frames[3], string_vars[1], *init['Технические средства']))
-    option_menus.append(OptionMenu(label_frames[3], string_vars[2], *init['Технические средства']))
-    option_menus.append(OptionMenu(label_frames[3], string_vars[3], *init['Методы']))
+    option_menus.append(OptionMenu(
+        label_frames[0], string_vars[0], *user_list))
+    option_menus.append(OptionMenu(
+        label_frames[3], string_vars[1], *init['Технические средства']))
+    option_menus.append(OptionMenu(
+        label_frames[3], string_vars[2], *init['Технические средства']))
+    option_menus.append(OptionMenu(
+        label_frames[3], string_vars[3], *init['Методы']))
     option_menus[0].config(width=67)
     option_menus[1].config(width=47)
     option_menus[2].config(width=47)
@@ -102,26 +111,21 @@ def getOMs(label_frames, init, cur_user):
         string_vars[0].set(user_list[0])
 
 
-# Создание флажков.
-checkbuttons_text = []
-int_vars = []
-checkbuttons = []
-
-
-def getCBs(label_frames):
-    CB_texts = ('фальсификация выдоха',
-                'отказ от сдачи пробы биологического объекта (мочи)',
-                'фальсификация пробы биологического объекта (мочи)')
-    for i in range(3):
+def init_checkbuttons(label_frames):
+    checkbuttons_text = (
+        'фальсификация выдоха',
+        'отказ от сдачи пробы биологического объекта (мочи)',
+        'фальсификация пробы биологического объекта (мочи)')
+    for i in range(len(checkbuttons_text)):
         int_vars.append(IntVar(label_frames[3]))
-    for i in range(len(CB_texts)):
-        checkbuttons.append(Checkbutton(label_frames[3], variable=int_vars[i]))
-        checkbuttons[i].config(text=CB_texts[i], onvalue=1, offvalue=0)
+        checkbuttons.append(
+            Checkbutton(label_frames[3], variable=int_vars[i],
+                        text=checkbuttons_text[i], onvalue=1, offvalue=0))
 
 
-# Размещение элементов формы.
-dX = 8      # шаг сетки по X
-dY = 28     # шаг сетки по Y
+# ЗАКЛАДКА
+dX = 8
+dY = 28
 def Place():
     # Подраздел "I. Паспортная часть"
     simple_labels[ 0][ 0].place(x= 1*dX, y= 0*dY)

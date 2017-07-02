@@ -1,5 +1,8 @@
-from const import minus, plus
 from time import strftime
+
+
+minus = '«-»'
+plus = '«+»'
 
 
 def get_simple_labels_data(chemicals):

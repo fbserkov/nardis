@@ -1,47 +1,18 @@
-# Константы
-# Переменные
-# Настройка главного окна
-# Вспомогательная функция                                               dqRoot
-# Запрет второго экземпляра
-# Чтение базы данных
-# Запрос пароля
-    # Окно
-    # Элементы
-    # Модальность
-    # Закрытие без пароля
-# Создание подразделов формы и списка актов
-# Создание и размещение элементов формы и списка актов
-    # Указание следующего номера акта
-    # Функция поиска (заполнение списка актов)
-# Главные функции
-    # Сохранение данных в базу
-    # Загрузка данных из базы
-    # Создание и открытие PDF-файла
-# Создание и настройка кнопок
-    # Переключение подразделов формы
-    # Вызов главных функций
-# Настройки администратора
-    # Элементы
-    # Отображение данных инициализации
-# Запуск окна
-
-from os         import remove
-from pickle     import dump, load
+from form import (check, dX, dY, entries, init_simple_labels, init_entries,
+                  init_smart_labels, init_option_menus, init_checkbuttons,
+                  place, write_indexes, get_data_lines, set_data_lines,
+                  get_print_data)
+from os import remove
+from pickle import dump, load
+from popup import dat_name, exe_name, pdf_name, PopupName
 from subprocess import Popen
-from sys        import platform
-from time       import strftime
-
-from tkinter import (Button, END, Entry, Frame, LabelFrame, OptionMenu,
-                     Scrollbar, StringVar, Text, Tk, Toplevel)
+from sys import platform
+from template import createPDF
+from time import strftime
+from tkinter import (Button, END, Entry, Frame, Label, LabelFrame, Listbox,
+                     OptionMenu, Scrollbar, StringVar, Text, Tk, Toplevel)
 from tkinter.messagebox import askyesno
 
-from buffer import getLB, ReadInit, WriteInit
-from form import (check, dX, dY, entries,
-                  init_simple_labels, init_entries, init_smart_labels, init_option_menus, init_checkbuttons,
-                  place, write_indexes,
-                  get_data_lines, set_data_lines, get_print_data)
-from popup import dat_name, exe_name, pdf_name, PopupName
-from template import createPDF
 
 # Константы
 X =    551  # ширина окна (не более 1366)
@@ -122,17 +93,13 @@ b = Button(tl_psw, width=18, text='OK', font='-size 10')
 om.place(x=0*dX - 1, y=0*dY - 2)
 e.place (x=0*dX    , y=1*dY + 1)
 b.place (x=0*dX    , y=2*dY)
-def cbff(event):
-    #print(event.keycode)
-    #if event.keycode == 13:     # Enter
-    cbf()
 def cbf():
     if e.get() in init['Врачи'].keys():
         current['user'] = init['Врачи'][e.get()].partition(',')[0]
         current['year'] = int(sv.get())
         tl_psw.destroy()
         tl_psw.quit()
-e.bind('<Key-Return>', cbff)
+e.bind('<Key-Return>', lambda _: cbf())
 b.config(command=cbf)
 e.focus()
  # Модальность
@@ -155,6 +122,26 @@ for item in LFs:
 
 # Создание списка актов
 F = Frame(height=23*dY - 7, width=67*dX)
+
+
+# Список
+def getLB(LF):
+    # Создание
+    LB_label = Label(LF, font='-size 10', text='№' + 9*' ' +
+                     'Дата' + 13*' ' + 'ФИО' + 25*' ' + 'Найти')
+    LB_entry = Entry(LF, width=15, font='-size 10', fg='#800000')
+    LB_frame = Frame(LF)
+    SB = Scrollbar(LB_frame)
+    SB.pack(side='right', fill='y')
+    LB = Listbox(LB_frame, font='-size 10', width=71, height=35, fg='#800000')
+    LB.pack()
+    SB['command'] = LB.yview
+    LB['yscrollcommand'] = SB.set
+    LB_label.place(x= 2*dX, y=0*dY + 3)
+    LB_entry.place(x=40*dX, y=0*dY + 4)
+    LB_frame.place(x= 1*dX, y=1*dY)
+    return LB, LB_entry
+
 
 # Создание и размещение элементов формы и списка актов
 init_simple_labels(LFs, init)
@@ -223,7 +210,10 @@ def Print():
         f.close()
         data = get_print_data(init)
         createPDF(data, pdf_name)
-        Popen(pdf_name, shell=True)
+        if not platform == 'linux':
+            Popen(pdf_name, shell=True)
+        else:
+            Popen('evince %s' % pdf_name, shell=True)
     except PermissionError:
         PopupName(pdf_name)
 
@@ -276,7 +266,10 @@ def cbPrint():
         Print()
 def cbNew():
     if cbExit():
-        Popen('nardis', shell=True)
+        if not platform == 'linux':
+            Popen('nardis', shell=True)     # вызов .exe-файла
+        else:
+            Popen('python3 nardis.py', shell=True)
 def cbExit():
     if get_data_lines() != save:
         if askyesno('Вопрос', 'Сохранить акт?'):
@@ -300,6 +293,73 @@ MF_Bs[1].place(x=57*dX, y=21*dY - 3)
 MF_Bs[2].place(x=5*dX, y= 0*dY)
 MF_Bs[1].config(font='-weight bold -size 10')
 
+
+# Чтение данных инициализации
+def ReadInit(lines):
+    init = {}
+    # Подготовка строк
+    for i in range(len(lines)):
+        lines[i] = lines[i].strip()
+    while True:
+        try:
+            lines.remove('')
+        except:
+            break
+    # Однострочные данные
+    def getLine(line):
+        for i in range(len(lines)):
+            if lines[i] == line:
+                return lines[i + 1]
+        PopupName(exe_name, line)
+    init['Подразделение'] = getLine('[Подразделение]')
+    init['Лаборатория']   = getLine('[Лаборатория]')
+    # Многострочные данные
+    def lastLine(n):
+        return n + 1 == len(lines) or lines[n + 1][0] == '['
+    line = '[Организация]'
+    temp = ''
+    for i in range(len(lines)):
+        if lines[i] == line:
+            while not lastLine(i):
+                temp += lines[i + 1]
+                i += 1
+                if not lastLine(i):
+                    temp += '\n'
+    if not temp:
+        PopupName(exe_name, line)
+    init['Организация'] = temp
+    # Списки данных
+    def getList(line):
+        temp = []
+        for i in range(len(lines)):
+            if lines[i] == line:
+                while not lastLine(i):
+                    temp.append(lines[i + 1])
+                    i += 1
+        if not temp:
+            PopupName(exe_name, line)
+        return temp
+    init['Вещества']             = getList('[Вещества]')
+    while len(init['Вещества']) < 11:
+        init['Вещества'].append('(пусто)')
+    init['Технические средства'] = getList('[Технические средства]')
+    init['Методы']               = getList('[Методы]')
+    # Словари данных
+    def getDict(line):
+        temp = {}
+        for i in range(len(lines)):
+            if lines[i] == line:
+                while not lastLine(i):
+                    temp1, trash, temp2 = lines[i + 1].partition(':')
+                    temp[temp1.strip()] = temp2.strip()
+                    i += 1
+        if not temp:
+            PopupName(exe_name, line)
+        return temp
+    init['Врачи'] = getDict('[Врачи]')
+    return init
+
+
 # Настройки администратора (и удаление)
 tl = None
 def cbtl():
@@ -309,6 +369,46 @@ def cbtl():
     tl.quit()
     cbNew()
     tl = None
+
+
+# Запись данных инициализации
+def WriteInit(init):
+    lines = ''
+    # Организация
+    lines += '[Организация]\n'
+    lines += init['Организация'] + '\n'
+    lines += '\n'
+    # Подразделение
+    lines += '[Подразделение]\n'
+    lines += init['Подразделение'] + '\n'
+    lines += '\n'
+    # Врачи
+    lines += '[Врачи]\n'
+    temp = sorted(init['Врачи'].items(), key = lambda x: x[1])
+    for item in temp:
+        lines += item[0] + ': ' + item[1] + '\n'
+    lines += '\n'
+    # Технические средства
+    lines += '[Технические средства]\n'
+    for item in init['Технические средства']:
+        lines += item + '\n'
+    lines += '\n'
+    # Лаборатория
+    lines += '[Лаборатория]\n'
+    lines += init['Лаборатория'] + '\n'
+    lines += '\n'
+    # Методы
+    lines += '[Методы]\n'
+    for item in init['Методы']:
+        lines += item + '\n'
+    lines += '\n'
+    # Вещества
+    lines += '[Вещества]'
+    for item in init['Вещества']:
+        lines += '\n' + item
+    return lines
+
+
 def cbSets():
     global tl
     if tl: return

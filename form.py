@@ -330,7 +330,6 @@ def place():
     entries[17][1].place(x=46 * dX, y=21 * dY + 1)
 
 
-# ЗАКЛАДКА
 def write_indexes():
     f = open('index.txt', 'w')
     f.write('simple_labels\n')
@@ -572,12 +571,10 @@ def get_data_lines():
     lines[39] = string_vars[3].get()
     lines[40] = entries[14][2].get()
     lines[41] = simple_labels[14][5]['text']
-    # Вещества
     for i in range(42, 53):
         if entries[14][i - 39].get():
             lines[i] = simple_labels[14][i - 36].cget('text') + \
                        ':' + entries[14][i - 39].get()
-    #
     lines[53] = entries[15][0].get()
     lines[54] = entries[16][0].get()
     lines[55] = entries[16][1].get()

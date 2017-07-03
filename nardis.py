@@ -165,6 +165,7 @@ entries[0][0].insert(0, str(temp + 1))
 entries[0][0].config(state='disabled')
 save = get_data_lines()
 
+
  # Функция поиска (заполнение списка актов)
 def Find(temp=''):
     LB.delete(0, END)

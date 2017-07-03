@@ -5,7 +5,6 @@ from time import strptime
 from tkinter import (Checkbutton, END, Entry, IntVar,
                      Label, OptionMenu, StringVar)
 
-
 form_length = 18
 
 simple_labels = []
@@ -22,9 +21,11 @@ option_menus_note = []
 int_vars = []
 checkbuttons = []
 
+dX = 8
+dY = 28
+
 
 def init_simple_labels(label_frames, init):
-
     for i in range(form_length):
         simple_labels.append([])
 
@@ -38,7 +39,6 @@ def init_simple_labels(label_frames, init):
 
 
 def init_entries(label_frames):
-
     entries_state = []
     for i in range(form_length):
         entries.append([])
@@ -62,7 +62,6 @@ def init_entries(label_frames):
 
 
 def init_smart_labels(label_frames):
-
     for i in range(form_length):
         smart_labels.append([])
 
@@ -123,546 +122,548 @@ def init_checkbuttons(label_frames):
                         text=checkbuttons_text[i], onvalue=1, offvalue=0))
 
 
-# ЗАКЛАДКА
-dX = 8
-dY = 28
-def Place():
+def place():
     # Подраздел "I. Паспортная часть"
-    simple_labels[ 0][ 0].place(x= 1*dX, y= 0*dY)
-    simple_labels[ 4][ 0].place(x=10*dX, y= 0*dY)
-    simple_labels[16][ 0].place(x=37*dX, y= 0*dY)
-    entries       [ 0][ 0].place(x=1 * dX, y=1 * dY + 1)
-    simple_labels[ 0][ 1].place(x= 5*dX, y= 1*dY)
-    simple_labels[ 4][ 1].place(x= 9*dX, y= 1*dY)
-    entries       [ 4][ 0].place(x=14 * dX, y=1 * dY + 1)
-    simple_labels[ 4][ 2].place(x=24*dX, y= 1*dY)
-    entries       [ 4][ 1].place(x=30 * dX, y=1 * dY + 1)
-    simple_labels[16][ 1].place(x=39*dX, y= 1*dY)
-    entries       [16][ 0].place(x=44 * dX, y=1 * dY + 1)
-    simple_labels[16][ 2].place(x=54*dX, y= 1*dY)
-    entries       [16][ 1].place(x=60 * dX, y=1 * dY + 1)
-    simple_labels[ 1][ 0].place(x= 0*dX, y= 2*dY)
-    simple_labels[ 1][ 1].place(x=53*dX, y= 2*dY)
-    simple_labels[ 1][ 2].place(x= 1*dX, y= 3*dY)
-    entries       [ 1][ 0].place(x=21 * dX, y=3 * dY + 1)
-    entries       [ 1][ 1].place(x=56 * dX, y=3 * dY + 1)
-    simple_labels[ 1][ 3].place(x= 1*dX, y= 4*dY)
-    smart_labels [ 1][ 0].place(x=10 * dX, y=5 * dY)
-    smart_labels [ 1][ 1].place(x=26 * dX, y=5 * dY)
-    smart_labels [ 1][ 2].place(x=45 * dX, y=5 * dY)
-    entries       [ 1][ 2].place(x=1 * dX, y=6 * dY + 1)
-    simple_labels[ 1][ 4].place(x= 1*dX, y= 7*dY)
-    smart_labels [ 1][ 3].place(x=57 * dX, y=7 * dY)
-    entries       [ 1][ 3].place(x=1 * dX, y=8 * dY + 1)
-    smart_labels [ 1][ 4].place(x=34 * dX, y=8 * dY)
-    smart_labels [ 1][ 5].place(x=58 * dX, y=8 * dY)
-    simple_labels[ 2][ 0].place(x= 0*dX, y= 9*dY)
-    smart_labels [ 2][ 0].place(x=1 * dX, y=10 * dY)
-    smart_labels [ 2][ 1].place(x=1 * dX, y=11 * dY)
-    smart_labels [ 2][ 2].place(x=35 * dX, y=11 * dY)
-    entries       [ 2][ 0].place(x=1 * dX, y=12 * dY + 1)
-    simple_labels[ 2][ 1].place(x= 1*dX, y=13*dY)
-    entries       [ 2][ 1].place(x=19 * dX, y=13 * dY + 1)
-    simple_labels[ 5][ 0].place(x= 0*dX, y=14*dY)
-    option_menus      [ 0]    .place(x=1 * dX, y=15 * dY - 5)
-    # Подраздел "II. Общие данные"
-    simple_labels[ 6][ 0].place(x= 0*dX, y= 0*dY)
-    entries       [ 6][ 0].place(x=1 * dX, y=1 * dY + 1)
-    simple_labels[ 7][ 0].place(x= 0*dX, y= 2*dY)
-    entries       [ 7][ 0].place(x=1 * dX, y=3 * dY + 1)
-    simple_labels[ 8][ 0].place(x= 0*dX, y= 4*dY)
-    simple_labels[ 8][ 1].place(x= 1*dX, y= 5*dY)
-    entries       [ 8][ 0].place(x=18 * dX, y=5 * dY + 1)
-    smart_labels [ 8][ 0].place(x=29 * dX, y=5 * dY)
-    smart_labels [ 8][ 1].place(x=35 * dX, y=5 * dY)
-    smart_labels [ 8][ 2].place(x=45 * dX, y=5 * dY)
-    smart_labels [ 8][ 3].place(x=51 * dX, y=5 * dY)
-    simple_labels[ 8][ 2].place(x= 1*dX, y= 6*dY)
-    smart_labels [ 8][ 4].place(x=11 * dX, y=6 * dY)
-    smart_labels [ 8][ 5].place(x=20 * dX, y=6 * dY)
-    smart_labels [ 8][ 6].place(x=27 * dX, y=6 * dY)
-    smart_labels [ 8][ 7].place(x=37 * dX, y=6 * dY)
-    smart_labels [ 8][ 8].place(x=47 * dX, y=6 * dY)
-    smart_labels [ 8][ 9].place(x=57 * dX, y=6 * dY)
-    smart_labels [ 8][10].place(x=11 * dX, y=7 * dY)
-    smart_labels [ 8][11].place(x=19 * dX, y=7 * dY)
-    smart_labels [ 8][12].place(x=27 * dX, y=7 * dY)
-    smart_labels [ 8][13].place(x=48 * dX, y=7 * dY)
-    smart_labels [ 8][14].place(x=56 * dX, y=7 * dY)
-    entries       [ 8][ 1].place(x=1 * dX, y=8 * dY + 1)
-    simple_labels[ 8][ 3].place(x= 1*dX, y= 9*dY)
-    entries       [ 8][ 2].place(x=1 * dX, y=10 * dY + 1)
-    smart_labels [ 8][15].place(x=23 * dX, y=10 * dY)
-    smart_labels [ 8][16].place(x=35 * dX, y=10 * dY)
-    smart_labels [ 8][17].place(x=52 * dX, y=10 * dY)
-    simple_labels[ 8][ 4].place(x= 1*dX, y=11*dY)
-    entries       [ 8][ 3].place(x=21 * dX, y=11 * dY + 1)
-    simple_labels[ 8][ 5].place(x=24*dX, y=11*dY)
-    # Подраздел "III. Объективный осмотр"
-    simple_labels[ 9][ 0].place(x= 0*dX, y= 0*dY)
-    simple_labels[ 9][ 1].place(x= 1*dX, y= 1*dY)
-    entries       [ 9][ 0].place(x=15 * dX, y=1 * dY + 1)
-    smart_labels [ 9][ 0].place(x=41 * dX, y=1 * dY)
-    smart_labels [ 9][ 1].place(x=49 * dX, y=1 * dY)
-    simple_labels[ 9][ 2].place(x= 1*dX, y= 2*dY)
-    entries       [ 9][ 1].place(x=15 * dX, y=2 * dY + 1)
-    smart_labels [ 9][ 2].place(x=41 * dX, y=2 * dY)
-    simple_labels[ 9][ 3].place(x= 1*dX, y= 3*dY)
-    entries       [ 9][ 2].place(x=15 * dX, y=3 * dY + 1)
-    smart_labels [ 9][ 3].place(x=41 * dX, y=3 * dY)
-    simple_labels[ 9][ 4].place(x= 1*dX, y= 4*dY)
-    entries       [ 9][ 3].place(x=15 * dX, y=4 * dY + 1)
-    smart_labels [ 9][ 4].place(x=41 * dX, y=4 * dY)
-    simple_labels[10][ 0].place(x= 0*dX, y= 5*dY)
-    simple_labels[10][ 1].place(x= 1*dX, y= 6*dY)
-    smart_labels [10][ 0].place(x=15 * dX, y=6 * dY)
-    smart_labels [10][ 1].place(x=36 * dX, y=6 * dY)
-    smart_labels [10][ 2].place(x=52 * dX, y=6 * dY)
-    entries       [10][ 0].place(x=1 * dX, y=7 * dY + 1)
-    simple_labels[10][ 2].place(x= 1*dX, y= 8*dY)
-    smart_labels [10][ 3].place(x=31 * dX, y=8 * dY)
-    smart_labels [10][ 4].place(x=43 * dX, y=8 * dY)
-    entries       [10][ 1].place(x=1 * dX, y=9 * dY + 1)
-    simple_labels[10][ 3].place(x= 1*dX, y=10*dY)
-    entries       [10][ 2].place(x=26 * dX, y=10 * dY + 1)
-    smart_labels [10][ 5].place(x=41 * dX, y=10 * dY)
-    smart_labels [10][ 6].place(x=49 * dX, y=10 * dY)
-    smart_labels [10][ 7].place(x=59 * dX, y=10 * dY)
-    simple_labels[10][ 4].place(x= 1*dX, y=11*dY)
-    entries       [10][ 3].place(x=13 * dX, y=12 * dY + 1)
-    smart_labels [10][ 8].place(x=28 * dX, y=12 * dY)
-    smart_labels [10][ 9].place(x=42 * dX, y=12 * dY)
-    smart_labels [10][10].place(x=54 * dX, y=12 * dY)
-    simple_labels[10][ 5].place(x= 1*dX, y=13*dY)
-    entries       [10][ 4].place(x=21 * dX, y=13 * dY + 1)
-    simple_labels[10][ 6].place(x=25*dX, y=13*dY)
-    simple_labels[11][ 0].place(x= 0*dX, y=14*dY)
-    simple_labels[11][ 1].place(x= 3*dX, y=15*dY)
-    entries       [11][ 0].place(x=1 * dX, y=16 * dY + 1)
-    simple_labels[12][ 0].place(x= 0*dX, y=17*dY)
-    simple_labels[12][ 1].place(x= 3*dX, y=18*dY)
-    entries       [12][ 0].place(x=1 * dX, y=19 * dY + 1)
-    smart_labels [12][ 0].place(x=41 * dX, y=19 * dY)
-    smart_labels [12][ 1].place(x=49 * dX, y=19 * dY)
-    # Подраздел "IV. Данные освидетельствования"
-    simple_labels[13][ 0].place(x= 0*dX, y= 0*dY)
-    simple_labels[13][ 1].place(x= 1*dX, y= 1*dY)
-    simple_labels[13][ 2].place(x=28*dX, y= 1*dY)
-    entries       [13][ 0].place(x=34 * dX, y=1 * dY + 1)
-    simple_labels[13][ 3].place(x=43*dX, y= 1*dY)
-    entries       [13][ 1].place(x=52 * dX, y=1 * dY + 1)
-    simple_labels[13][ 4].place(x=57*dX, y= 1*dY)
-    simple_labels[13][ 5].place(x= 1*dX, y= 2*dY)
-    option_menus      [ 1]    .place(x=19 * dX, y=2 * dY - 5)
-    checkbuttons      [ 0]    .place(x=47 * dX, y=3 * dY)
-    simple_labels[13][ 6].place(x= 1*dX, y= 4*dY)
-    simple_labels[13][ 7].place(x=28*dX, y= 4*dY)
-    entries       [13][ 2].place(x=34 * dX, y=4 * dY + 1)
-    simple_labels[13][ 8].place(x=43*dX, y= 4*dY)
-    entries       [13][ 3].place(x=52 * dX, y=4 * dY + 1)
-    simple_labels[13][ 9].place(x=57*dX, y= 4*dY)
-    simple_labels[13][10].place(x= 1*dX, y= 5*dY)
-    option_menus      [ 2]    .place(x=19 * dX, y=5 * dY - 5)
-    simple_labels[14][ 0].place(x= 0*dX, y= 6*dY)
-    entries       [14][ 0].place(x=34 * dX, y=6 * dY + 1)
-    simple_labels[14][ 1].place(x=44*dX, y= 6*dY)
-    entries       [14][ 1].place(x=51 * dX, y=6 * dY + 1)
-    smart_labels [14][ 0].place(x=57 * dX, y=6 * dY)
-    checkbuttons      [ 1]    .place(x=27 * dX, y=7 * dY)
-    checkbuttons      [ 2]    .place(x=27 * dX, y=8 * dY)
-    simple_labels[14][ 2].place(x= 2*dX, y= 9*dY)
-    option_menus      [ 3]    .place(x=19 * dX, y=9 * dY - 5)
-    simple_labels[14][ 3].place(x= 1*dX, y=10*dY)
-    simple_labels[14][ 4].place(x=44*dX, y=10*dY)
-    entries       [14][ 2].place(x=57 * dX, y=10 * dY + 1)
-    simple_labels[14][ 5].place(x=62*dX, y=10*dY)
-    simple_labels[14][ 6].place(x= 3*dX, y=11*dY)
-    entries       [14][ 3].place(x=20 * dX, y=11 * dY + 1)
-    smart_labels [14][ 1].place(x=24 * dX, y=11 * dY)
-    smart_labels [14][ 2].place(x=28 * dX, y=11 * dY)
-    simple_labels[14][ 7].place(x=35*dX, y=11*dY)
-    entries       [14][ 4].place(x=52 * dX, y=11 * dY + 1)
-    smart_labels [14][ 3].place(x=56 * dX, y=11 * dY)
-    smart_labels [14][ 4].place(x=60 * dX, y=11 * dY)
-    simple_labels[14][ 8].place(x= 3*dX, y=12*dY)
-    entries       [14][ 5].place(x=20 * dX, y=12 * dY + 1)
-    smart_labels [14][ 5].place(x=24 * dX, y=12 * dY)
-    smart_labels [14][ 6].place(x=28 * dX, y=12 * dY)
-    simple_labels[14][ 9].place(x=35*dX, y=12*dY)
-    entries       [14][ 6].place(x=52 * dX, y=12 * dY + 1)
-    smart_labels [14][ 7].place(x=56 * dX, y=12 * dY)
-    smart_labels [14][ 8].place(x=60 * dX, y=12 * dY)
-    simple_labels[14][10].place(x= 3*dX, y=13*dY)
-    entries       [14][ 7].place(x=20 * dX, y=13 * dY + 1)
-    smart_labels [14][ 9].place(x=24 * dX, y=13 * dY)
-    smart_labels [14][10].place(x=28 * dX, y=13 * dY)
-    simple_labels[14][11].place(x=35*dX, y=13*dY)
-    entries       [14][ 8].place(x=52 * dX, y=13 * dY + 1)
-    smart_labels [14][11].place(x=56 * dX, y=13 * dY)
-    smart_labels [14][12].place(x=60 * dX, y=13 * dY)
-    simple_labels[14][12].place(x= 3*dX, y=14*dY)
-    entries       [14][ 9].place(x=20 * dX, y=14 * dY + 1)
-    smart_labels [14][13].place(x=24 * dX, y=14 * dY)
-    smart_labels [14][14].place(x=28 * dX, y=14 * dY)
-    simple_labels[14][13].place(x=35*dX, y=14*dY)
-    entries       [14][10].place(x=52 * dX, y=14 * dY + 1)
-    smart_labels [14][15].place(x=56 * dX, y=14 * dY)
-    smart_labels [14][16].place(x=60 * dX, y=14 * dY)
-    simple_labels[14][14].place(x= 3*dX, y=15*dY)
-    entries       [14][11].place(x=20 * dX, y=15 * dY + 1)
-    smart_labels [14][17].place(x=24 * dX, y=15 * dY)
-    smart_labels [14][18].place(x=28 * dX, y=15 * dY)
-    simple_labels[14][15].place(x=35*dX, y=15*dY)
-    entries       [14][12].place(x=52 * dX, y=15 * dY + 1)
-    smart_labels [14][19].place(x=56 * dX, y=15 * dY)
-    smart_labels [14][20].place(x=60 * dX, y=15 * dY)
-    simple_labels[14][16].place(x= 3*dX, y=16*dY)
-    entries       [14][13].place(x=20 * dX, y=16 * dY + 1)
-    smart_labels [14][21].place(x=24 * dX, y=16 * dY)
-    smart_labels [14][22].place(x=28 * dX, y=16 * dY)
-    simple_labels[15][ 0].place(x= 0*dX, y=17*dY)
-    entries       [15][ 0].place(x=1 * dX, y=18 * dY + 1)
-    simple_labels[17][ 0].place(x= 0*dX, y=19*dY)
-    smart_labels [17][ 0].place(x=27 * dX, y=19 * dY)
-    smart_labels [17][ 1].place(x=8 * dX, y=20 * dY)
-    smart_labels [17][ 2].place(x=36 * dX, y=20 * dY)
-    entries       [17][ 0].place(x=1 * dX, y=21 * dY + 1)
-    simple_labels[17][ 1].place(x=41*dX, y=21*dY)
-    entries       [17][ 1].place(x=46 * dX, y=21 * dY + 1)
+    simple_labels[0][0].place(x=1 * dX, y=0 * dY)
+    simple_labels[4][0].place(x=10 * dX, y=0 * dY)
+    simple_labels[16][0].place(x=37 * dX, y=0 * dY)
+    entries[0][0].place(x=1 * dX, y=1 * dY + 1)
+    simple_labels[0][1].place(x=5 * dX, y=1 * dY)
+    simple_labels[4][1].place(x=9 * dX, y=1 * dY)
+    entries[4][0].place(x=14 * dX, y=1 * dY + 1)
+    simple_labels[4][2].place(x=24 * dX, y=1 * dY)
+    entries[4][1].place(x=30 * dX, y=1 * dY + 1)
+    simple_labels[16][1].place(x=39 * dX, y=1 * dY)
+    entries[16][0].place(x=44 * dX, y=1 * dY + 1)
+    simple_labels[16][2].place(x=54 * dX, y=1 * dY)
+    entries[16][1].place(x=60 * dX, y=1 * dY + 1)
+    simple_labels[1][0].place(x=0 * dX, y=2 * dY)
+    simple_labels[1][1].place(x=53 * dX, y=2 * dY)
+    simple_labels[1][2].place(x=1 * dX, y=3 * dY)
+    entries[1][0].place(x=21 * dX, y=3 * dY + 1)
+    entries[1][1].place(x=56 * dX, y=3 * dY + 1)
+    simple_labels[1][3].place(x=1 * dX, y=4 * dY)
+    smart_labels[1][0].place(x=10 * dX, y=5 * dY)
+    smart_labels[1][1].place(x=26 * dX, y=5 * dY)
+    smart_labels[1][2].place(x=45 * dX, y=5 * dY)
+    entries[1][2].place(x=1 * dX, y=6 * dY + 1)
+    simple_labels[1][4].place(x=1 * dX, y=7 * dY)
+    smart_labels[1][3].place(x=57 * dX, y=7 * dY)
+    entries[1][3].place(x=1 * dX, y=8 * dY + 1)
+    smart_labels[1][4].place(x=34 * dX, y=8 * dY)
+    smart_labels[1][5].place(x=58 * dX, y=8 * dY)
+    simple_labels[2][0].place(x=0 * dX, y=9 * dY)
+    smart_labels[2][0].place(x=1 * dX, y=10 * dY)
+    smart_labels[2][1].place(x=1 * dX, y=11 * dY)
+    smart_labels[2][2].place(x=35 * dX, y=11 * dY)
+    entries[2][0].place(x=1 * dX, y=12 * dY + 1)
+    simple_labels[2][1].place(x=1 * dX, y=13 * dY)
+    entries[2][1].place(x=19 * dX, y=13 * dY + 1)
+    simple_labels[5][0].place(x=0 * dX, y=14 * dY)
+    option_menus[0].place(x=1 * dX, y=15 * dY - 5)
 
-# Вывод индексации списков.
-def WriteIndexes():
+    # Подраздел "II. Общие данные"
+    simple_labels[6][0].place(x=0 * dX, y=0 * dY)
+    entries[6][0].place(x=1 * dX, y=1 * dY + 1)
+    simple_labels[7][0].place(x=0 * dX, y=2 * dY)
+    entries[7][0].place(x=1 * dX, y=3 * dY + 1)
+    simple_labels[8][0].place(x=0 * dX, y=4 * dY)
+    simple_labels[8][1].place(x=1 * dX, y=5 * dY)
+    entries[8][0].place(x=18 * dX, y=5 * dY + 1)
+    smart_labels[8][0].place(x=29 * dX, y=5 * dY)
+    smart_labels[8][1].place(x=35 * dX, y=5 * dY)
+    smart_labels[8][2].place(x=45 * dX, y=5 * dY)
+    smart_labels[8][3].place(x=51 * dX, y=5 * dY)
+    simple_labels[8][2].place(x=1 * dX, y=6 * dY)
+    smart_labels[8][4].place(x=11 * dX, y=6 * dY)
+    smart_labels[8][5].place(x=20 * dX, y=6 * dY)
+    smart_labels[8][6].place(x=27 * dX, y=6 * dY)
+    smart_labels[8][7].place(x=37 * dX, y=6 * dY)
+    smart_labels[8][8].place(x=47 * dX, y=6 * dY)
+    smart_labels[8][9].place(x=57 * dX, y=6 * dY)
+    smart_labels[8][10].place(x=11 * dX, y=7 * dY)
+    smart_labels[8][11].place(x=19 * dX, y=7 * dY)
+    smart_labels[8][12].place(x=27 * dX, y=7 * dY)
+    smart_labels[8][13].place(x=48 * dX, y=7 * dY)
+    smart_labels[8][14].place(x=56 * dX, y=7 * dY)
+    entries[8][1].place(x=1 * dX, y=8 * dY + 1)
+    simple_labels[8][3].place(x=1 * dX, y=9 * dY)
+    entries[8][2].place(x=1 * dX, y=10 * dY + 1)
+    smart_labels[8][15].place(x=23 * dX, y=10 * dY)
+    smart_labels[8][16].place(x=35 * dX, y=10 * dY)
+    smart_labels[8][17].place(x=52 * dX, y=10 * dY)
+    simple_labels[8][4].place(x=1 * dX, y=11 * dY)
+    entries[8][3].place(x=21 * dX, y=11 * dY + 1)
+    simple_labels[8][5].place(x=24 * dX, y=11 * dY)
+
+    # Подраздел "III. Объективный осмотр"
+    simple_labels[9][0].place(x=0 * dX, y=0 * dY)
+    simple_labels[9][1].place(x=1 * dX, y=1 * dY)
+    entries[9][0].place(x=15 * dX, y=1 * dY + 1)
+    smart_labels[9][0].place(x=41 * dX, y=1 * dY)
+    smart_labels[9][1].place(x=49 * dX, y=1 * dY)
+    simple_labels[9][2].place(x=1 * dX, y=2 * dY)
+    entries[9][1].place(x=15 * dX, y=2 * dY + 1)
+    smart_labels[9][2].place(x=41 * dX, y=2 * dY)
+    simple_labels[9][3].place(x=1 * dX, y=3 * dY)
+    entries[9][2].place(x=15 * dX, y=3 * dY + 1)
+    smart_labels[9][3].place(x=41 * dX, y=3 * dY)
+    simple_labels[9][4].place(x=1 * dX, y=4 * dY)
+    entries[9][3].place(x=15 * dX, y=4 * dY + 1)
+    smart_labels[9][4].place(x=41 * dX, y=4 * dY)
+    simple_labels[10][0].place(x=0 * dX, y=5 * dY)
+    simple_labels[10][1].place(x=1 * dX, y=6 * dY)
+    smart_labels[10][0].place(x=15 * dX, y=6 * dY)
+    smart_labels[10][1].place(x=36 * dX, y=6 * dY)
+    smart_labels[10][2].place(x=52 * dX, y=6 * dY)
+    entries[10][0].place(x=1 * dX, y=7 * dY + 1)
+    simple_labels[10][2].place(x=1 * dX, y=8 * dY)
+    smart_labels[10][3].place(x=31 * dX, y=8 * dY)
+    smart_labels[10][4].place(x=43 * dX, y=8 * dY)
+    entries[10][1].place(x=1 * dX, y=9 * dY + 1)
+    simple_labels[10][3].place(x=1 * dX, y=10 * dY)
+    entries[10][2].place(x=26 * dX, y=10 * dY + 1)
+    smart_labels[10][5].place(x=41 * dX, y=10 * dY)
+    smart_labels[10][6].place(x=49 * dX, y=10 * dY)
+    smart_labels[10][7].place(x=59 * dX, y=10 * dY)
+    simple_labels[10][4].place(x=1 * dX, y=11 * dY)
+    entries[10][3].place(x=13 * dX, y=12 * dY + 1)
+    smart_labels[10][8].place(x=28 * dX, y=12 * dY)
+    smart_labels[10][9].place(x=42 * dX, y=12 * dY)
+    smart_labels[10][10].place(x=54 * dX, y=12 * dY)
+    simple_labels[10][5].place(x=1 * dX, y=13 * dY)
+    entries[10][4].place(x=21 * dX, y=13 * dY + 1)
+    simple_labels[10][6].place(x=25 * dX, y=13 * dY)
+    simple_labels[11][0].place(x=0 * dX, y=14 * dY)
+    simple_labels[11][1].place(x=3 * dX, y=15 * dY)
+    entries[11][0].place(x=1 * dX, y=16 * dY + 1)
+    simple_labels[12][0].place(x=0 * dX, y=17 * dY)
+    simple_labels[12][1].place(x=3 * dX, y=18 * dY)
+    entries[12][0].place(x=1 * dX, y=19 * dY + 1)
+    smart_labels[12][0].place(x=41 * dX, y=19 * dY)
+    smart_labels[12][1].place(x=49 * dX, y=19 * dY)
+
+    # Подраздел "IV. Данные освидетельствования"
+    simple_labels[13][0].place(x=0 * dX, y=0 * dY)
+    simple_labels[13][1].place(x=1 * dX, y=1 * dY)
+    simple_labels[13][2].place(x=28 * dX, y=1 * dY)
+    entries[13][0].place(x=34 * dX, y=1 * dY + 1)
+    simple_labels[13][3].place(x=43 * dX, y=1 * dY)
+    entries[13][1].place(x=52 * dX, y=1 * dY + 1)
+    simple_labels[13][4].place(x=57 * dX, y=1 * dY)
+    simple_labels[13][5].place(x=1 * dX, y=2 * dY)
+    option_menus[1].place(x=19 * dX, y=2 * dY - 5)
+    checkbuttons[0].place(x=47 * dX, y=3 * dY)
+    simple_labels[13][6].place(x=1 * dX, y=4 * dY)
+    simple_labels[13][7].place(x=28 * dX, y=4 * dY)
+    entries[13][2].place(x=34 * dX, y=4 * dY + 1)
+    simple_labels[13][8].place(x=43 * dX, y=4 * dY)
+    entries[13][3].place(x=52 * dX, y=4 * dY + 1)
+    simple_labels[13][9].place(x=57 * dX, y=4 * dY)
+    simple_labels[13][10].place(x=1 * dX, y=5 * dY)
+    option_menus[2].place(x=19 * dX, y=5 * dY - 5)
+    simple_labels[14][0].place(x=0 * dX, y=6 * dY)
+    entries[14][0].place(x=34 * dX, y=6 * dY + 1)
+    simple_labels[14][1].place(x=44 * dX, y=6 * dY)
+    entries[14][1].place(x=51 * dX, y=6 * dY + 1)
+    smart_labels[14][0].place(x=57 * dX, y=6 * dY)
+    checkbuttons[1].place(x=27 * dX, y=7 * dY)
+    checkbuttons[2].place(x=27 * dX, y=8 * dY)
+    simple_labels[14][2].place(x=2 * dX, y=9 * dY)
+    option_menus[3].place(x=19 * dX, y=9 * dY - 5)
+    simple_labels[14][3].place(x=1 * dX, y=10 * dY)
+    simple_labels[14][4].place(x=44 * dX, y=10 * dY)
+    entries[14][2].place(x=57 * dX, y=10 * dY + 1)
+    simple_labels[14][5].place(x=62 * dX, y=10 * dY)
+    simple_labels[14][6].place(x=3 * dX, y=11 * dY)
+    entries[14][3].place(x=20 * dX, y=11 * dY + 1)
+    smart_labels[14][1].place(x=24 * dX, y=11 * dY)
+    smart_labels[14][2].place(x=28 * dX, y=11 * dY)
+    simple_labels[14][7].place(x=35 * dX, y=11 * dY)
+    entries[14][4].place(x=52 * dX, y=11 * dY + 1)
+    smart_labels[14][3].place(x=56 * dX, y=11 * dY)
+    smart_labels[14][4].place(x=60 * dX, y=11 * dY)
+    simple_labels[14][8].place(x=3 * dX, y=12 * dY)
+    entries[14][5].place(x=20 * dX, y=12 * dY + 1)
+    smart_labels[14][5].place(x=24 * dX, y=12 * dY)
+    smart_labels[14][6].place(x=28 * dX, y=12 * dY)
+    simple_labels[14][9].place(x=35 * dX, y=12 * dY)
+    entries[14][6].place(x=52 * dX, y=12 * dY + 1)
+    smart_labels[14][7].place(x=56 * dX, y=12 * dY)
+    smart_labels[14][8].place(x=60 * dX, y=12 * dY)
+    simple_labels[14][10].place(x=3 * dX, y=13 * dY)
+    entries[14][7].place(x=20 * dX, y=13 * dY + 1)
+    smart_labels[14][9].place(x=24 * dX, y=13 * dY)
+    smart_labels[14][10].place(x=28 * dX, y=13 * dY)
+    simple_labels[14][11].place(x=35 * dX, y=13 * dY)
+    entries[14][8].place(x=52 * dX, y=13 * dY + 1)
+    smart_labels[14][11].place(x=56 * dX, y=13 * dY)
+    smart_labels[14][12].place(x=60 * dX, y=13 * dY)
+    simple_labels[14][12].place(x=3 * dX, y=14 * dY)
+    entries[14][9].place(x=20 * dX, y=14 * dY + 1)
+    smart_labels[14][13].place(x=24 * dX, y=14 * dY)
+    smart_labels[14][14].place(x=28 * dX, y=14 * dY)
+    simple_labels[14][13].place(x=35 * dX, y=14 * dY)
+    entries[14][10].place(x=52 * dX, y=14 * dY + 1)
+    smart_labels[14][15].place(x=56 * dX, y=14 * dY)
+    smart_labels[14][16].place(x=60 * dX, y=14 * dY)
+    simple_labels[14][14].place(x=3 * dX, y=15 * dY)
+    entries[14][11].place(x=20 * dX, y=15 * dY + 1)
+    smart_labels[14][17].place(x=24 * dX, y=15 * dY)
+    smart_labels[14][18].place(x=28 * dX, y=15 * dY)
+    simple_labels[14][15].place(x=35 * dX, y=15 * dY)
+    entries[14][12].place(x=52 * dX, y=15 * dY + 1)
+    smart_labels[14][19].place(x=56 * dX, y=15 * dY)
+    smart_labels[14][20].place(x=60 * dX, y=15 * dY)
+    simple_labels[14][16].place(x=3 * dX, y=16 * dY)
+    entries[14][13].place(x=20 * dX, y=16 * dY + 1)
+    smart_labels[14][21].place(x=24 * dX, y=16 * dY)
+    smart_labels[14][22].place(x=28 * dX, y=16 * dY)
+    simple_labels[15][0].place(x=0 * dX, y=17 * dY)
+    entries[15][0].place(x=1 * dX, y=18 * dY + 1)
+    simple_labels[17][0].place(x=0 * dX, y=19 * dY)
+    smart_labels[17][0].place(x=27 * dX, y=19 * dY)
+    smart_labels[17][1].place(x=8 * dX, y=20 * dY)
+    smart_labels[17][2].place(x=36 * dX, y=20 * dY)
+    entries[17][0].place(x=1 * dX, y=21 * dY + 1)
+    simple_labels[17][1].place(x=41 * dX, y=21 * dY)
+    entries[17][1].place(x=46 * dX, y=21 * dY + 1)
+
+
+# ЗАКЛАДКА
+def write_indexes():
     f = open('index.txt', 'w')
     f.write('simple_labels\n')
     for i in range(form_length):
         for j in range(len(simple_labels[i])):
             f.write('%d\t%d\t%s\n' % (i, j, simple_labels[i][j].cget('text')))
     f.write('\n')
-    f.write('Es\n')
+    f.write('entries\n')
     for i in range(form_length):
         for j in range(len(entries[i])):
             f.write('%d\t%d\t%d\t%s\n' %
                     (i, j, entries[i][j].cget('width'), entries_default[i][j]))
     f.write('\n')
-    f.write('smart_Ls\n')
+    f.write('smart_labels\n')
     for i in range(form_length):
         for j in range(len(smart_labels[i])):
             f.write('%d\t%d\t%s\n' %
                     (i, j, smart_labels[i][j].cget('text')))
     f.write('\n')
-    f.write('OMs\n')
+    f.write('option_menus\n')
     for i in range(len(option_menus)):
         f.write('%d\t%s\t%s\n' % (i, option_menus[i].cget('width'), option_menus_note[i]))
     f.write('\n')
-    f.write('CBs\n')
+    f.write('checkbuttons\n')
     for i in range(len(checkbuttons)):
         f.write('%d\t%s\n' % (i, checkbuttons[i].cget('text')))
     f.close()
 
-# Работа с элементаци формы.
-#  Проверка данных формы
-def need():
-    for i in range(11):
-        if entries[14][i + 3].get():
-            return True
-    return False
-def Check():
-    temp = True
+
+def check():
+    b = True
+
     # I. Паспортная часть
     if entries[0][0].get():
         if not entries[0][0].get().isnumeric():
             popup_tag(simple_labels, 'format', (0, 0))
-            temp = False
+            b = False
     else:
         popup_tag(simple_labels, 'enter', (0, 0))
-        temp = False
+        b = False
     if not entries[1][0].get():
         popup_tag(simple_labels, 'enter', (1, 0), (1, 2))
-        temp = False
+        b = False
     if entries[4][0].get():
-        try: strptime(entries[4][0].get(), '%d.%m.%Y')
-        except:
+        try:
+            strptime(entries[4][0].get(), '%d.%m.%Y')
+        except ValueError:
             popup_tag(simple_labels, 'format', (4, 0), (4, 1))
-            temp = False
+            b = False
     else:
         popup_tag(simple_labels, 'enter', (4, 0), (4, 1))
-        temp = False
+        b = False
     if entries[4][1].get():
-        try: strptime(entries[4][1].get(), '%H:%M')
-        except:
+        try:
+            strptime(entries[4][1].get(), '%H:%M')
+        except ValueError:
             popup_tag(simple_labels, 'format', (4, 0), (4, 2))
-            temp = False
+            b = False
     else:
         popup_tag(simple_labels, 'enter', (4, 0), (4, 2))
-        temp = False
+        b = False
     if entries[16][0].get():
-        try: strptime(entries[16][0].get(), '%d.%m.%Y')
-        except:
+        try:
+            strptime(entries[16][0].get(), '%d.%m.%Y')
+        except ValueError:
             popup_tag(simple_labels, 'format', (16, 0), (16, 1))
-            temp = False
+            b = False
     else:
         popup_tag(simple_labels, 'enter', (16, 0), (16, 1))
-        temp = False
+        b = False
     if entries[16][1].get():
-        try: strptime(entries[16][1].get(), '%H:%M')
-        except:
+        try:
+            strptime(entries[16][1].get(), '%H:%M')
+        except ValueError:
             popup_tag(simple_labels, 'format', (16, 0), (16, 2))
-            temp = False
+            b = False
     else:
         popup_tag(simple_labels, 'enter', (16, 0), (16, 2))
-        temp = False
+        b = False
     if entries[1][1].get():
-        try: strptime(entries[1][1].get(), '%d.%m.%Y')
-        except:
+        try:
+            strptime(entries[1][1].get(), '%d.%m.%Y')
+        except ValueError:
             popup_tag(simple_labels, 'format', (1, 0), (1, 1))
-            temp = False
+            b = False
     if not string_vars[0].get():
         popup_tag(simple_labels, 'select', (5, 0))
-        temp = False
+        b = False
+
     # IV. Данные освидетельствования
     if not int_vars[0].get():
         if entries[13][1].get():
             try:
                 float(entries[13][1].get())
-            except:
+            except ValueError:
                 popup_tag(simple_labels, 'format', (13, 1), (13, 3))
-                temp = False
+                b = False
             if entries[13][0].get():
                 try:
                     strptime(entries[13][0].get(), '%H:%M')
-                except:
+                except ValueError:
                     popup_tag(simple_labels, 'format', (13, 1), (13, 2))
-                    temp = False
+                    b = False
             else:
                 popup_tag(simple_labels, 'enter', (13, 1), (13, 2))
-                temp = False
+                b = False
             if not string_vars[1].get():
                 popup_tag(simple_labels, 'select', (13, 1), (13, 5))
-                temp = False
+                b = False
         if entries[13][3].get():
             try:
                 float(entries[13][3].get())
-            except:
+            except ValueError:
                 popup_tag(simple_labels, 'format', (13, 6), (13, 8))
-                temp = False
+                b = False
             if entries[13][2].get():
                 try:
                     strptime(entries[13][2].get(), '%H:%M')
-                except:
+                except ValueError:
                     popup_tag(simple_labels, 'format', (13, 6), (13, 7))
-                    temp = False
+                    b = False
             else:
                 popup_tag(simple_labels, 'enter', (13, 6), (13, 7))
-                temp = False
+                b = False
             if not string_vars[2].get():
                 popup_tag(simple_labels, 'select', (13, 6), (13, 10))
-                temp = False
+                b = False
     if entries[14][0].get():
-        try: strptime(entries[14][0].get(), '%H:%M')
-        except:
+        def need():
+            for i in range(11):
+                if entries[14][i + 3].get():
+                    return True
+            return False
+        try:
+            strptime(entries[14][0].get(), '%H:%M')
+        except ValueError:
             popup_tag(simple_labels, 'format', (14, 0))
-            temp = False
+            b = False
         if not string_vars[3].get():
             popup_tag(simple_labels, 'enter', (14, 0), (14, 2))
-            temp = False
+            b = False
         if not entries[14][2].get() and need():
             popup_tag(simple_labels, 'enter', (14, 0), (14, 4))
-            temp = False
+            b = False
     if entries[17][1].get():
-        try: strptime(entries[17][1].get(), '%d.%m.%Y')
-        except:
+        try:
+            strptime(entries[17][1].get(), '%d.%m.%Y')
+        except ValueError:
             popup_tag(simple_labels, 'format', (17, 0), (17, 1))
-            temp = False
+            b = False
     elif entries[17][0].get():
         popup_tag(simple_labels, 'enter', (17, 0), (17, 1))
-        temp = False
+        b = False
+
     # Последовательность событий
     try:
-        temp1 = strptime(entries[ 4][0].get() + entries[ 4][1].get(), '%d.%m.%Y%H:%M')
+        temp1 = strptime(entries[4][0].get() + entries[4][1].get(), '%d.%m.%Y%H:%M')
         temp2 = strptime(entries[16][0].get() + entries[16][1].get(), '%d.%m.%Y%H:%M')
         if not temp1 < temp2:
             popup_tag(simple_labels, 'ratio', (4, 0), (16, 0))
-            temp = False
-    except: pass
+            b = False
+    except ValueError:
+        pass
     try:
         temp2 = strptime(entries[16][1].get(), '%H:%M')
         if entries[13][1].get() and not entries[13][3].get():
             temp1 = strptime(entries[13][0].get(), '%H:%M')
-            temp3 = temp1.tm_hour + temp1.tm_min/60
-            temp4 = temp2.tm_hour + temp2.tm_min/60
+            temp3 = temp1.tm_hour + temp1.tm_min / 60
+            temp4 = temp2.tm_hour + temp2.tm_min / 60
             if temp1 > temp2 and temp3 - temp4 < 23:
                 popup_tag(simple_labels, 'ratio', (13, 1), (16, 0))
-                temp = False
+                b = False
         if entries[13][3].get():
             temp1 = strptime(entries[13][2].get(), '%H:%M')
-            temp3 = temp1.tm_hour + temp1.tm_min/60
-            temp4 = temp2.tm_hour + temp2.tm_min/60
+            temp3 = temp1.tm_hour + temp1.tm_min / 60
+            temp4 = temp2.tm_hour + temp2.tm_min / 60
             if temp1 > temp2 and temp3 - temp4 < 23:
                 popup_tag(simple_labels, 'ratio', (13, 6), (16, 0))
-                temp = False
-    except: pass
+                b = False
+    except ValueError:
+        pass
     try:
         temp1 = strptime(entries[13][0].get(), '%H:%M')
         temp2 = strptime(entries[13][2].get(), '%H:%M')
-        temp3 = temp1.tm_hour*60 + temp1.tm_min
-        temp4 = temp2.tm_hour*60 + temp2.tm_min
+        temp3 = temp1.tm_hour * 60 + temp1.tm_min
+        temp4 = temp2.tm_hour * 60 + temp2.tm_min
         if ((temp4 - temp3 < 15 or temp4 - temp3 > 20) and
-            (temp4 - temp3 + 1440 < 15 or temp4 - temp3 + 1440 > 20)):
+                (temp4 - temp3 + 1440 < 15 or temp4 - temp3 + 1440 > 20)):
             popup_tag(simple_labels, 'ratio', (13, 1), (13, 6))
-            temp = False
-    except: pass
-    return temp
-#  Чтение данных из формы
-def getDataLines():
+            b = False
+    except ValueError:
+        pass
+    return b
+
+
+def get_data_lines():
     lines = []
     for i in range(58):
         lines.append('')
-    lines[ 0] =        entries[ 0][ 0].get()
-    lines[ 1] = simple_labels[ 0][ 1]['text']
-    lines[ 2] =        entries[ 1][ 0].get()
-    lines[ 3] =        entries[ 1][ 1].get()
-    lines[ 4] =        entries[ 1][ 2].get()
-    lines[ 5] =        entries[ 1][ 3].get()
-    lines[ 6] =        entries[ 2][ 0].get()
-    lines[ 7] =        entries[ 2][ 1].get()
-    lines[ 8] =        entries[ 4][ 0].get()
-    lines[ 9] =        entries[ 4][ 1].get()
-    lines[10] =           string_vars[ 0].get()
-    lines[11] =        entries[ 6][ 0].get()
-    lines[12] =        entries[ 7][ 0].get()
-    lines[13] =        entries[ 8][ 0].get()
-    lines[14] =        entries[ 8][ 1].get()
-    lines[15] =        entries[ 8][ 2].get()
-    lines[16] =        entries[ 8][ 3].get()
-    lines[17] =        entries[ 9][ 0].get()
-    lines[18] =        entries[ 9][ 1].get()
-    lines[19] =        entries[ 9][ 2].get()
-    lines[20] =        entries[ 9][ 3].get()
-    lines[21] =        entries[10][ 0].get()
-    lines[22] =        entries[10][ 1].get()
-    lines[23] =        entries[10][ 2].get()
-    lines[24] =        entries[10][ 3].get()
-    lines[25] =        entries[10][ 4].get()
-    lines[26] =        entries[11][ 0].get()
-    lines[27] =        entries[12][ 0].get()
-    lines[28] =        entries[13][ 0].get()
-    lines[29] =        entries[13][ 1].get()
-    lines[30] =           string_vars[ 1].get()
-    lines[31] =       str(int_vars[ 0].get())
-    lines[32] =        entries[13][ 2].get()
-    lines[33] =        entries[13][ 3].get()
-    lines[34] =           string_vars[ 2].get()
-    lines[35] =        entries[14][ 0].get()
-    lines[36] =        entries[14][ 1].get()
-    lines[37] =       str(int_vars[ 1].get())
-    lines[38] =       str(int_vars[ 2].get())
-    lines[39] =           string_vars[ 3].get()
-    lines[40] =        entries[14][ 2].get()
-    lines[41] = simple_labels[14][ 5]['text']
+    lines[0] = entries[0][0].get()
+    lines[1] = simple_labels[0][1]['text']
+    lines[2] = entries[1][0].get()
+    lines[3] = entries[1][1].get()
+    lines[4] = entries[1][2].get()
+    lines[5] = entries[1][3].get()
+    lines[6] = entries[2][0].get()
+    lines[7] = entries[2][1].get()
+    lines[8] = entries[4][0].get()
+    lines[9] = entries[4][1].get()
+    lines[10] = string_vars[0].get()
+    lines[11] = entries[6][0].get()
+    lines[12] = entries[7][0].get()
+    lines[13] = entries[8][0].get()
+    lines[14] = entries[8][1].get()
+    lines[15] = entries[8][2].get()
+    lines[16] = entries[8][3].get()
+    lines[17] = entries[9][0].get()
+    lines[18] = entries[9][1].get()
+    lines[19] = entries[9][2].get()
+    lines[20] = entries[9][3].get()
+    lines[21] = entries[10][0].get()
+    lines[22] = entries[10][1].get()
+    lines[23] = entries[10][2].get()
+    lines[24] = entries[10][3].get()
+    lines[25] = entries[10][4].get()
+    lines[26] = entries[11][0].get()
+    lines[27] = entries[12][0].get()
+    lines[28] = entries[13][0].get()
+    lines[29] = entries[13][1].get()
+    lines[30] = string_vars[1].get()
+    lines[31] = str(int_vars[0].get())
+    lines[32] = entries[13][2].get()
+    lines[33] = entries[13][3].get()
+    lines[34] = string_vars[2].get()
+    lines[35] = entries[14][0].get()
+    lines[36] = entries[14][1].get()
+    lines[37] = str(int_vars[1].get())
+    lines[38] = str(int_vars[2].get())
+    lines[39] = string_vars[3].get()
+    lines[40] = entries[14][2].get()
+    lines[41] = simple_labels[14][5]['text']
     # Вещества
     for i in range(42, 53):
         if entries[14][i - 39].get():
-            lines[i] = simple_labels[14][i - 36].cget('text') +\
+            lines[i] = simple_labels[14][i - 36].cget('text') + \
                        ':' + entries[14][i - 39].get()
     #
-    lines[53] =        entries[15][ 0].get()
-    lines[54] =        entries[16][ 0].get()
-    lines[55] =        entries[16][ 1].get()
-    lines[56] =        entries[17][ 0].get()
-    lines[57] =        entries[17][ 1].get()
+    lines[53] = entries[15][0].get()
+    lines[54] = entries[16][0].get()
+    lines[55] = entries[16][1].get()
+    lines[56] = entries[17][0].get()
+    lines[57] = entries[17][1].get()
     return lines
-#  Запись данных в форму
-def setLine(entry, line):
-    temp = entry.cget('state') == 'disabled'
-    if temp:
-        entry.config(state='normal')
-    entry.delete(0, END)
-    entry.insert(0, line)
-    if temp:
-        entry.config(state='disabled')
-def setDataLines(lines):
-    setLine(entries[ 0][ 0], lines[ 0])
-    simple_labels [ 0][ 1]['text'] = lines[ 1]
-    setLine(entries[ 1][ 0], lines[ 2])
-    setLine(entries[ 1][ 1], lines[ 3])
-    setLine(entries[ 1][ 2], lines[ 4])
-    setLine(entries[ 1][ 3], lines[ 5])
-    setLine(entries[ 2][ 0], lines[ 6])
-    setLine(entries[ 2][ 1], lines[ 7])
-    setLine(entries[ 4][ 0], lines[ 8])
-    setLine(entries[ 4][ 1], lines[ 9])
+
+
+def set_data_lines(lines):
+    def set_line(entry, line):
+        b = entry.cget('state') == 'disabled'
+        if b:
+            entry.config(state='normal')
+        entry.delete(0, END)
+        entry.insert(0, line)
+        if b:
+            entry.config(state='disabled')
+
+    set_line(entries[0][0], lines[0])
+    simple_labels[0][1]['text'] = lines[1]
+    set_line(entries[1][0], lines[2])
+    set_line(entries[1][1], lines[3])
+    set_line(entries[1][2], lines[4])
+    set_line(entries[1][3], lines[5])
+    set_line(entries[2][0], lines[6])
+    set_line(entries[2][1], lines[7])
+    set_line(entries[4][0], lines[8])
+    set_line(entries[4][1], lines[9])
     string_vars[0].set(lines[10])
-    setLine(entries[ 6][ 0], lines[11])
-    setLine(entries[ 7][ 0], lines[12])
-    setLine(entries[ 8][ 0], lines[13])
-    setLine(entries[ 8][ 1], lines[14])
-    setLine(entries[ 8][ 2], lines[15])
-    setLine(entries[ 8][ 3], lines[16])
-    setLine(entries[ 9][ 0], lines[17])
-    setLine(entries[ 9][ 1], lines[18])
-    setLine(entries[ 9][ 2], lines[19])
-    setLine(entries[ 9][ 3], lines[20])
-    setLine(entries[10][ 0], lines[21])
-    setLine(entries[10][ 1], lines[22])
-    setLine(entries[10][ 2], lines[23])
-    setLine(entries[10][ 3], lines[24])
-    setLine(entries[10][ 4], lines[25])
-    setLine(entries[11][ 0], lines[26])
-    setLine(entries[12][ 0], lines[27])
-    setLine(entries[13][ 0], lines[28])
-    setLine(entries[13][ 1], lines[29])
+    set_line(entries[6][0], lines[11])
+    set_line(entries[7][0], lines[12])
+    set_line(entries[8][0], lines[13])
+    set_line(entries[8][1], lines[14])
+    set_line(entries[8][2], lines[15])
+    set_line(entries[8][3], lines[16])
+    set_line(entries[9][0], lines[17])
+    set_line(entries[9][1], lines[18])
+    set_line(entries[9][2], lines[19])
+    set_line(entries[9][3], lines[20])
+    set_line(entries[10][0], lines[21])
+    set_line(entries[10][1], lines[22])
+    set_line(entries[10][2], lines[23])
+    set_line(entries[10][3], lines[24])
+    set_line(entries[10][4], lines[25])
+    set_line(entries[11][0], lines[26])
+    set_line(entries[12][0], lines[27])
+    set_line(entries[13][0], lines[28])
+    set_line(entries[13][1], lines[29])
     string_vars[1].set(lines[30])
     int_vars[0].set(lines[31])
-    setLine(entries[13][ 2], lines[32])
-    setLine(entries[13][ 3], lines[33])
+    set_line(entries[13][2], lines[32])
+    set_line(entries[13][3], lines[33])
     string_vars[2].set(lines[34])
-    setLine(entries[14][ 0], lines[35])
-    setLine(entries[14][ 1], lines[36])
+    set_line(entries[14][0], lines[35])
+    set_line(entries[14][1], lines[36])
     int_vars[1].set(lines[37])
     int_vars[2].set(lines[38])
     string_vars[3].set(lines[39])
-    setLine(entries[14][ 2], lines[40])
-    simple_labels [14][ 5]['text'] = lines[41]
-    # Вещества
+    set_line(entries[14][2], lines[40])
+    simple_labels[14][5]['text'] = lines[41]
     for i in range(42, 53):
         if lines[i]:
-            simple_labels [14][i - 36].config(text=lines[i].split(':')[0])
-            setLine(entries[14][i - 39], lines[i].split(':')[1])
+            simple_labels[14][i - 36].config(text=lines[i].split(':')[0])
+            set_line(entries[14][i - 39], lines[i].split(':')[1])
         else:
-            setLine(entries[14][i - 39], '')
-    #
-    setLine(entries[15][ 0], lines[53])
-    setLine(entries[16][ 0], lines[54])
-    setLine(entries[16][ 1], lines[55])
-    setLine(entries[17][ 0], lines[56])
-    setLine(entries[17][ 1], lines[57])
-#  Подготовка данных к печати
-def getMonth(n):
-    if n ==  1: return 'января'
-    if n ==  2: return 'февраля'
-    if n ==  3: return 'марта'
-    if n ==  4: return 'апреля'
-    if n ==  5: return 'мая'
-    if n ==  6: return 'июня'
-    if n ==  7: return 'июля'
-    if n ==  8: return 'августа'
-    if n ==  9: return 'сентября'
-    if n == 10: return 'октября'
-    if n == 11: return 'ноября'
-    if n == 12: return 'декабря'
-def getDateLine(line):
-    t = strptime(line, '%d.%m.%Y')
-    return '%d %s %d г.' % (t.tm_mday, getMonth(t.tm_mon), t.tm_year)
-def getLineMP(entry):
-    if entry.get() == minus: return 'отрицательный'
-    if entry.get() == plus:  return 'положительный'
-def getPrintData(init):
+            set_line(entries[14][i - 39], '')
+    set_line(entries[15][0], lines[53])
+    set_line(entries[16][0], lines[54])
+    set_line(entries[16][1], lines[55])
+    set_line(entries[17][0], lines[56])
+    set_line(entries[17][1], lines[57])
+
+
+def get_print_data(init):
+    def get_date_line(line):
+        month = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
+        t = strptime(line, '%d.%m.%Y')
+        return '%d %s %d г.' % (t.tm_mday, month[t.tm_mon - 1], t.tm_year)
+
     data = []
     for i in range(19):
         data.append([])
     data[0].append(init['Организация'])
     data[0].append(entries[0][0].get() + simple_labels[0][1]['text'])
-    data[0].append(getDateLine(entries[4][0].get()))
+    data[0].append(get_date_line(entries[4][0].get()))
     data[1].append(entries[1][0].get())
     data[1].append(entries[1][1].get())
     data[1].append(entries[1][2].get())
@@ -708,17 +709,25 @@ def getPrintData(init):
         if entries[13][1].get() and float(entries[13][1].get()) <= 0.16:
             data[13].append('''не проводилось в связи с
                 отрицательным результатом первого исследования''')
-        else: data[13].append('не проводилось')
+        else:
+            data[13].append('не проводилось')
     if int_vars[0].get():
         data[13][0] = checkbuttons[0]['text']
         data[13][1] = 'не проводилось'
     if entries[14][0].get():
-        data[14].append('%s (%s)' % (entries[14][0].get(), entries[14][1].get()))
+        data[14].append('%s (%s)' % (entries[14][0].get(),
+                                     entries[14][1].get()))
         data[14].append(init['Лаборатория'] + ', ' + string_vars[3].get())
         for i in range(3, 13):
-            if entries[14][i].get():
-                data[14][1] += ', %s: %s' % (simple_labels[14][i + 3]['text'],
-                                             getLineMP(entries[14][i]))
+            temp = entries[14][i].get()
+            if temp:
+                result = None
+                if temp == minus:
+                    result = 'отрицательный'
+                if temp == plus:
+                    result = 'положительный'
+                data[14][1] += ', %s: %s' % (
+                    simple_labels[14][i + 3]['text'], result)
         data[14][1] += ', № ' + entries[14][2].get() + simple_labels[14][5]['text']
     else:
         data[14].append('''забор биологического объекта для

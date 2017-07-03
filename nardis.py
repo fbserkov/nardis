@@ -36,10 +36,10 @@ from tkinter import (Button, END, Entry, Frame, LabelFrame, OptionMenu,
 from tkinter.messagebox import askyesno
 
 from buffer import getLB, ReadInit, WriteInit
-from form import (Check, dX, dY, entries,
+from form import (check, dX, dY, entries,
                   init_simple_labels, init_entries, init_smart_labels, init_option_menus, init_checkbuttons,
-                  Place, WriteIndexes,
-                  getDataLines, setDataLines, getPrintData)
+                  place, write_indexes,
+                  get_data_lines, set_data_lines, get_print_data)
 from popup import dat_name, exe_name, pdf_name, PopupName
 from template import createPDF
 
@@ -163,9 +163,9 @@ init_smart_labels(LFs)
 init_option_menus(LFs, init, current['user'])
 init_checkbuttons(LFs)
 LB, LB_entry = getLB(F)
-Place()
+place()
 if False:
-    WriteIndexes()
+    write_indexes()
  # Указание следующего номера акта
 if current['year'] not in base.keys():
     base[current['year']] = []
@@ -176,7 +176,7 @@ else:
 entries[0][0].config(state='normal')
 entries[0][0].insert(0, str(temp + 1))
 entries[0][0].config(state='disabled')
-save = getDataLines()
+save = get_data_lines()
  # Функция поиска (заполнение списка актов)
 def Find(temp=''):
     LB.delete(0, END)
@@ -195,7 +195,7 @@ LB_entry.bind('<KeyRelease>', cbFind)
 # Главные функции
  # Сохранение данных в базу
 def Save():
-    lines = getDataLines()
+    lines = get_data_lines()
     # Запись акта
     if current['index'] == -1:
         current['index'] = len(base[current['year']])
@@ -203,7 +203,7 @@ def Save():
     else:
         base[current['year']][current['index']] = lines
     global save
-    save = getDataLines()
+    save = get_data_lines()
  # Загрузка данных из базы
 def Open():
     try:
@@ -212,16 +212,16 @@ def Open():
         Show(4)
         return
     lines = base[current['year']][current['index']]
-    setDataLines(lines)
+    set_data_lines(lines)
     global save
-    save = getDataLines()
+    save = get_data_lines()
     Show(0)
  # Создание и открытие PDF-файла
 def Print():
     try:
         f = open(pdf_name, 'w')
         f.close()
-        data = getPrintData(init)
+        data = get_print_data(init)
         createPDF(data, pdf_name)
         Popen(pdf_name, shell=True)
     except PermissionError:
@@ -263,24 +263,24 @@ F_B.place(x=56*dX, y=0*dY)
 F_B.bind('<Button-1>', cbShowF)
  # Вызов главных функций
 def cbOpen():
-    if getDataLines() != save:
+    if get_data_lines() != save:
         if askyesno('Вопрос', 'Сохранить акт?'):
-            if Check():
+            if check():
                 Save()
             else:
                 return
     Open()
 def cbPrint():
-    if Check():
+    if check():
         Save()
         Print()
 def cbNew():
     if cbExit():
         Popen('nardis', shell=True)
 def cbExit():
-    if getDataLines() != save:
+    if get_data_lines() != save:
         if askyesno('Вопрос', 'Сохранить акт?'):
-            if Check():
+            if check():
                 Save()
             else:
                 return False

@@ -3,22 +3,17 @@ from form import (check, dX, dY, entries, init_simple_labels, init_entries,
                   place, write_indexes, get_data_lines, set_data_lines,
                   get_print_data)
 from os import remove
-from pickle import dump, load
-from popup import dat_name, exe_name, pdf_name, PopupName
+from popup import exe_name, pdf_name, popup_name
 from subprocess import Popen
-from sys import platform
 from template import createPDF
-from time import strftime
-from tkinter import (Button, END, Entry, Frame, Label, LabelFrame, Listbox,
-                     OptionMenu, Scrollbar, StringVar, Text, Tk, Toplevel)
+from tkinter import (Button, END, Entry, Frame, Label, LabelFrame,
+                     Listbox, Scrollbar, Text, Tk, Toplevel)
 from tkinter.messagebox import askyesno
 
 
 # Константы
 X =    551  # ширина окна (не более 1366)
 Y =    672  # высота окна (не более  768)
-frame =  3  # толщина рамки окна    (Windows XP)
-title = 26  # высота заголовка окна (Windows XP)
 
 # Переменные
 current = {'user': '', 'year': -1, 'index': -1}
@@ -52,64 +47,10 @@ try:
     remove('#LOCK')
     lock = open('#LOCK', 'w')
 except PermissionError:
-    PopupName(exe_name)
+    popup_name(exe_name)
     dqRoot()
     raise SystemExit
 
-# Чтение базы данных
-try:
-    with open('nardis.dat', 'rb') as f:
-        DB = load(f)
-except:
-    PopupName(dat_name)
-    dqRoot()
-    raise SystemExit
-init = DB[0]
-base = DB[1]
-
-# Запрос пароля
- # Окно
-tl_psw = Toplevel()
-X = 154
-Y = 84
-temp_x = (root.winfo_screenwidth()  - (X + 2*frame))/2
-temp_y = (root.winfo_screenheight() - (Y + 2*frame + title))/3
-tl_psw.geometry('%dx%d+%d+%d' % (X, Y, temp_x, temp_y))
-if not platform == 'linux':
-    tl_psw.iconbitmap('nardis.ico')
-tl_psw.title('Введите пароль')
-tl_psw.resizable(False, False)
- # Элементы
-sv = StringVar(tl_psw)
-y = int(strftime('%Y'))
-sv.set(y)
-l = list(base.keys())
-if y + 1 not in base.keys():
-    l.append(y + 1)
-om = OptionMenu(tl_psw, sv, *l)
-om.config(width=16, font='-size 10', fg='#800000')
-e = Entry(tl_psw, width=14, font='-size 14', show='●')
-b = Button(tl_psw, width=18, text='OK', font='-size 10')
-om.place(x=0*dX - 1, y=0*dY - 2)
-e.place (x=0*dX    , y=1*dY + 1)
-b.place (x=0*dX    , y=2*dY)
-def cbf():
-    if e.get() in init['Врачи'].keys():
-        current['user'] = init['Врачи'][e.get()].partition(',')[0]
-        current['year'] = int(sv.get())
-        tl_psw.destroy()
-        tl_psw.quit()
-e.bind('<Key-Return>', lambda _: cbf())
-b.config(command=cbf)
-e.focus()
- # Модальность
-tl_psw.transient(root)
-tl_psw.grab_set()
-root.wait_window(tl_psw)
- # Закрытие без пароля
-if not current['user']:
-    dqRoot()
-    raise SystemExit
 
 # Создание подразделов формы и списка актов
 LFs = []
@@ -217,7 +158,7 @@ def Print():
         else:
             Popen('evince %s' % pdf_name, shell=True)
     except PermissionError:
-        PopupName(pdf_name)
+        popup_name(pdf_name)
 
 # Создание и настройка кнопок
  # Переключение подразделов формы
@@ -280,9 +221,6 @@ def cbExit():
             else:
                 return False
     dqRoot()
-    with open('nardis.dat', 'wb') as f:
-        DB = [init, base]
-        dump(DB, f)
     return True
 MF_Bs = []
 MF_Bs.append(Button(F,      text='Открыть', command=cbOpen))
@@ -312,7 +250,7 @@ def ReadInit(lines):
         for i in range(len(lines)):
             if lines[i] == line:
                 return lines[i + 1]
-        PopupName(exe_name, line)
+        popup_name(exe_name, line)
     init['Подразделение'] = getLine('[Подразделение]')
     init['Лаборатория']   = getLine('[Лаборатория]')
     # Многострочные данные
@@ -328,7 +266,7 @@ def ReadInit(lines):
                 if not lastLine(i):
                     temp += '\n'
     if not temp:
-        PopupName(exe_name, line)
+        popup_name(exe_name, line)
     init['Организация'] = temp
     # Списки данных
     def getList(line):
@@ -339,7 +277,7 @@ def ReadInit(lines):
                     temp.append(lines[i + 1])
                     i += 1
         if not temp:
-            PopupName(exe_name, line)
+            popup_name(exe_name, line)
         return temp
     init['Вещества']             = getList('[Вещества]')
     while len(init['Вещества']) < 11:
@@ -356,7 +294,7 @@ def ReadInit(lines):
                     temp[temp1.strip()] = temp2.strip()
                     i += 1
         if not temp:
-            PopupName(exe_name, line)
+            popup_name(exe_name, line)
         return temp
     init['Врачи'] = getDict('[Врачи]')
     return init

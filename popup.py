@@ -1,12 +1,12 @@
 from tkinter.messagebox import showerror, showinfo, showwarning
 
 
-dat_name = 'nardis.dat'     # имя файла базы данных
+dat_name = 'nardis.db'      # имя файла базы данных
 exe_name = 'nardis.exe'     # имя файла приложения
 pdf_name = 'nardis.pdf'     # имя pdf-файла для печати
 
 
-def PopupName(name, line=''):
+def popup_name(name, line=''):
     # Сообщения
     if name == exe_name:
         if line:
@@ -20,6 +20,7 @@ def PopupName(name, line=''):
     # Ошибки
     if name == dat_name:
         showinfo('Ошибка', 'Файл не найден:\n%s' % name)
+        raise SystemExit
 
 
 def popup_tag(simple_Ls, tag, item1, item2 = None):

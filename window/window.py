@@ -1,5 +1,6 @@
 import sys
 from tkinter import Tk
+from tkinter.messagebox import showinfo
 
 
 class Window:
@@ -22,3 +23,8 @@ class Window:
         top = (self.root.winfo_screenheight() - (height + 2 * frame + title)) / 2
         self.root.geometry('%ix%i+%i+%i' % (width, height, left, top))
         self.root.resizable(False, False)
+
+    def show_popup(self, title, message, alone=False):
+        if alone:
+            self.root.withdraw()
+        showinfo(title, message)

@@ -1,8 +1,8 @@
 from database import Database
 import os
-from tkinter.messagebox import showinfo
 from window.entrance import Entrance
 from window.main import Main
+from window.window import Window
 
 
 class Application:
@@ -11,7 +11,8 @@ class Application:
         self.lock()
 
         self.database = Database()
-        Entrance(self.database)
+        if self.database.read():
+            Entrance(self.database)
         if self.database.current_user:
             Main()
 
@@ -24,7 +25,7 @@ class Application:
             self.lock_file = open('file.lock', 'w')
             self.lock_file.close()
         else:
-            showinfo('Сообщение', 'Приложение уже запущено.')
+            Window().show_popup('Сообщение', 'Приложение уже запущено.', True)
             raise SystemExit
 
     @staticmethod

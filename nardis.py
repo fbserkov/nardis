@@ -11,23 +11,6 @@ from tkinter import (Button, END, Entry, Frame, Label, LabelFrame,
 from tkinter.messagebox import askyesno
 
 
-# Константы
-X =    551  # ширина окна (не более 1366)
-Y =    672  # высота окна (не более  768)
-
-# Переменные
-current = {'user': '', 'year': -1, 'index': -1}
-
-# Настройка главного окна
-root = Tk()
-temp_x = (root.winfo_screenwidth()  - (X + 2*frame))/2
-temp_y = (root.winfo_screenheight() - (Y + 2*frame + title))/3
-root.geometry('%dx%d+%d+%d' % (X, Y, temp_x, temp_y))
-if not platform == 'linux':
-    root.iconbitmap('nardis.ico')
-root.title('Наркологическая экспертиза')
-root.resizable(False, False)
-
 # Вспомогательная функция
 def dqRoot():
     lock.close()
@@ -40,8 +23,7 @@ def dqRoot():
     root.quit()
 
 # Запрет второго экземпляра
-global lock
-lock = open('#LOCK', 'w')
+
 try:
     lock.close()
     remove('#LOCK')

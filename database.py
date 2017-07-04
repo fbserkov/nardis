@@ -1,19 +1,25 @@
 import pickle
-from popup import dat_name, popup_name
 import time
+from tkinter.messagebox import showinfo
+
+
+database_name = 'nardis.db'
 
 
 class Database:
     def __init__(self):
         self.current_user = None
         self.current_year = None
+        self.current_index = -1
         try:
-            with open(dat_name, 'rb') as f:
+            with open(database_name, 'rb') as f:
                 database = pickle.load(f)
+        except FileNotFoundError:
+            showinfo('Сообщение', 'База данных не найдена.')
+            raise SystemExit
+        else:
             self.settings = database[0]
             self.folders = database[1]
-        except FileNotFoundError:
-            popup_name(dat_name)
 
     def get_years(self):
         years = sorted(self.folders.keys())
@@ -31,6 +37,6 @@ class Database:
 
     # использовать только при наличии изменений
     def save(self):
-        with open(dat_name, 'wb') as f:
+        with open(database_name, 'wb') as f:
             database = [self.settings, self.folders]
             pickle.dump(database, f)

@@ -1,7 +1,6 @@
 from tkinter.messagebox import showerror, showinfo, showwarning
 
 
-dat_name = 'nardis.db'      # имя файла базы данных
 exe_name = 'nardis.exe'     # имя файла приложения
 pdf_name = 'nardis.pdf'     # имя pdf-файла для печати
 
@@ -10,17 +9,11 @@ def popup_name(name, line=''):
     # Сообщения
     if name == exe_name:
         if line:
-            showerror('Ошибка', 'Не найдена метка:\n%s (%s)' % (line, name))
+            showerror('Ошибка', 'Метка не найдена:\n%s (%s)' % (line, name))
             #dqRoot()
             raise SystemExit
-        else:
-            showinfo('Сообщение', 'Приложение уже запущено:\n%s' % name)
     if name == pdf_name:
-        showinfo('Сообщение', 'Необходимо закрыть:\n%s' % name)
-    # Ошибки
-    if name == dat_name:
-        showinfo('Ошибка', 'Файл не найден:\n%s' % name)
-        raise SystemExit
+        showinfo('Сообщение', 'Документ необходимо закрыть:\n%s' % name)
 
 
 def popup_tag(simple_Ls, tag, item1, item2 = None):

@@ -7,41 +7,19 @@ from popup import exe_name, pdf_name, popup_name
 from subprocess import Popen
 from template import createPDF
 from tkinter import (Button, END, Entry, Frame, Label, LabelFrame,
-                     Listbox, Scrollbar, Text, Tk, Toplevel)
+                     Listbox, Scrollbar, Text, Toplevel)
 from tkinter.messagebox import askyesno
 
 
 # Вспомогательная функция
 def dqRoot():
-    lock.close()
     try:
-        remove('#LOCK')
         remove(pdf_name)
     except:
         pass
     root.destroy()
     root.quit()
 
-# Запрет второго экземпляра
-
-try:
-    lock.close()
-    remove('#LOCK')
-    lock = open('#LOCK', 'w')
-except PermissionError:
-    popup_name(exe_name)
-    dqRoot()
-    raise SystemExit
-
-
-# Создание подразделов формы и списка актов
-LFs = []
-LFs.append(LabelFrame(height=17*dY - 7, text='Паспортная часть'))
-LFs.append(LabelFrame(height=13*dY - 7, text='Общие данные'))
-LFs.append(LabelFrame(height=21*dY - 7, text='Объективный осмотр'))
-LFs.append(LabelFrame(height=23*dY - 7, text='Данные освидетельствования'))
-for item in LFs:
-    item.config(width=67*dX, font='-weight bold -size 10')
 
 # Создание списка актов
 F = Frame(height=23*dY - 7, width=67*dX)
@@ -67,11 +45,11 @@ def getLB(LF):
 
 
 # Создание и размещение элементов формы и списка актов
-init_simple_labels(LFs, init)
-init_entries(LFs)
-init_smart_labels(LFs)
-init_option_menus(LFs, init, current['user'])
-init_checkbuttons(LFs)
+init_simple_labels(label_frames, init)
+init_entries(label_frames)
+init_smart_labels(label_frames)
+init_option_menus(label_frames, init, current['user'])
+init_checkbuttons(label_frames)
 LB, LB_entry = getLB(F)
 place()
 if False:
@@ -146,16 +124,16 @@ def Print():
  # Переключение подразделов формы
 def Show(n):
     F.place_forget()
-    for i in range(len(LFs)):
+    for i in range(len(label_frames)):
         if i == n:
             LF_Bs[i].config(font='-weight bold -size 10')
-            LFs[i].place(x=1*dX, y=1*dY)
+            label_frames[i].place(x=1 * dX, y=1 * dY)
         else:
             LF_Bs[i].config(font='-size 10')
-            LFs[i].place_forget()
+            label_frames[i].place_forget()
     if n == 4:
-        for i in range(len(LFs)):
-            LFs[i].place_forget()
+        for i in range(len(label_frames)):
+            label_frames[i].place_forget()
         F.place(x=1*dX, y=1*dY)
         LB_entry.delete(0, END)
         Find()
@@ -206,7 +184,7 @@ def cbExit():
     return True
 MF_Bs = []
 MF_Bs.append(Button(F,      text='Открыть', command=cbOpen))
-MF_Bs.append(Button(LFs[3], text='Печать',  command=cbPrint))
+MF_Bs.append(Button(label_frames[3], text='Печать', command=cbPrint))
 MF_Bs.append(Button(        text='Рестарт', command=cbNew))
 for item in MF_Bs:
     item.config(width=7, font='-size 10')

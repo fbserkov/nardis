@@ -26,14 +26,6 @@ def key_release_result(event):
         event.widget.delete(4, END)
 
 
-def enter(event):
-    event.widget['font'] = '-size 10 -underline false'
-
-
-def leave(event):
-    event.widget['font'] = '-size 10 -underline true'
-
-
 def add(entry, label):
     if entry.get().find(label['text']) == -1:
         entry.insert(END, label['text'] + ', ')

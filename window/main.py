@@ -1,20 +1,46 @@
-from tkinter import LabelFrame
+from labelframe.passport import PassportFrame
+from tkinter import BOTH, Button, E, Frame, LabelFrame, LEFT, W, X
 from window.window import Window
 
 
 class Main(Window):
-    def __init__(self):
+    def __init__(self, database):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
+        self.create(database)
         self.centering()    # было 551x672 (высота < 768)
-        self.create()
         self.root.mainloop()
 
     @staticmethod
-    def create():
-        label_frames = [LabelFrame(text='Паспортная часть'),
+    def create(database):
+        label_frames = [PassportFrame(database),
                         LabelFrame(text='Общие данные'),
                         LabelFrame(text='Объективный осмотр'),
                         LabelFrame(text='Данные освидетельствования')]
-        for item in label_frames:
-            item.config(font='-weight bold -size 10')
+        for frame in label_frames:
+            frame.config(font='-weight bold -size 10')
+
+        label_frame_buttons_frame = Frame()
+        label_frame_buttons_frame.pack(fill=X)
+
+        label_frame_buttons = [Button(label_frame_buttons_frame, text='I'),
+                               Button(label_frame_buttons_frame, text='II'),
+                               Button(label_frame_buttons_frame, text='III'),
+                               Button(label_frame_buttons_frame, text='IV')]
+
+        def show_label_frame(n):
+            for i in range(len(label_frames)):
+                if i == n:
+                    label_frame_buttons[i].config(font='-weight bold -size 10')
+                    label_frames[i].pack(fill=BOTH, expand=True)
+                else:
+                    label_frame_buttons[i].config(font='-size 10')
+                    label_frames[i].forget()
+
+        for button in label_frame_buttons:
+            button.config(font='-size 10')
+            button.pack(side=LEFT, expand=True, fill=X)
+            button.bind('<Button-1>', lambda e: show_label_frame(
+                label_frame_buttons.index(e.widget)))
+
+        show_label_frame(0)

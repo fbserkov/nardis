@@ -18,11 +18,6 @@ def bind_entries_events(entries):
 
 def bind_smart_labels_events(smart_labels, entries, entries_default):
 
-    for item in smart_labels:
-        for jtem in item:
-            jtem.bind('<Enter>', enter)
-            jtem.bind('<Leave>', leave)
-
     smart_labels[1][0].bind(
         '<Button-1>', lambda e: add(entries[1][2], e.widget))
     smart_labels[1][1].bind(

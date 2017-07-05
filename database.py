@@ -44,3 +44,15 @@ class Database:
             self.current_year = current_year
             return True
         return False
+
+    def get_doctors(self):
+        doctors = None
+        if self.current_user == 'admin':
+            doctors = list(self.settings['Врачи'].values())
+            doctors.remove('admin')
+        else:
+            for line in self.settings['Врачи'].values():
+                if line.find(self.current_user) != -1:
+                    doctors = [line]
+                    break
+        return doctors

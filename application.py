@@ -5,18 +5,27 @@ from window.main import Main
 from window.window import Window
 
 
+LOCK = False
+PASSWORD = True
+
+
 class Application:
     def __init__(self):
         self.lock_file = None
-        self.lock()
+        if LOCK:
+            self.lock()
 
         self.database = Database()
         if self.database.read():
-            Entrance(self.database)
+            if PASSWORD:
+                Entrance(self.database)
+            else:
+                self.database.current_user = True
         if self.database.current_user:
-            Main()
+            Main(self.database)
 
-        self.unlock()
+        if LOCK:
+            self.unlock()
 
     def lock(self):
         try:

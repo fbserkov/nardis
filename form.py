@@ -69,43 +69,23 @@ def init_smart_labels(label_frames):
         smart_labels[item[0]].append(
             Label(label_frames[item[1]], text=item[2]))
 
-    for i in range(form_length):
-        for item in smart_labels[i]:
-            item.config(font='-size 10 -underline true', fg='#000080')
-
     bind_smart_labels_events(smart_labels, entries, entries_default)
 
 
 def init_option_menus(label_frames, init, cur_user):
-    user_list = []
-    if cur_user == 'admin':
-        user_list = list(init['Врачи'].values())
-        user_list.remove('admin')
-    else:
-        for item in init['Врачи'].values():
-            if item.find(cur_user) != -1:
-                user_list = [item]
-                break
     option_menus_note.append(simple_labels[5][0].cget('text'))
     option_menus_note.append(simple_labels[13][5].cget('text'))
     option_menus_note.append(simple_labels[13][10].cget('text'))
     option_menus_note.append(simple_labels[14][2].cget('text'))
-    for i in [0, 3, 3, 3]:
+    for i in [3, 3, 3]:
         string_vars.append(StringVar(label_frames[i]))
-    option_menus.append(OptionMenu(
-        label_frames[0], string_vars[0], *user_list))
     option_menus.append(OptionMenu(
         label_frames[3], string_vars[1], *init['Технические средства']))
     option_menus.append(OptionMenu(
         label_frames[3], string_vars[2], *init['Технические средства']))
     option_menus.append(OptionMenu(
         label_frames[3], string_vars[3], *init['Методы']))
-    option_menus[0].config(width=67)
-    option_menus[1].config(width=47)
-    option_menus[2].config(width=47)
-    option_menus[3].config(width=47)
-    for item in option_menus:
-        item.config(font='-size 10', fg='#800000')
+
     if cur_user != 'admin':
         string_vars[0].set(user_list[0])
 

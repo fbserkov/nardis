@@ -6,7 +6,7 @@ from os import remove
 from popup import exe_name, pdf_name, popup_name
 from subprocess import Popen
 from template import createPDF
-from tkinter import (Button, END, Entry, Frame, Label, LabelFrame,
+from tkinter import (Button, END, Entry, Frame, Label,
                      Listbox, Scrollbar, Text, Toplevel)
 from tkinter.messagebox import askyesno
 
@@ -124,32 +124,18 @@ def Print():
  # Переключение подразделов формы
 def Show(n):
     F.place_forget()
-    for i in range(len(label_frames)):
-        if i == n:
-            LF_Bs[i].config(font='-weight bold -size 10')
-            label_frames[i].place(x=1 * dX, y=1 * dY)
-        else:
-            LF_Bs[i].config(font='-size 10')
-            label_frames[i].place_forget()
+
     if n == 4:
         for i in range(len(label_frames)):
             label_frames[i].place_forget()
         F.place(x=1*dX, y=1*dY)
         LB_entry.delete(0, END)
         Find()
-def cbShow(event):
-    Show(LF_Bs.index(event.widget))
+
 def cbShowF(event):
     Show(4)
-LF_Bs = []
-LF_Bs.append(Button(text='I'))
-LF_Bs.append(Button(text='II'))
-LF_Bs.append(Button(text='III'))
-LF_Bs.append(Button(text='IV'))
-for i in range(len(LF_Bs)):
-    LF_Bs[i].config(width=7, font='-size 10')
-    LF_Bs[i].place(x=(17 + i*9)*dX, y=0*dY)
-    LF_Bs[i].bind('<Button-1>', cbShow)
+
+
  # "Переключение" списка актов
 F_B = Button(text='Список', width=7, font='-size 10')
 F_B.place(x=56*dX, y=0*dY)

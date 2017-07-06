@@ -27,8 +27,8 @@ class Database:
 
     # использовать только при наличии изменений
     def write(self):
+        database = [self.settings, self.folders]
         with open(database_name, 'wb') as f:
-            database = [self.settings, self.folders]
             pickle.dump(database, f)
 
     def get_years(self):

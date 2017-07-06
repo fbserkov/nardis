@@ -155,8 +155,11 @@ class PassportFrame(LabelFrame):
 
         frame_d1 = Frame(frame_d)
         frame_d1.pack(fill=X)
+        doctors = database.get_doctors()
         string_var_d10 = StringVar(frame_d1)
+        if len(doctors) == 1:
+            string_var_d10.set(doctors[0])
         option_menu_d10 = OptionMenu(
-            frame_d1, string_var_d10, database.get_doctors())
+            frame_d1, string_var_d10, *doctors)
         option_menu_d10.config(font='-size 10', fg='#800000')
         option_menu_d10.pack(fill=X)

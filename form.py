@@ -86,9 +86,6 @@ def init_option_menus(label_frames, init, cur_user):
     option_menus.append(OptionMenu(
         label_frames[3], string_vars[3], *init['Методы']))
 
-    if cur_user != 'admin':
-        string_vars[0].set(user_list[0])
-
 
 def init_checkbuttons(label_frames):
     checkbuttons_text = (

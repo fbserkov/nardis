@@ -56,3 +56,6 @@ class Database:
                     doctors = [line]
                     break
         return doctors
+
+    def get_technical_means(self):
+        return self.settings['Технические средства']

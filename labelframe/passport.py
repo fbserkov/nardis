@@ -1,6 +1,6 @@
 import time
-from tkinter import (E, Entry, Frame, Label, LabelFrame, LEFT,
-                     OptionMenu, RIGHT, StringVar, W, X)
+from tkinter import (Entry, Frame, Label, LabelFrame, LEFT,
+                     OptionMenu, RIGHT, StringVar, X)
 from widget.smartlabel import SmartLabel
 
 
@@ -11,11 +11,11 @@ class PassportFrame(LabelFrame):
         # пункты (0), 4 и 16
         frame_a = Frame(self, bd=4)
         frame_a.pack(fill=X)
-        frame_a.columnconfigure(0, weight=1)
+        frame_a.columnconfigure(1, weight=1)
         frame_a.columnconfigure(3, weight=1)
 
         frame_a0 = Frame(frame_a)
-        frame_a0.grid(row=0, column=0, sticky=W)
+        frame_a0.grid(row=0, column=0)
         label_a00 = Label(frame_a0, text='Акт №')
         label_a00.grid(row=0, column=0, columnspan=2)
         entry_a00 = Entry(frame_a0, width=4, font='-size 10', fg='#800000',
@@ -161,7 +161,6 @@ class PassportFrame(LabelFrame):
         string_var_d10 = StringVar(frame_d1)
         if len(doctors) == 1:
             string_var_d10.set(doctors[0])
-        option_menu_d10 = OptionMenu(
-            frame_d1, string_var_d10, *doctors)
+        option_menu_d10 = OptionMenu(frame_d1, string_var_d10, *doctors)
         option_menu_d10.config(font='-size 10', fg='#800000')
         option_menu_d10.pack(fill=X)

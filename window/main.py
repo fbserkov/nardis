@@ -19,7 +19,7 @@ class Main(Window):
         label_frames = [PassportFrame(database),
                         CommonFrame(),
                         SurveyFrame(),
-                        ExaminationFrame()]
+                        ExaminationFrame(database)]
         for frame in label_frames:
             frame.config(font='-weight bold -size 10')
 
@@ -46,4 +46,4 @@ class Main(Window):
             button.bind('<Button-1>', lambda e: show_label_frame(
                 label_frame_buttons.index(e.widget)))
 
-        show_label_frame(2)
+        show_label_frame(3)

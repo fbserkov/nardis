@@ -1,6 +1,6 @@
 import time
-from tkinter import (Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT,
-                     StringVar, X)
+from tkinter import (E, Entry, Frame, Label, LabelFrame, LEFT,
+                     OptionMenu, RIGHT, StringVar, W, X)
 from widget.smartlabel import SmartLabel
 
 
@@ -11,9 +11,12 @@ class PassportFrame(LabelFrame):
         # пункты (0), 4 и 16
         frame_a = Frame(self, bd=4)
         frame_a.pack(fill=X)
+        frame_a.columnconfigure(0, weight=1)
+        frame_a.columnconfigure(1, weight=1)
+        frame_a.columnconfigure(2, weight=1)
 
         frame_a0 = Frame(frame_a)
-        frame_a0.pack(side=LEFT, fill=X, expand=True)
+        frame_a0.grid(row=0, column=0, sticky=W)
         label_a00 = Label(frame_a0, text='Акт №')
         label_a00.grid(row=0, column=0, columnspan=2)
         entry_a00 = Entry(frame_a0, width=4, font='-size 10', fg='#800000',
@@ -23,7 +26,7 @@ class PassportFrame(LabelFrame):
         label_a01.grid(row=1, column=1)
 
         frame_a1 = Frame(frame_a)
-        frame_a1.pack(side=LEFT, fill=X, expand=True)
+        frame_a1.grid(row=0, column=1, sticky=W+E)
         label_a10 = Label(frame_a1, text='4. Начало освидетельствования')
         label_a10.grid(row=0, column=0, columnspan=4)
         label_a11 = Label(frame_a1, text='Дата')
@@ -38,7 +41,7 @@ class PassportFrame(LabelFrame):
         entry_a11.insert(0, time.strftime('%H:%M'))
 
         frame_a2 = Frame(frame_a)
-        frame_a2.pack(side=LEFT, fill=X, expand=True)
+        frame_a2.grid(row=0, column=2, sticky=E)
         label_a20 = Label(frame_a2, text='16. Окончание освидетельствования')
         label_a20.grid(row=0, column=0, columnspan=4)
         label_a21 = Label(frame_a2, text='Дата')

@@ -1,5 +1,7 @@
 from labelframe.common import CommonFrame
+from labelframe.examination import ExaminationFrame
 from labelframe.passport import PassportFrame
+from labelframe.survey import SurveyFrame
 from tkinter import Button, Frame, LabelFrame, LEFT, X
 from window.window import Window
 
@@ -16,8 +18,8 @@ class Main(Window):
     def create(database):
         label_frames = [PassportFrame(database),
                         CommonFrame(),
-                        LabelFrame(text='Объективный осмотр'),
-                        LabelFrame(text='Данные освидетельствования')]
+                        SurveyFrame(),
+                        ExaminationFrame()]
         for frame in label_frames:
             frame.config(font='-weight bold -size 10')
 
@@ -44,4 +46,4 @@ class Main(Window):
             button.bind('<Button-1>', lambda e: show_label_frame(
                 label_frame_buttons.index(e.widget)))
 
-        show_label_frame(1)
+        show_label_frame(2)

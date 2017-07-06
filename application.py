@@ -6,7 +6,6 @@ from window.window import Window
 
 
 LOCK = False
-PASSWORD = True
 
 
 class Application:
@@ -17,10 +16,7 @@ class Application:
 
         self.database = Database()
         if self.database.read():
-            if PASSWORD:
                 Entrance(self.database)
-            else:
-                self.database.current_user = True
         if self.database.current_user:
             Main(self.database)
 

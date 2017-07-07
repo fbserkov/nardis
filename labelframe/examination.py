@@ -1,7 +1,11 @@
 import time
-from tkinter import (Checkbutton, Entry, Frame, IntVar, Label, LabelFrame,
+from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
                      LEFT, OptionMenu, RIGHT, StringVar, W, X)
 from widget.smartlabel import SmartLabel
+
+
+minus = '«-»'
+plus = '«+»'
 
 
 class ExaminationFrame(LabelFrame):
@@ -118,7 +122,6 @@ class ExaminationFrame(LabelFrame):
         frame_b1.pack(fill=X)
         frame_b10 = Frame(frame_b1)
         frame_b10.pack(side=RIGHT)
-
         int_var_b100 = IntVar(frame_b10)
         checkbutton_b100 = Checkbutton(
             frame_b10, variable=int_var_b100, onvalue=1, offvalue=0,
@@ -129,3 +132,94 @@ class ExaminationFrame(LabelFrame):
             frame_b10, variable=int_var_b101, onvalue=1, offvalue=0,
             text='фальсификация пробы биологического объекта (мочи)')
         checkbutton_b101.grid(row=1)
+
+        frame_b2 = Frame(frame_b)
+        frame_b2.pack(fill=X)
+        label_b20 = Label(frame_b2, text='метод исследования')
+        label_b20.pack(side=LEFT)
+        methods = database.get_methods()
+        string_var_b20 = StringVar(frame_b2)
+        option_menu_b20 = OptionMenu(
+            frame_b2, string_var_b20, *methods)
+        option_menu_b20.config(font='-size 10', fg='#800000')
+        option_menu_b20.pack(fill=X)
+
+        frame_b3 = Frame(frame_b)
+        frame_b3.pack(fill=X)
+        line = 'Результаты химико-токсикологических исследований'
+        label_b30 = Label(frame_b3, text=line)
+        label_b30.pack(side=LEFT)
+        label_b31 = Label(frame_b3, text=time.strftime('/%y'))
+        label_b31.pack(side=RIGHT)
+        entry_b30 = Entry(frame_b3, width=5, font='-size 10', fg='#800000')
+        entry_b30.pack(side=RIGHT)
+        label_b32 = Label(frame_b3, text='номер справки')
+        label_b32.pack(side=RIGHT)
+
+        chemicals = database.get_chemicals()
+        frame_b4 = Frame(frame_b)
+        frame_b4.pack(fill=X)
+        frame_b4.columnconfigure(0, weight=1)
+        frame_b4.columnconfigure(2, weight=1)
+        frame_b4.columnconfigure(4, weight=1)
+
+        frames_b4, labels_b4, smart_labels_b4, entries_b4 = [], [], [[], []], []
+        for i in range(11):
+            row, column = int(i / 2), (i % 2) * 2 + 1
+            frames_b4.append(Frame(frame_b4))
+            frames_b4[i].grid(row=row, column=column, sticky=W+E)
+            labels_b4.append(Label(frames_b4[i], text=chemicals[i]))
+            labels_b4[i].pack(side=LEFT)
+            smart_labels_b4[0].append(SmartLabel(frames_b4[i], text=plus))
+            smart_labels_b4[0][i].pack(side=RIGHT)
+            smart_labels_b4[1].append(SmartLabel(frames_b4[i], text=minus))
+            smart_labels_b4[1][i].pack(side=RIGHT)
+            entries_b4.append(Entry(frames_b4[i], width=3, font='-size 10', fg='#800000',
+                                    state='disabled', disabledforeground='#800000'))
+            entries_b4[i].pack(side=RIGHT)
+
+        # пункт 15
+        frame_c = Frame(self, bd=4)
+        frame_c.pack(fill=X)
+
+        frame_с0 = Frame(frame_c)
+        frame_с0.pack(fill=X)
+        label_с00 = Label(frame_с0, text='15. Другие данные')
+        label_с00.pack(side=LEFT)
+
+        frame_c1 = Frame(frame_c)
+        frame_c1.pack(fill=X)
+        entry_c10 = Entry(frame_c1, font='-size 10', fg='#800000')
+        entry_c10.pack(fill=X)
+        entry_c10.insert(0, 'нет')
+
+        # пункт 17
+        frame_d = Frame(self, bd=4)
+        frame_d.pack(fill=X)
+
+        frame_d0 = Frame(frame_d)
+        frame_d0.pack(fill=X)
+        label_d00 = Label(frame_d0, text='17. Заключение')
+        label_d00.pack(side=LEFT)
+        line = 'от медицинского освидетельствования отказался'
+        smart_label_d00 = SmartLabel(frame_d0, text=line)
+        smart_label_d00.pack(side=RIGHT)
+
+        frame_d1 = Frame(frame_d)
+        frame_d1.pack(fill=X)
+        line = 'состояние опьянения не установлено'
+        smart_label_d10 = SmartLabel(frame_d1, text=line)
+        smart_label_d10.pack(side=RIGHT)
+        line = 'установлено состояние опьянения'
+        smart_label_d11 = SmartLabel(frame_d1, text=line)
+        smart_label_d11.pack(side=RIGHT)
+
+        frame_d2 = Frame(frame_d)
+        frame_d2.pack(fill=X)
+        entry_d20 = Entry(frame_d2, font='-size 10', fg='#800000',
+                          state='disabled', disabledforeground='#800000')
+        entry_d20.pack(side=LEFT, expand=True, fill=X)
+        label_d20 = Label(frame_d2, text='Дата')
+        label_d20.pack(side=LEFT)
+        entry_d21 = Entry(frame_d2, width=10, font='-size 10', fg='#800000')
+        entry_d21.pack(side=LEFT)

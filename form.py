@@ -1,4 +1,3 @@
-from data import *
 from event import *
 from popup import *
 from time import strptime

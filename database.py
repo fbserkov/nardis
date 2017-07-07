@@ -59,3 +59,9 @@ class Database:
 
     def get_technical_means(self):
         return self.settings['Технические средства']
+
+    def get_methods(self):
+        return self.settings['Методы']
+
+    def get_chemicals(self):
+        return self.settings['Вещества']

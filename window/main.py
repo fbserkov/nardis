@@ -11,7 +11,7 @@ class Main(Window):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.create(database)
-        self.centering(width=600, height=600)    # было 551x672 (высота < 768)
+        self.centering(width=570, height=560)   # height < 768
         self.root.mainloop()
 
     @staticmethod
@@ -46,4 +46,4 @@ class Main(Window):
             button.bind('<Button-1>', lambda e: show_label_frame(
                 label_frame_buttons.index(e.widget)))
 
-        show_label_frame(3)
+        show_label_frame(0)

@@ -17,7 +17,7 @@ class CommonFrame(LabelFrame):
 
         frame_a1 = Frame(frame_a)
         frame_a1.pack(fill=X)
-        entry_a10 = Entry(frame_a1, font='-size 10', fg='#800000')
+        entry_a10 = Entry(frame_a1, width=69, font='-size 10', fg='#800000')
         entry_a10.pack(fill=X)
         line = ('внешний вид и кожные покровы без особенностей' +
                 ', видимых повреждений нет')

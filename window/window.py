@@ -22,7 +22,7 @@ class Window:
         left = (self.root.winfo_screenwidth() - (width + 2 * frame)) / 2
         top = (self.root.winfo_screenheight() - (height + 2 * frame + title)) / 2
         self.root.geometry('%ix%i+%i+%i' % (width, height, left, top))
-        # self.root.resizable(False, False)
+        self.root.resizable(False, False)
 
     def show_popup(self, title, message, alone=False):
         if alone:

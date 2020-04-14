@@ -5,37 +5,27 @@ from window.main import Main
 from window.window import Window
 
 
-LOCK = False
+def lock(on):
+    if not on:
+        os.remove('file.lock')
+        return
+    try:
+        open('file.lock', 'x').close()
+    except FileExistsError:
+        Window().show_popup(
+            title='Сообщение', message='Приложение уже запущено.', alone=True)
+        raise SystemExit
 
 
 class Application:
     def __init__(self):
-        self.lock_file = None
-        if LOCK:
-            self.lock()
-
+        lock(True)
         self.database = Database()
         if self.database.read():
-                Entrance(self.database)
+            Entrance(self.database)
         if self.database.current_user:
             Main(self.database)
-
-        if LOCK:
-            self.unlock()
-
-    def lock(self):
-        try:
-            self.lock_file = open('file.lock', 'r')
-        except FileNotFoundError:
-            self.lock_file = open('file.lock', 'w')
-            self.lock_file.close()
-        else:
-            Window().show_popup('Сообщение', 'Приложение уже запущено.', True)
-            raise SystemExit
-
-    @staticmethod
-    def unlock():
-        os.remove('file.lock')
+        lock(False)
 
 
 application = Application()

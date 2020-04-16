@@ -2,7 +2,7 @@ from labelframe.common import CommonFrame
 from labelframe.examination import ExaminationFrame
 from labelframe.passport import PassportFrame
 from labelframe.survey import SurveyFrame
-from tkinter import Button, Frame, LabelFrame, LEFT, X
+from tkinter import Button, Frame, LEFT, X
 from window.window import Window
 
 
@@ -11,7 +11,7 @@ class Main(Window):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.create(database)
-        self.centering(width=570, height=560)   # height < 768
+        self.centering(width=570, height=612)   # height < 768
         self.root.mainloop()
 
     @staticmethod

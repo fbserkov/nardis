@@ -6,7 +6,7 @@ from window.window import Window
 
 try:
     open('file.lock', 'x').close()
-    database = Database()
+    database = Database('nardis.db')
     Entrance(database)
     if database.current_user:
         Main(database)

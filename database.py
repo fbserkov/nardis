@@ -1,22 +1,22 @@
 import pickle
 import time
 
-database_name = 'nardis.db'
-
 
 class Database:
-    def __init__(self):
+    def __init__(self, filename):
+        self.filename = filename
+        self.current_user = None
         self.changed = False
-        with open(database_name, 'rb') as f:
+        with open(self.filename, 'rb') as f:
             database = pickle.load(f)
         self.settings, self.folders = database
+        self.current_year = -1
         self.current_index = -1
-        self.current_user = None
 
     def __del__(self):
         if not self.changed:
             return
-        with open(database_name, 'wb') as file:
+        with open(self.filename, 'wb') as file:
             pickle.dump((self.settings, self.folders), file)
 
     def get_years(self):
@@ -28,7 +28,8 @@ class Database:
 
     def authentication(self, password, current_year):
         if password in self.settings['Врачи'].keys():
-            self.current_user = self.settings['Врачи'][password].partition(',')[0]
+            self.current_user = (
+                self.settings['Врачи'][password].partition(',')[0])
             self.current_year = current_year
             return True
         return False

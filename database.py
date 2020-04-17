@@ -1,35 +1,23 @@
 import pickle
 import time
-from window.window import Window
-
 
 database_name = 'nardis.db'
 
 
 class Database:
     def __init__(self):
-        self.current_user = None
-        self.current_year = None
+        self.changed = False
+        with open(database_name, 'rb') as f:
+            database = pickle.load(f)
+        self.settings, self.folders = database
         self.current_index = -1
-        self.settings = None
-        self.folders = None
+        self.current_user = None
 
-    def read(self):
-        try:
-            with open(database_name, 'rb') as f:
-                database = pickle.load(f)
-        except FileNotFoundError:
-            Window().show_popup('Сообщение', 'База данных не найдена.', True)
-            return False
-        self.settings = database[0]
-        self.folders = database[1]
-        return True
-
-    # использовать только при наличии изменений
-    def write(self):
-        database = [self.settings, self.folders]
-        with open(database_name, 'wb') as f:
-            pickle.dump(database, f)
+    def __del__(self):
+        if not self.changed:
+            return
+        with open(database_name, 'wb') as file:
+            pickle.dump((self.settings, self.folders), file)
 
     def get_years(self):
         years = sorted(self.folders.keys())

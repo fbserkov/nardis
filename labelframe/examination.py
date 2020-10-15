@@ -1,6 +1,7 @@
 import time
 from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
                      LEFT, OptionMenu, RIGHT, StringVar, W, X)
+from widget.func import key_release_date, key_release_result, key_release_time
 from widget.smartlabel import SmartLabel
 
 
@@ -11,8 +12,12 @@ plus = '«+»'
 class ExaminationFrame(LabelFrame):
     def __init__(self, database):
         LabelFrame.__init__(self, text='Данные освидетельствования')
+        self.paragraph_13(database)
+        self.paragraph_14(database)
+        self.paragraph_15()
+        self.paragraph_17()
 
-        # пункт 13
+    def paragraph_13(self, database):
         frame_a = Frame(self, bd=4)
         frame_a.pack(fill=X)
 
@@ -36,6 +41,7 @@ class ExaminationFrame(LabelFrame):
         entry_a100 = Entry(frame_a10, width=5, font='-size 10', fg='#800000')
         entry_a100.pack(side=LEFT)
         entry_a100.insert(0, time.strftime('%H:%M'))
+        entry_a100.bind('<KeyRelease>', key_release_time)
 
         frame_a11 = Frame(frame_a1)
         frame_a11.grid(row=0, column=4)
@@ -43,6 +49,7 @@ class ExaminationFrame(LabelFrame):
         label_a110.pack(side=LEFT)
         entry_a110 = Entry(frame_a11, width=4, font='-size 10', fg='#800000')
         entry_a110.pack(side=LEFT)
+        entry_a110.bind('<KeyRelease>', key_release_result)
         label_a111 = Label(frame_a11, text='мг/л')
         label_a111.pack(side=LEFT)
 
@@ -78,6 +85,7 @@ class ExaminationFrame(LabelFrame):
         label_a400.pack(side=LEFT)
         entry_a400 = Entry(frame_a40, width=5, font='-size 10', fg='#800000')
         entry_a400.pack(side=LEFT)
+        entry_a400.bind('<KeyRelease>', key_release_time)
 
         frame_a41 = Frame(frame_a4)
         frame_a41.grid(row=0, column=4)
@@ -85,6 +93,7 @@ class ExaminationFrame(LabelFrame):
         label_a410.pack(side=LEFT)
         entry_a410 = Entry(frame_a41, width=4, font='-size 10', fg='#800000')
         entry_a410.pack(side=LEFT)
+        entry_a410.bind('<KeyRelease>', key_release_result)
         label_a411 = Label(frame_a41, text='мг/л')
         label_a411.pack(side=LEFT)
 
@@ -98,7 +107,7 @@ class ExaminationFrame(LabelFrame):
         option_menu_a50.config(font='-size 10', fg='#800000')
         option_menu_a50.pack(fill=X)
 
-        # пункт 14
+    def paragraph_14(self, database):
         frame_b = Frame(self, bd=4)
         frame_b.pack(fill=X)
 
@@ -109,6 +118,7 @@ class ExaminationFrame(LabelFrame):
         label_b00.pack(side=LEFT)
         entry_b00 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')
         entry_b00.pack(side=LEFT)
+        entry_b00.bind('<KeyRelease>', key_release_time)
         smart_label_b00 = SmartLabel(frame_b0, text='кровь')
         smart_label_b00.pack(side=RIGHT)
         entry_b01 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')
@@ -178,7 +188,7 @@ class ExaminationFrame(LabelFrame):
                                     state='disabled', disabledforeground='#800000'))
             entries_b4[i].pack(side=RIGHT)
 
-        # пункт 15
+    def paragraph_15(self):
         frame_c = Frame(self, bd=4)
         frame_c.pack(fill=X)
 
@@ -193,7 +203,7 @@ class ExaminationFrame(LabelFrame):
         entry_c10.pack(fill=X)
         entry_c10.insert(0, 'нет')
 
-        # пункт 17
+    def paragraph_17(self):
         frame_d = Frame(self, bd=4)
         frame_d.pack(fill=X)
 
@@ -223,3 +233,4 @@ class ExaminationFrame(LabelFrame):
         label_d20.pack(side=LEFT)
         entry_d21 = Entry(frame_d2, width=10, font='-size 10', fg='#800000')
         entry_d21.pack(side=LEFT)
+        entry_d21.bind('<KeyRelease>', key_release_date)

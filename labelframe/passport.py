@@ -1,14 +1,19 @@
 import time
 from tkinter import (Entry, Frame, Label, LabelFrame, LEFT,
                      OptionMenu, RIGHT, StringVar, X)
+from widget.func import key_release_date, key_release_time
 from widget.smartlabel import SmartLabel
 
 
 class PassportFrame(LabelFrame):
     def __init__(self, database):
         LabelFrame.__init__(self, text='Паспортная часть')
+        self.paragraphs_0_4_16()
+        self.paragraph_1()
+        self.paragraph_2()
+        self.paragraph_5(database)
 
-        # пункты (0), 4 и 16
+    def paragraphs_0_4_16(self):
         frame_a = Frame(self, bd=4)
         frame_a.pack(fill=X)
         frame_a.columnconfigure(1, weight=1)
@@ -33,11 +38,13 @@ class PassportFrame(LabelFrame):
         entry_a10 = Entry(frame_a1, width=10, font='-size 10', fg='#800000')
         entry_a10.pack(side=LEFT)
         entry_a10.insert(0, time.strftime('%d.%m.%Y'))
+        entry_a10.bind('<KeyRelease>', key_release_date)
         label_a12 = Label(frame_a1, text='Время')
         label_a12.pack(side=LEFT)
         entry_a11 = Entry(frame_a1, width=5, font='-size 10', fg='#800000')
         entry_a11.pack(side=LEFT)
         entry_a11.insert(0, time.strftime('%H:%M'))
+        entry_a11.bind('<KeyRelease>', key_release_time)
 
         frame_a2 = Frame(frame_a)
         frame_a2.grid(row=0, column=4)
@@ -48,13 +55,15 @@ class PassportFrame(LabelFrame):
         entry_a20 = Entry(frame_a2, width=10, font='-size 10', fg='#800000')
         entry_a20.pack(side=LEFT)
         entry_a20.insert(0, time.strftime('%d.%m.%Y'))
+        entry_a20.bind('<KeyRelease>', key_release_date)
         label_a22 = Label(frame_a2, text='Время')
         label_a22.pack(side=LEFT)
         entry_a21 = Entry(frame_a2, width=5, font='-size 10', fg='#800000')
         entry_a21.pack(side=LEFT)
         entry_a21.insert(0, time.strftime('%H:%M'))
+        entry_a21.bind('<KeyRelease>', key_release_time)
 
-        # пункт 1
+    def paragraph_1(self):
         frame_b = Frame(self, bd=4)
         frame_b.pack(fill=X)
 
@@ -73,6 +82,7 @@ class PassportFrame(LabelFrame):
         entry_b10.pack(side=LEFT, expand=True, fill=X)
         entry_b11 = Entry(frame_b1, width=10, font='-size 10', fg='#800000')
         entry_b11.pack(side=LEFT)
+        entry_b11.bind('<KeyRelease>', key_release_date)
 
         frame_b2 = Frame(frame_b)
         frame_b2.pack(fill=X)
@@ -110,7 +120,7 @@ class PassportFrame(LabelFrame):
         smart_label_b61 = SmartLabel(frame_b6, text='паспорта')
         smart_label_b61.pack(side=LEFT)
 
-        # пункт 2
+    def paragraph_2(self):
         frame_c = Frame(self, bd=4)
         frame_c.pack(fill=X)
 
@@ -146,7 +156,7 @@ class PassportFrame(LabelFrame):
         entry_c40 = Entry(frame_c4, font='-size 10', fg='#800000')
         entry_c40.pack(side=LEFT, expand=True, fill=X)
 
-        # пункт 5
+    def paragraph_5(self, database):
         frame_d = Frame(self, bd=4)
         frame_d.pack(fill=X)
 

@@ -11,7 +11,7 @@ class Main(Window):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.create(database)
-        self.centering(width=570, height=612)   # height < 768
+        self.centering(width=604, height=612)   # height < 768
         self.root.mainloop()
 
     @staticmethod

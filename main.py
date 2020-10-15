@@ -18,3 +18,5 @@ except FileNotFoundError:
     Window().show_popup(
         title='Сообщение', message='База данных не найдена.', alone=True)
     os.remove('file.lock')
+except KeyboardInterrupt:
+    os.remove('file.lock')

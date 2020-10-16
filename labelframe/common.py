@@ -1,5 +1,5 @@
 from tkinter import Entry, Frame, Label, LabelFrame, LEFT, RIGHT, X
-from widget.smartlabel import SmartLabel
+from widget.widget import SmartLabel
 
 
 class CommonFrame(LabelFrame):

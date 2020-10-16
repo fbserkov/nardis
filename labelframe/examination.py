@@ -1,12 +1,10 @@
 import time
 from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
                      LEFT, OptionMenu, RIGHT, StringVar, W, X)
-from widget.func import key_release_date, key_release_result, key_release_time
-from widget.smartlabel import SmartLabel
+from widget.func import key_release_result, key_release_time
+from widget.widget import DateEntry, SmartLabel
 
-
-minus = '«-»'
-plus = '«+»'
+minus, plus = '«-»', '«+»'
 
 
 class ExaminationFrame(LabelFrame):
@@ -173,7 +171,8 @@ class ExaminationFrame(LabelFrame):
         frame_b4.columnconfigure(2, weight=1)
         frame_b4.columnconfigure(4, weight=1)
 
-        frames_b4, labels_b4, smart_labels_b4, entries_b4 = [], [], [[], []], []
+        frames_b4, labels_b4, entries_b4 = [], [], []
+        smart_labels_b4 = [[], []]
         for i in range(11):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frames_b4.append(Frame(frame_b4))
@@ -184,18 +183,20 @@ class ExaminationFrame(LabelFrame):
             smart_labels_b4[0][i].pack(side=RIGHT)
             smart_labels_b4[1].append(SmartLabel(frames_b4[i], text=minus))
             smart_labels_b4[1][i].pack(side=RIGHT)
-            entries_b4.append(Entry(frames_b4[i], width=3, font='-size 10', fg='#800000',
-                                    state='disabled', disabledforeground='#800000'))
+            entries_b4.append(Entry(
+                frames_b4[i], width=3, font='-size 10', fg='#800000',
+                state='disabled', disabledforeground='#800000')
+            )
             entries_b4[i].pack(side=RIGHT)
 
     def paragraph_15(self):
         frame_c = Frame(self, bd=4)
         frame_c.pack(fill=X)
 
-        frame_с0 = Frame(frame_c)
-        frame_с0.pack(fill=X)
-        label_с00 = Label(frame_с0, text='15. Другие данные')
-        label_с00.pack(side=LEFT)
+        frame_c0 = Frame(frame_c)
+        frame_c0.pack(fill=X)
+        label_c00 = Label(frame_c0, text='15. Другие данные')
+        label_c00.pack(side=LEFT)
 
         frame_c1 = Frame(frame_c)
         frame_c1.pack(fill=X)
@@ -231,6 +232,4 @@ class ExaminationFrame(LabelFrame):
         entry_d20.pack(side=LEFT, expand=True, fill=X)
         label_d20 = Label(frame_d2, text='Дата')
         label_d20.pack(side=LEFT)
-        entry_d21 = Entry(frame_d2, width=10, font='-size 10', fg='#800000')
-        entry_d21.pack(side=LEFT)
-        entry_d21.bind('<KeyRelease>', key_release_date)
+        DateEntry(frame_d2)

@@ -2,14 +2,6 @@ from time import strftime
 from tkinter import END
 
 
-def key_release_date(event):
-    length = len(event.widget.get())
-    if length == 2 or length == 5:
-        event.widget.insert(END, '.')
-    if length > 10:
-        event.widget.delete(10, END)
-
-
 def key_release_time(event):
     length = len(event.widget.get())
     if length == 2:

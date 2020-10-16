@@ -1,8 +1,8 @@
 import time
 from tkinter import (Entry, Frame, Label, LabelFrame, LEFT,
                      OptionMenu, RIGHT, StringVar, X)
-from widget.func import key_release_date, key_release_time
-from widget.smartlabel import SmartLabel
+from widget.func import key_release_time
+from widget.widget import DateEntry, SmartLabel
 
 
 class PassportFrame(LabelFrame):
@@ -35,10 +35,7 @@ class PassportFrame(LabelFrame):
         label_a10.pack()
         label_a11 = Label(frame_a1, text='Дата')
         label_a11.pack(side=LEFT)
-        entry_a10 = Entry(frame_a1, width=10, font='-size 10', fg='#800000')
-        entry_a10.pack(side=LEFT)
-        entry_a10.insert(0, time.strftime('%d.%m.%Y'))
-        entry_a10.bind('<KeyRelease>', key_release_date)
+        DateEntry(frame_a1, time.strftime('%d.%m.%Y'))
         label_a12 = Label(frame_a1, text='Время')
         label_a12.pack(side=LEFT)
         entry_a11 = Entry(frame_a1, width=5, font='-size 10', fg='#800000')
@@ -52,10 +49,7 @@ class PassportFrame(LabelFrame):
         label_a20.pack()
         label_a21 = Label(frame_a2, text='Дата')
         label_a21.pack(side=LEFT)
-        entry_a20 = Entry(frame_a2, width=10, font='-size 10', fg='#800000')
-        entry_a20.pack(side=LEFT)
-        entry_a20.insert(0, time.strftime('%d.%m.%Y'))
-        entry_a20.bind('<KeyRelease>', key_release_date)
+        DateEntry(frame_a2, time.strftime('%d.%m.%Y'))
         label_a22 = Label(frame_a2, text='Время')
         label_a22.pack(side=LEFT)
         entry_a21 = Entry(frame_a2, width=5, font='-size 10', fg='#800000')
@@ -69,7 +63,8 @@ class PassportFrame(LabelFrame):
 
         frame_b0 = Frame(frame_b)
         frame_b0.pack(fill=X)
-        label_b00 = Label(frame_b0, text='1. Сведения об освидетельствуемом лице')
+        label_b00 = Label(
+            frame_b0, text='1. Сведения об освидетельствуемом лице')
         label_b00.pack(side=LEFT)
         label_b01 = Label(frame_b0, text='Дата рождения')
         label_b01.pack(side=RIGHT)
@@ -80,9 +75,7 @@ class PassportFrame(LabelFrame):
         label_b10.pack(side=LEFT)
         entry_b10 = Entry(frame_b1, font='-size 10', fg='#800000')
         entry_b10.pack(side=LEFT, expand=True, fill=X)
-        entry_b11 = Entry(frame_b1, width=10, font='-size 10', fg='#800000')
-        entry_b11.pack(side=LEFT)
-        entry_b11.bind('<KeyRelease>', key_release_date)
+        DateEntry(frame_b1)
 
         frame_b2 = Frame(frame_b)
         frame_b2.pack(fill=X)
@@ -115,7 +108,8 @@ class PassportFrame(LabelFrame):
         frame_b6.pack(fill=X)
         entry_b60 = Entry(frame_b6, font='-size 10', fg='#800000')
         entry_b60.pack(side=LEFT, expand=True, fill=X)
-        smart_label_b60 = SmartLabel(frame_b6, text='водительского удостоверения')
+        smart_label_b60 = SmartLabel(
+            frame_b6, text='водительского удостоверения')
         smart_label_b60.pack(side=LEFT)
         smart_label_b61 = SmartLabel(frame_b6, text='паспорта')
         smart_label_b61.pack(side=LEFT)

@@ -2,14 +2,6 @@ from time import strftime
 from tkinter import END
 
 
-def key_release_result(event):
-    length = len(event.widget.get())
-    if length == 1:
-        event.widget.insert(END, '.')
-    if length > 4:
-        event.widget.delete(4, END)
-
-
 def add(entry, label):
     if entry.get().find(label['text']) == -1:
         entry.insert(END, label['text'] + ', ')

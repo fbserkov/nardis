@@ -1,4 +1,3 @@
-import time
 from tkinter import END, Entry, Label, LEFT
 
 
@@ -17,6 +16,21 @@ class DateEntry(Entry):
             event.widget.insert(END, '.')
         if length > 10:
             event.widget.delete(10, END)
+
+
+class ResultEntry(Entry):
+    def __init__(self, master):
+        Entry.__init__(self, master, width=4, font='-size 10', fg='#800000')
+        self.pack(side=LEFT)
+        self.bind('<KeyRelease>', self.key_release_result)
+
+    @staticmethod
+    def key_release_result(event):
+        length = len(event.widget.get())
+        if length == 1:
+            event.widget.insert(END, '.')
+        if length > 4:
+            event.widget.delete(4, END)
 
 
 class SmartLabel(Label):

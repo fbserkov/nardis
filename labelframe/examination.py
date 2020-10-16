@@ -1,8 +1,7 @@
 import time
 from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
                      LEFT, OptionMenu, RIGHT, StringVar, W, X)
-from widget.func import key_release_result
-from widget.widget import DateEntry, SmartLabel, TimeEntry
+from widget.widget import DateEntry, ResultEntry, SmartLabel, TimeEntry
 
 minus, plus = '«-»', '«+»'
 
@@ -42,9 +41,7 @@ class ExaminationFrame(LabelFrame):
         frame_a11.grid(row=0, column=4)
         label_a110 = Label(frame_a11, text='Результат')
         label_a110.pack(side=LEFT)
-        entry_a110 = Entry(frame_a11, width=4, font='-size 10', fg='#800000')
-        entry_a110.pack(side=LEFT)
-        entry_a110.bind('<KeyRelease>', key_release_result)
+        ResultEntry(frame_a11)
         label_a111 = Label(frame_a11, text='мг/л')
         label_a111.pack(side=LEFT)
 
@@ -84,9 +81,7 @@ class ExaminationFrame(LabelFrame):
         frame_a41.grid(row=0, column=4)
         label_a410 = Label(frame_a41, text='Результат')
         label_a410.pack(side=LEFT)
-        entry_a410 = Entry(frame_a41, width=4, font='-size 10', fg='#800000')
-        entry_a410.pack(side=LEFT)
-        entry_a410.bind('<KeyRelease>', key_release_result)
+        ResultEntry(frame_a41)
         label_a411 = Label(frame_a41, text='мг/л')
         label_a411.pack(side=LEFT)
 

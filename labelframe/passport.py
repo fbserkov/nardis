@@ -1,8 +1,7 @@
 import time
-from tkinter import (Entry, Frame, Label, LabelFrame, LEFT,
-                     OptionMenu, RIGHT, StringVar, X)
-from widget.func import key_release_time
-from widget.widget import DateEntry, SmartLabel
+from tkinter import (
+    Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
+from widget.widget import DateEntry, SmartLabel, TimeEntry
 
 
 class PassportFrame(LabelFrame):
@@ -38,10 +37,7 @@ class PassportFrame(LabelFrame):
         DateEntry(frame_a1, time.strftime('%d.%m.%Y'))
         label_a12 = Label(frame_a1, text='Время')
         label_a12.pack(side=LEFT)
-        entry_a11 = Entry(frame_a1, width=5, font='-size 10', fg='#800000')
-        entry_a11.pack(side=LEFT)
-        entry_a11.insert(0, time.strftime('%H:%M'))
-        entry_a11.bind('<KeyRelease>', key_release_time)
+        TimeEntry(frame_a1, time.strftime('%H:%M'))
 
         frame_a2 = Frame(frame_a)
         frame_a2.grid(row=0, column=4)
@@ -52,10 +48,7 @@ class PassportFrame(LabelFrame):
         DateEntry(frame_a2, time.strftime('%d.%m.%Y'))
         label_a22 = Label(frame_a2, text='Время')
         label_a22.pack(side=LEFT)
-        entry_a21 = Entry(frame_a2, width=5, font='-size 10', fg='#800000')
-        entry_a21.pack(side=LEFT)
-        entry_a21.insert(0, time.strftime('%H:%M'))
-        entry_a21.bind('<KeyRelease>', key_release_time)
+        TimeEntry(frame_a2, time.strftime('%H:%M'))
 
     def paragraph_1(self):
         frame_b = Frame(self, bd=4)

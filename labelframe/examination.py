@@ -1,8 +1,8 @@
 import time
 from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
                      LEFT, OptionMenu, RIGHT, StringVar, W, X)
-from widget.func import key_release_result, key_release_time
-from widget.widget import DateEntry, SmartLabel
+from widget.func import key_release_result
+from widget.widget import DateEntry, SmartLabel, TimeEntry
 
 minus, plus = '«-»', '«+»'
 
@@ -36,10 +36,7 @@ class ExaminationFrame(LabelFrame):
         frame_a10.grid(row=0, column=2)
         label_a100 = Label(frame_a10, text='Время')
         label_a100.pack(side=LEFT)
-        entry_a100 = Entry(frame_a10, width=5, font='-size 10', fg='#800000')
-        entry_a100.pack(side=LEFT)
-        entry_a100.insert(0, time.strftime('%H:%M'))
-        entry_a100.bind('<KeyRelease>', key_release_time)
+        TimeEntry(frame_a10, time.strftime('%H:%M'))
 
         frame_a11 = Frame(frame_a1)
         frame_a11.grid(row=0, column=4)
@@ -81,9 +78,7 @@ class ExaminationFrame(LabelFrame):
         frame_a40.grid(row=0, column=2)
         label_a400 = Label(frame_a40, text='Время')
         label_a400.pack(side=LEFT)
-        entry_a400 = Entry(frame_a40, width=5, font='-size 10', fg='#800000')
-        entry_a400.pack(side=LEFT)
-        entry_a400.bind('<KeyRelease>', key_release_time)
+        TimeEntry(frame_a40)
 
         frame_a41 = Frame(frame_a4)
         frame_a41.grid(row=0, column=4)
@@ -114,9 +109,7 @@ class ExaminationFrame(LabelFrame):
         line = '14. Время отбора биологического объекта'
         label_b00 = Label(frame_b0, text=line)
         label_b00.pack(side=LEFT)
-        entry_b00 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')
-        entry_b00.pack(side=LEFT)
-        entry_b00.bind('<KeyRelease>', key_release_time)
+        TimeEntry(frame_b0)
         smart_label_b00 = SmartLabel(frame_b0, text='кровь')
         smart_label_b00.pack(side=RIGHT)
         entry_b01 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')

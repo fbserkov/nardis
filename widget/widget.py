@@ -7,7 +7,7 @@ class DateEntry(Entry):
         Entry.__init__(self, master, width=10, font='-size 10', fg='#800000')
         self.pack(side=LEFT)
         if text:
-            self.insert(0, time.strftime('%d.%m.%Y'))
+            self.insert(0, text)
         self.bind('<KeyRelease>', self.key_release_date)
 
     @staticmethod
@@ -35,3 +35,20 @@ class SmartLabel(Label):
     @staticmethod
     def leave(event):
         event.widget['font'] = '-size 10 -underline true'
+
+
+class TimeEntry(Entry):
+    def __init__(self, master, text=None):
+        Entry.__init__(self, master, width=5, font='-size 10', fg='#800000')
+        self.pack(side=LEFT)
+        if text:
+            self.insert(0, text)
+        self.bind('<KeyRelease>', self.key_release_time)
+
+    @staticmethod
+    def key_release_time(event):
+        length = len(event.widget.get())
+        if length == 2:
+            event.widget.insert(END, ':')
+        if length > 5:
+            event.widget.delete(5, END)

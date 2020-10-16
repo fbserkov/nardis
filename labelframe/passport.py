@@ -7,17 +7,21 @@ from widget.widget import DateEntry, SmartLabel, TimeEntry
 class PassportFrame(LabelFrame):
     def __init__(self, database):
         LabelFrame.__init__(self, text='Паспортная часть')
-        self.paragraphs_0_4_16()
-        self.paragraph_1()
-        self.paragraph_2()
-        self.paragraph_5(database)
 
-    def paragraphs_0_4_16(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frame.columnconfigure(1, weight=1)
         frame.columnconfigure(3, weight=1)
+        self.paragraph_0(frame)
+        self.paragraph_4(frame)
+        self.paragraph_16(frame)
 
+        self.paragraph_1()
+        self.paragraph_2()
+        self.paragraph_5(database)
+
+    @staticmethod
+    def paragraph_0(frame):
         frame_0 = Frame(frame)
         frame_0.grid(row=0, column=0)
         label_00 = Label(frame_0, text='Акт №')
@@ -27,28 +31,6 @@ class PassportFrame(LabelFrame):
         entry_00.grid(row=1, column=0)
         label_01 = Label(frame_0, text=time.strftime('/%y'))
         label_01.grid(row=1, column=1)
-
-        frame_1 = Frame(frame)
-        frame_1.grid(row=0, column=2)
-        label_10 = Label(frame_1, text='4. Начало освидетельствования')
-        label_10.pack()
-        label_11 = Label(frame_1, text='Дата')
-        label_11.pack(side=LEFT)
-        DateEntry(frame_1, time.strftime('%d.%m.%Y'))
-        label_12 = Label(frame_1, text='Время')
-        label_12.pack(side=LEFT)
-        TimeEntry(frame_1, time.strftime('%H:%M'))
-
-        frame_2 = Frame(frame)
-        frame_2.grid(row=0, column=4)
-        label_20 = Label(frame_2, text='16. Окончание освидетельствования')
-        label_20.pack()
-        label_21 = Label(frame_2, text='Дата')
-        label_21.pack(side=LEFT)
-        DateEntry(frame_2, time.strftime('%d.%m.%Y'))
-        label_22 = Label(frame_2, text='Время')
-        label_22.pack(side=LEFT)
-        TimeEntry(frame_2, time.strftime('%H:%M'))
 
     def paragraph_1(self):
         frame = Frame(self, bd=4)
@@ -134,6 +116,19 @@ class PassportFrame(LabelFrame):
         entry_40 = Entry(frame_4, font='-size 10', fg='#800000')
         entry_40.pack(side=LEFT, expand=True, fill=X)
 
+    @staticmethod
+    def paragraph_4(frame):
+        frame_1 = Frame(frame)
+        frame_1.grid(row=0, column=2)
+        label_10 = Label(frame_1, text='4. Начало освидетельствования')
+        label_10.pack()
+        label_11 = Label(frame_1, text='Дата')
+        label_11.pack(side=LEFT)
+        DateEntry(frame_1, time.strftime('%d.%m.%Y'))
+        label_12 = Label(frame_1, text='Время')
+        label_12.pack(side=LEFT)
+        TimeEntry(frame_1, time.strftime('%H:%M'))
+
     def paragraph_5(self, database):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
@@ -152,3 +147,16 @@ class PassportFrame(LabelFrame):
         option_menu_10 = OptionMenu(frame_1, string_var_10, *doctors)
         option_menu_10.config(font='-size 10', fg='#800000')
         option_menu_10.pack(fill=X)
+
+    @staticmethod
+    def paragraph_16(frame):
+        frame_2 = Frame(frame)
+        frame_2.grid(row=0, column=4)
+        label_20 = Label(frame_2, text='16. Окончание освидетельствования')
+        label_20.pack()
+        label_21 = Label(frame_2, text='Дата')
+        label_21.pack(side=LEFT)
+        DateEntry(frame_2, time.strftime('%d.%m.%Y'))
+        label_22 = Label(frame_2, text='Время')
+        label_22.pack(side=LEFT)
+        TimeEntry(frame_2, time.strftime('%H:%M'))

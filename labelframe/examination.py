@@ -1,7 +1,10 @@
 import time
-from tkinter import (Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame,
-                     LEFT, OptionMenu, RIGHT, StringVar, W, X)
-from widget.widget import DateEntry, ResultEntry, SmartLabel, TimeEntry
+from tkinter import (
+    Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame, LEFT, OptionMenu,
+    RIGHT, StringVar, W, X
+)
+from widget.widget import (
+    DateEntry, get_frames, ResultEntry, SmartLabel, TimeEntry)
 
 minus, plus = '«-»', '«+»'
 
@@ -15,200 +18,143 @@ class ExaminationFrame(LabelFrame):
         self.paragraph_17()
 
     def paragraph_13(self, database):
-        frame_a = Frame(self, bd=4)
-        frame_a.pack(fill=X)
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        frames = get_frames(frame, 6)
+        for i in 1, 4:
+            frames[i].columnconfigure(1, weight=1)
+            frames[i].columnconfigure(3, weight=1)
 
-        frame_a0 = Frame(frame_a)
-        frame_a0.pack(fill=X)
         line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
-        label_a00 = Label(frame_a0, text=line)
-        label_a00.pack(side=LEFT)
+        Label(frames[0], text=line).pack(side=LEFT)
+        Label(frames[1], text='13.1. Первое исследование').grid(row=0, column=0)
+        frame_10 = Frame(frames[1])
+        frame_10.grid(row=0, column=2)
+        Label(frame_10, text='Время').pack(side=LEFT)
+        TimeEntry(frame_10, time.strftime('%H:%M'))
+        frame_11 = Frame(frames[1])
+        frame_11.grid(row=0, column=4)
+        Label(frame_11, text='Результат').pack(side=LEFT)
+        ResultEntry(frame_11)
+        Label(frame_11, text='мг/л').pack(side=LEFT)
 
-        frame_a1 = Frame(frame_a)
-        frame_a1.pack(fill=X)
-        frame_a1.columnconfigure(1, weight=1)
-        frame_a1.columnconfigure(3, weight=1)
-        label_a10 = Label(frame_a1, text='13.1. Первое исследование')
-        label_a10.grid(row=0, column=0)
-
-        frame_a10 = Frame(frame_a1)
-        frame_a10.grid(row=0, column=2)
-        label_a100 = Label(frame_a10, text='Время')
-        label_a100.pack(side=LEFT)
-        TimeEntry(frame_a10, time.strftime('%H:%M'))
-
-        frame_a11 = Frame(frame_a1)
-        frame_a11.grid(row=0, column=4)
-        label_a110 = Label(frame_a11, text='Результат')
-        label_a110.pack(side=LEFT)
-        ResultEntry(frame_a11)
-        label_a111 = Label(frame_a11, text='мг/л')
-        label_a111.pack(side=LEFT)
-
-        frame_a2 = Frame(frame_a)
-        frame_a2.pack(fill=X)
-        label_a20 = Label(frame_a2, text='техническое средство')
-        label_a20.pack(side=LEFT)
+        Label(frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = database.get_technical_means()
-        string_var_a20 = StringVar(frame_a2)
-        option_menu_a20 = OptionMenu(
-            frame_a2, string_var_a20, *technical_means)
-        option_menu_a20.config(font='-size 10', fg='#800000')
-        option_menu_a20.pack(fill=X)
+        string_var_20 = StringVar(frames[2])
+        option_menu_20 = OptionMenu(
+            frames[2], string_var_20, *technical_means)
+        option_menu_20.config(font='-size 10', fg='#800000')
+        option_menu_20.pack(fill=X)
 
-        frame_a3 = Frame(frame_a)
-        frame_a3.pack(fill=X)
-        int_var_a30 = IntVar(frame_a3)
-        checkbutton_a30 = Checkbutton(
-            frame_a3, variable=int_var_a30, onvalue=1, offvalue=0,
-            text='фальсификация выдоха')
-        checkbutton_a30.pack(side=RIGHT)
+        int_var_30 = IntVar(frames[3])
+        checkbutton_30 = Checkbutton(
+            frames[3], variable=int_var_30, onvalue=1, offvalue=0,
+            text='фальсификация выдоха',
+        )
+        checkbutton_30.pack(side=RIGHT)
 
-        frame_a4 = Frame(frame_a)
-        frame_a4.pack(fill=X)
-        frame_a4.columnconfigure(1, weight=1)
-        frame_a4.columnconfigure(3, weight=1)
-        label_a40 = Label(frame_a4, text='13.2. Второе исследование')
-        label_a40.grid(row=0, column=0)
+        Label(frames[4], text='13.2. Второе исследование').grid(row=0, column=0)
+        frame_40 = Frame(frames[4])
+        frame_40.grid(row=0, column=2)
+        Label(frame_40, text='Время').pack(side=LEFT)
+        TimeEntry(frame_40)
+        frame_41 = Frame(frames[4])
+        frame_41.grid(row=0, column=4)
+        Label(frame_41, text='Результат').pack(side=LEFT)
+        ResultEntry(frame_41)
+        Label(frame_41, text='мг/л').pack(side=LEFT)
 
-        frame_a40 = Frame(frame_a4)
-        frame_a40.grid(row=0, column=2)
-        label_a400 = Label(frame_a40, text='Время')
-        label_a400.pack(side=LEFT)
-        TimeEntry(frame_a40)
-
-        frame_a41 = Frame(frame_a4)
-        frame_a41.grid(row=0, column=4)
-        label_a410 = Label(frame_a41, text='Результат')
-        label_a410.pack(side=LEFT)
-        ResultEntry(frame_a41)
-        label_a411 = Label(frame_a41, text='мг/л')
-        label_a411.pack(side=LEFT)
-
-        frame_a5 = Frame(frame_a)
-        frame_a5.pack(fill=X)
-        label_a50 = Label(frame_a5, text='техническое средство')
-        label_a50.pack(side=LEFT)
-        string_var_a50 = StringVar(frame_a5)
-        option_menu_a50 = OptionMenu(
-            frame_a5, string_var_a50, *technical_means)
-        option_menu_a50.config(font='-size 10', fg='#800000')
-        option_menu_a50.pack(fill=X)
+        Label(frames[5], text='техническое средство').pack(side=LEFT)
+        string_var_50 = StringVar(frames[5])
+        option_menu_50 = OptionMenu(
+            frames[5], string_var_50, *technical_means)
+        option_menu_50.config(font='-size 10', fg='#800000')
+        option_menu_50.pack(fill=X)
 
     def paragraph_14(self, database):
-        frame_b = Frame(self, bd=4)
-        frame_b.pack(fill=X)
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        frames = get_frames(frame, 5)
+        frames[4].columnconfigure(0, weight=1)
+        frames[4].columnconfigure(2, weight=1)
+        frames[4].columnconfigure(4, weight=1)
 
-        frame_b0 = Frame(frame_b)
-        frame_b0.pack(fill=X)
         line = '14. Время отбора биологического объекта'
-        label_b00 = Label(frame_b0, text=line)
-        label_b00.pack(side=LEFT)
-        TimeEntry(frame_b0)
-        SmartLabel(frame_b0, text='кровь')
-        entry_b01 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')
-        entry_b01.pack(side=RIGHT)
-        entry_b01.insert(0, 'моча')
-        entry_b01.config(state='disabled', disabledforeground='#800000')
-        label_b01 = Label(frame_b0, text='среда')
-        label_b01.pack(side=RIGHT)
+        Label(frames[0], text=line).pack(side=LEFT)
+        TimeEntry(frames[0])
+        SmartLabel(frames[0], text='кровь')
+        entry_01 = Entry(frames[0], width=5, font='-size 10', fg='#800000')
+        entry_01.pack(side=RIGHT)
+        entry_01.insert(0, 'моча')
+        entry_01.config(state='disabled', disabledforeground='#800000')
+        Label(frames[0], text='среда').pack(side=RIGHT)
 
-        frame_b1 = Frame(frame_b)
-        frame_b1.pack(fill=X)
-        frame_b10 = Frame(frame_b1)
-        frame_b10.pack(side=RIGHT)
-        int_var_b100 = IntVar(frame_b10)
-        checkbutton_b100 = Checkbutton(
-            frame_b10, variable=int_var_b100, onvalue=1, offvalue=0,
-            text='отказ от сдачи пробы биологического объекта (мочи)')
-        checkbutton_b100.grid(row=0, sticky=W)
-        int_var_b101 = IntVar(frame_b10)
-        checkbutton_b101 = Checkbutton(
-            frame_b10, variable=int_var_b101, onvalue=1, offvalue=0,
-            text='фальсификация пробы биологического объекта (мочи)')
-        checkbutton_b101.grid(row=1)
+        frame_10 = Frame(frames[1])
+        frame_10.pack(side=RIGHT)
+        int_var_100 = IntVar(frame_10)
+        checkbutton_100 = Checkbutton(
+            frame_10, variable=int_var_100, onvalue=1, offvalue=0,
+            text='отказ от сдачи пробы биологического объекта (мочи)',
+        )
+        checkbutton_100.grid(row=0, sticky=W)
+        int_var_101 = IntVar(frame_10)
+        checkbutton_101 = Checkbutton(
+            frame_10, variable=int_var_101, onvalue=1, offvalue=0,
+            text='фальсификация пробы биологического объекта (мочи)',
+        )
+        checkbutton_101.grid(row=1)
 
-        frame_b2 = Frame(frame_b)
-        frame_b2.pack(fill=X)
-        label_b20 = Label(frame_b2, text='метод исследования')
-        label_b20.pack(side=LEFT)
+        Label(frames[2], text='метод исследования').pack(side=LEFT)
         methods = database.get_methods()
-        string_var_b20 = StringVar(frame_b2)
-        option_menu_b20 = OptionMenu(
-            frame_b2, string_var_b20, *methods)
-        option_menu_b20.config(font='-size 10', fg='#800000')
-        option_menu_b20.pack(fill=X)
+        string_var_20 = StringVar(frames[2])
+        option_menu_20 = OptionMenu(
+            frames[2], string_var_20, *methods)
+        option_menu_20.config(font='-size 10', fg='#800000')
+        option_menu_20.pack(fill=X)
 
-        frame_b3 = Frame(frame_b)
-        frame_b3.pack(fill=X)
         line = 'Результаты химико-токсикологических исследований'
-        label_b30 = Label(frame_b3, text=line)
-        label_b30.pack(side=LEFT)
-        label_b31 = Label(frame_b3, text=time.strftime('/%y'))
-        label_b31.pack(side=RIGHT)
-        entry_b30 = Entry(frame_b3, width=5, font='-size 10', fg='#800000')
-        entry_b30.pack(side=RIGHT)
-        label_b32 = Label(frame_b3, text='номер справки')
-        label_b32.pack(side=RIGHT)
+        Label(frames[3], text=line).pack(side=LEFT)
+        Label(frames[3], text=time.strftime('/%y')).pack(side=RIGHT)
+        Entry(frames[3], width=5, font='-size 10', fg='#800000').pack(side=RIGHT)
+        Label(frames[3], text='номер справки').pack(side=RIGHT)
 
         chemicals = database.get_chemicals()
-        frame_b4 = Frame(frame_b)
-        frame_b4.pack(fill=X)
-        frame_b4.columnconfigure(0, weight=1)
-        frame_b4.columnconfigure(2, weight=1)
-        frame_b4.columnconfigure(4, weight=1)
-
-        frames_b4, labels_b4, entries_b4 = [], [], []
+        frames_4 = []
         for i in range(11):
             row, column = int(i / 2), (i % 2) * 2 + 1
-            frames_b4.append(Frame(frame_b4))
-            frames_b4[i].grid(row=row, column=column, sticky=W+E)
-            labels_b4.append(Label(frames_b4[i], text=chemicals[i]))
-            labels_b4[i].pack(side=LEFT)
-            SmartLabel(frames_b4[i], text=plus)
-            SmartLabel(frames_b4[i], text=minus)
-            entries_b4.append(Entry(
-                frames_b4[i], width=3, font='-size 10', fg='#800000',
-                state='disabled', disabledforeground='#800000')
-            )
-            entries_b4[i].pack(side=RIGHT)
+            frames_4.append(Frame(frames[4]))
+            frames_4[i].grid(row=row, column=column, sticky=W+E)
+            Label(frames_4[i], text=chemicals[i]).pack(side=LEFT)
+            SmartLabel(frames_4[i], text=plus)
+            SmartLabel(frames_4[i], text=minus)
+            Entry(
+                frames_4[i], width=3, font='-size 10', fg='#800000',
+                state='disabled', disabledforeground='#800000',
+            ).pack(side=RIGHT)
 
     def paragraph_15(self):
-        frame_c = Frame(self, bd=4)
-        frame_c.pack(fill=X)
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        frames = get_frames(frame, 2)
 
-        frame_c0 = Frame(frame_c)
-        frame_c0.pack(fill=X)
-        label_c00 = Label(frame_c0, text='15. Другие данные')
-        label_c00.pack(side=LEFT)
-
-        frame_c1 = Frame(frame_c)
-        frame_c1.pack(fill=X)
-        entry_c10 = Entry(frame_c1, font='-size 10', fg='#800000')
-        entry_c10.pack(fill=X)
-        entry_c10.insert(0, 'нет')
+        Label(frames[0], text='15. Другие данные').pack(side=LEFT)
+        entry_10 = Entry(frames[1], font='-size 10', fg='#800000')
+        entry_10.pack(fill=X)
+        entry_10.insert(0, 'нет')
 
     def paragraph_17(self):
-        frame_d = Frame(self, bd=4)
-        frame_d.pack(fill=X)
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        frames = get_frames(frame, 3)
 
-        frame_d0 = Frame(frame_d)
-        frame_d0.pack(fill=X)
-        label_d00 = Label(frame_d0, text='17. Заключение')
-        label_d00.pack(side=LEFT)
+        Label(frames[0], text='17. Заключение').pack(side=LEFT)
         SmartLabel(
-            frame_d0, text='от медицинского освидетельствования отказался')
-
-        frame_d1 = Frame(frame_d)
-        frame_d1.pack(fill=X)
-        SmartLabel(frame_d1, text='состояние опьянения не установлено')
-        SmartLabel(frame_d1, text='установлено состояние опьянения')
-
-        frame_d2 = Frame(frame_d)
-        frame_d2.pack(fill=X)
-        entry_d20 = Entry(frame_d2, font='-size 10', fg='#800000',
-                          state='disabled', disabledforeground='#800000')
-        entry_d20.pack(side=LEFT, expand=True, fill=X)
-        label_d20 = Label(frame_d2, text='Дата')
-        label_d20.pack(side=LEFT)
-        DateEntry(frame_d2)
+            frames[0], text='от медицинского освидетельствования отказался')
+        SmartLabel(frames[1], text='состояние опьянения не установлено')
+        SmartLabel(frames[1], text='установлено состояние опьянения')
+        Entry(
+            frames[2], font='-size 10', fg='#800000',
+            state='disabled', disabledforeground='#800000',
+        ).pack(side=LEFT, expand=True, fill=X)
+        Label(frames[2], text='Дата').pack(side=LEFT)
+        DateEntry(frames[2])

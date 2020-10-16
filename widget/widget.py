@@ -1,4 +1,13 @@
-from tkinter import END, Entry, Label, LEFT, RIGHT
+from tkinter import END, Entry, Frame, Label, LEFT, RIGHT, X
+
+
+def get_frames(master, length):
+    frames = []
+    for i in range(length):
+        frame = Frame(master)
+        frame.pack(fill=X)
+        frames.append(frame)
+    return frames
 
 
 class DateEntry(Entry):
@@ -34,7 +43,7 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text, place=RIGHT):
+    def __init__(self, master, text, place=RIGHT, entry=None, bind=None):  # TODO don't Nones
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'
@@ -45,6 +54,8 @@ class SmartLabel(Label):
             self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
+        if entry:  # TODO add and bind, delete if
+            self.bind('<Button-1>', lambda e: self.add(entry, e.widget))
 
     @staticmethod
     def enter(event):
@@ -53,6 +64,11 @@ class SmartLabel(Label):
     @staticmethod
     def leave(event):
         event.widget['font'] = '-size 10 -underline true'
+
+    @staticmethod
+    def add(entry, label):
+        if entry.get().find(label['text']) == -1:
+            entry.insert(END, label['text'] + ', ')
 
 
 class TimeEntry(Entry):

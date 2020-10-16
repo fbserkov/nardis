@@ -105,8 +105,7 @@ class ExaminationFrame(LabelFrame):
         label_b00 = Label(frame_b0, text=line)
         label_b00.pack(side=LEFT)
         TimeEntry(frame_b0)
-        smart_label_b00 = SmartLabel(frame_b0, text='кровь')
-        smart_label_b00.pack(side=RIGHT)
+        SmartLabel(frame_b0, text='кровь')
         entry_b01 = Entry(frame_b0, width=5, font='-size 10', fg='#800000')
         entry_b01.pack(side=RIGHT)
         entry_b01.insert(0, 'моча')
@@ -160,17 +159,14 @@ class ExaminationFrame(LabelFrame):
         frame_b4.columnconfigure(4, weight=1)
 
         frames_b4, labels_b4, entries_b4 = [], [], []
-        smart_labels_b4 = [[], []]
         for i in range(11):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frames_b4.append(Frame(frame_b4))
             frames_b4[i].grid(row=row, column=column, sticky=W+E)
             labels_b4.append(Label(frames_b4[i], text=chemicals[i]))
             labels_b4[i].pack(side=LEFT)
-            smart_labels_b4[0].append(SmartLabel(frames_b4[i], text=plus))
-            smart_labels_b4[0][i].pack(side=RIGHT)
-            smart_labels_b4[1].append(SmartLabel(frames_b4[i], text=minus))
-            smart_labels_b4[1][i].pack(side=RIGHT)
+            SmartLabel(frames_b4[i], text=plus)
+            SmartLabel(frames_b4[i], text=minus)
             entries_b4.append(Entry(
                 frames_b4[i], width=3, font='-size 10', fg='#800000',
                 state='disabled', disabledforeground='#800000')
@@ -200,18 +196,13 @@ class ExaminationFrame(LabelFrame):
         frame_d0.pack(fill=X)
         label_d00 = Label(frame_d0, text='17. Заключение')
         label_d00.pack(side=LEFT)
-        line = 'от медицинского освидетельствования отказался'
-        smart_label_d00 = SmartLabel(frame_d0, text=line)
-        smart_label_d00.pack(side=RIGHT)
+        SmartLabel(
+            frame_d0, text='от медицинского освидетельствования отказался')
 
         frame_d1 = Frame(frame_d)
         frame_d1.pack(fill=X)
-        line = 'состояние опьянения не установлено'
-        smart_label_d10 = SmartLabel(frame_d1, text=line)
-        smart_label_d10.pack(side=RIGHT)
-        line = 'установлено состояние опьянения'
-        smart_label_d11 = SmartLabel(frame_d1, text=line)
-        smart_label_d11.pack(side=RIGHT)
+        SmartLabel(frame_d1, text='состояние опьянения не установлено')
+        SmartLabel(frame_d1, text='установлено состояние опьянения')
 
         frame_d2 = Frame(frame_d)
         frame_d2.pack(fill=X)

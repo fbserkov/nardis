@@ -1,4 +1,4 @@
-from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, RIGHT, W, X
+from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
 from widget.widget import SmartLabel
 
 
@@ -48,18 +48,17 @@ class SurveyFrame(LabelFrame):
 
         frame_a10 = Frame(frame_a1)
         frame_a10.grid(row=0, column=2, sticky=E)
-        smart_label_a10 = SmartLabel(frame_a10, text='расширены')
-        smart_label_a10.pack(side=RIGHT)
-        smart_label_a11 = SmartLabel(frame_a10, text='сужены')
-        smart_label_a11.pack(side=RIGHT)
+        SmartLabel(frame_a10, text='расширены')
+        SmartLabel(frame_a10, text='сужены')
 
-        smart_label_a12 = SmartLabel(frame_a1, text='вялая')
-        smart_label_a12.grid(row=1, column=2, sticky=E)
-        line = 'инъекция сосудов конъюнктивы'
-        smart_label_a13 = SmartLabel(frame_a1, text=line)
-        smart_label_a13.grid(row=2, column=2, sticky=E)
-        smart_label_a14 = SmartLabel(frame_a1, text='есть')
-        smart_label_a14.grid(row=3, column=2, sticky=E)
+        SmartLabel(
+            frame_a1, text='вялая', place=dict(row=1, column=2, sticky=E))
+        SmartLabel(
+            frame_a1, text='инъекция сосудов конъюнктивы',
+            place=dict(row=2, column=2, sticky=E)
+        )
+        SmartLabel(
+            frame_a1, text='есть', place=dict(row=3, column=2, sticky=E))
 
         # пункт 10
         frame_b = Frame(self, bd=4)
@@ -75,12 +74,9 @@ class SurveyFrame(LabelFrame):
         frame_b1.pack(fill=X)
         label_b10 = Label(frame_b1, text='речь')
         label_b10.pack(side=LEFT)
-        smart_label_b10 = SmartLabel(frame_b1, text='речь бессвязная')
-        smart_label_b10.pack(side=RIGHT)
-        smart_label_b11 = SmartLabel(frame_b1, text='смазанность речи')
-        smart_label_b11.pack(side=RIGHT)
-        smart_label_b12 = SmartLabel(frame_b1, text='нарушение артикуляции')
-        smart_label_b12.pack(side=RIGHT)
+        SmartLabel(frame_b1, text='речь бессвязная')
+        SmartLabel(frame_b1, text='смазанность речи')
+        SmartLabel(frame_b1, text='нарушение артикуляции')
 
         frame_b2 = Frame(frame_b)
         frame_b2.pack(fill=X)
@@ -93,11 +89,8 @@ class SurveyFrame(LabelFrame):
         frame_b3.pack(fill=X)
         label_b30 = Label(frame_b3, text='походка')
         label_b30.pack(side=LEFT)
-        line = 'пошатывание при поворотах'
-        smart_label_b30 = SmartLabel(frame_b3, text=line)
-        smart_label_b30.pack(side=RIGHT)
-        smart_label_b31 = SmartLabel(frame_b3, text='шатающаяся')
-        smart_label_b31.pack(side=RIGHT)
+        SmartLabel(frame_b3, text='пошатывание при поворотах')
+        SmartLabel(frame_b3, text='шатающаяся')
 
         frame_b4 = Frame(frame_b)
         frame_b4.pack(fill=X)
@@ -114,12 +107,9 @@ class SurveyFrame(LabelFrame):
         entry_b50.pack(side=LEFT, expand=True, fill=X)
         entry_b50.insert(0, 'не проводилось')
         entry_b50.config(state='disabled', disabledforeground='#800000')
-        smart_label_b50 = SmartLabel(frame_b5, text='устойчив')
-        smart_label_b50.pack(side=LEFT)
-        smart_label_b51 = SmartLabel(frame_b5, text='неустойчив')
-        smart_label_b51.pack(side=LEFT)
-        smart_label_b52 = SmartLabel(frame_b5, text='падает')
-        smart_label_b52.pack(side=LEFT)
+        SmartLabel(frame_b5, text='устойчив', place=LEFT)
+        SmartLabel(frame_b5, text='неустойчив', place=LEFT)
+        SmartLabel(frame_b5, text='падает', place=LEFT)
 
         frame_b6 = Frame(frame_b)
         frame_b6.pack(fill=X)
@@ -133,12 +123,9 @@ class SurveyFrame(LabelFrame):
         entry_b70.pack(side=LEFT, expand=True, fill=X)
         entry_b70.insert(0, 'не проводилось')
         entry_b70.config(state='disabled', disabledforeground='#800000')
-        smart_label_b70 = SmartLabel(frame_b7, text='выполняет точно')
-        smart_label_b70.pack(side=LEFT)
-        smart_label_b71 = SmartLabel(frame_b7, text='промахивание')
-        smart_label_b71.pack(side=LEFT)
-        smart_label_b72 = SmartLabel(frame_b7, text='не выполняет')
-        smart_label_b72.pack(side=LEFT)
+        SmartLabel(frame_b7, text='выполняет точно', place=LEFT)
+        SmartLabel(frame_b7, text='промахивание', place=LEFT)
+        SmartLabel(frame_b7, text='не выполняет', place=LEFT)
 
         frame_b8 = Frame(frame_b)
         frame_b8.pack(fill=X)
@@ -194,7 +181,5 @@ class SurveyFrame(LabelFrame):
         frame_d2.pack(fill=X)
         entry_d20 = Entry(frame_d2, font='-size 10', fg='#800000')
         entry_d20.pack(side=LEFT, expand=True, fill=X)
-        smart_label_d20 = SmartLabel(frame_d2, text='отрицает')
-        smart_label_d20.pack(side=LEFT)
-        smart_label_d21 = SmartLabel(frame_d2, text='употреблял спиртное')
-        smart_label_d21.pack(side=LEFT)
+        SmartLabel(frame_d2, text='отрицает', place=LEFT)
+        SmartLabel(frame_d2, text='употреблял спиртное', place=LEFT)

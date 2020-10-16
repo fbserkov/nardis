@@ -77,12 +77,9 @@ class PassportFrame(LabelFrame):
 
         frame_b3 = Frame(frame_b)
         frame_b3.pack(fill=X)
-        smart_label_b32 = SmartLabel(frame_b3, text='г. Комсомольск-на-Амуре')
-        smart_label_b32.pack(side=RIGHT)
-        smart_label_b31 = SmartLabel(frame_b3, text='Комсомольский район')
-        smart_label_b31.pack(side=RIGHT)
-        smart_label_b30 = SmartLabel(frame_b3, text='Хабаровский край')
-        smart_label_b30.pack(side=RIGHT)
+        SmartLabel(frame_b3, text='г. Комсомольск-на-Амуре')
+        SmartLabel(frame_b3, text='Комсомольский район')
+        SmartLabel(frame_b3, text='Хабаровский край')
 
         frame_b4 = Frame(frame_b)
         frame_b4.pack(fill=X)
@@ -94,18 +91,14 @@ class PassportFrame(LabelFrame):
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         label_b50 = Label(frame_b5, text=line)
         label_b50.pack(side=LEFT)
-        smart_label_b50 = SmartLabel(frame_b5, text='протокола')
-        smart_label_b50.pack(side=RIGHT)
+        SmartLabel(frame_b5, text='протокола')
 
         frame_b6 = Frame(frame_b)
         frame_b6.pack(fill=X)
         entry_b60 = Entry(frame_b6, font='-size 10', fg='#800000')
         entry_b60.pack(side=LEFT, expand=True, fill=X)
-        smart_label_b60 = SmartLabel(
-            frame_b6, text='водительского удостоверения')
-        smart_label_b60.pack(side=LEFT)
-        smart_label_b61 = SmartLabel(frame_b6, text='паспорта')
-        smart_label_b61.pack(side=LEFT)
+        SmartLabel(frame_b6, text='водительского удостоверения', place=LEFT)
+        SmartLabel(frame_b6, text='паспорта', place=LEFT)
 
     def paragraph_2(self):
         frame_c = Frame(self, bd=4)
@@ -119,17 +112,15 @@ class PassportFrame(LabelFrame):
 
         frame_c1 = Frame(frame_c)
         frame_c1.pack(fill=X)
-        line = 'протокол о направлении на медицинское освидетельствование'
-        smart_label_c10 = SmartLabel(frame_c1, text=line)
-        smart_label_c10.pack(side=RIGHT)
+        SmartLabel(
+            frame_c1,
+            text='протокол о направлении на медицинское освидетельствование'
+        )
 
         frame_c2 = Frame(frame_c)
         frame_c2.pack(fill=X)
-        smart_label_c21 = SmartLabel(frame_c2, text='личное заявление')
-        smart_label_c21.pack(side=RIGHT)
-        line = 'письменное направление работодателя'
-        smart_label_c20 = SmartLabel(frame_c2, text=line)
-        smart_label_c20.pack(side=RIGHT)
+        SmartLabel(frame_c2, text='личное заявление')
+        SmartLabel(frame_c2, text='письменное направление работодателя')
 
         frame_c3 = Frame(frame_c)
         frame_c3.pack(fill=X)

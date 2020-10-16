@@ -1,4 +1,4 @@
-from tkinter import END, Entry, Label, LEFT
+from tkinter import END, Entry, Label, LEFT, RIGHT
 
 
 class DateEntry(Entry):
@@ -34,11 +34,15 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text):
+    def __init__(self, master, text, place=RIGHT):
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'
         )
+        if place == LEFT or place == RIGHT:
+            self.pack(side=place)
+        else:
+            self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
 

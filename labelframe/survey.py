@@ -19,7 +19,8 @@ class SurveyFrame(LabelFrame):
         line = '9. Вегетативно-сосудистые реакции освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
         Label(frames[1], text='зрачки').grid(row=0, column=0, sticky=W)
-        Label(frames[1], text='реакция на свет').grid(row=1, column=0, sticky=W)
+        Label(frames[1], text='реакция на свет').grid(
+            row=1, column=0, sticky=W)
         Label(frames[1], text='склеры').grid(row=2, column=0, sticky=W)
         Label(frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
 
@@ -96,7 +97,8 @@ class SurveyFrame(LabelFrame):
         SmartLabel(frames[7], text='промахивание', place=LEFT)
         SmartLabel(frames[7], text='не выполняет', place=LEFT)
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
-        Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(side=LEFT)
+        Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(
+            side=LEFT)
         Label(frames[8], text='сек.').pack(side=LEFT)
 
     def paragraph_11(self):
@@ -133,8 +135,8 @@ class SurveyFrame(LabelFrame):
         entry = Entry(frames[2], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         SmartLabel(
-            frames[2], text='отрицает', place=LEFT, bind=(entry, 'replace'))
+            frames[2], text='отрицает', place=LEFT, bind=('replace', entry))
         SmartLabel(
             frames[2], text='употреблял спиртное',
-            place=LEFT, bind=(entry, 'replace'),
+            place=LEFT, bind=('replace', entry),
         )

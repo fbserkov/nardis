@@ -46,12 +46,12 @@ class CommonFrame(LabelFrame):
         entry = Entry(frames[1], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         SmartLabel(
-            frames[1], text='ясное', place=LEFT, bind=(entry, 'replace'))
+            frames[1], text='ясное', place=LEFT, bind=('replace', entry))
         SmartLabel(
-            frames[1], text='оглушение', place=LEFT, bind=(entry, 'replace'))
+            frames[1], text='оглушение', place=LEFT, bind=('replace', entry))
         SmartLabel(
-            frames[1], text='сопор', place=LEFT, bind=(entry, 'replace'))
-        SmartLabel(frames[1], text='кома', place=LEFT, bind=(entry, 'replace'))
+            frames[1], text='сопор', place=LEFT, bind=('replace', entry))
+        SmartLabel(frames[1], text='кома', place=LEFT, bind=('replace', entry))
 
         Label(frames[2], text='поведение').pack(side=LEFT)
         SmartLabel(frames[2], text='эйфоричен')
@@ -76,17 +76,18 @@ class CommonFrame(LabelFrame):
         entry.pack(side=LEFT, expand=True, fill=X)
         SmartLabel(
             frames[6], text='ориентирован',
-            place=LEFT, bind=(entry, 'replace'),
+            place=LEFT, bind=('replace', entry),
         )
         SmartLabel(
             frames[6], text='ориентация снижена',
-            place=LEFT, bind=(entry, 'replace'),
+            place=LEFT, bind=('replace', entry),
         )
         SmartLabel(
             frames[6], text='дезориентирован',
-            place=LEFT, bind=(entry, 'replace'),
+            place=LEFT, bind=('replace', entry),
         )
 
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
-        Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(side=LEFT)
+        Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(
+            side=LEFT)
         Label(frames[7], text='сек.').pack(side=LEFT)

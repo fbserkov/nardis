@@ -160,13 +160,13 @@ class ExaminationFrame(LabelFrame):
         date = DateEntry(frames[2])
         SmartLabel(
             frames[0], text='от медицинского освидетельствования отказался',
-            bind=(entry, 'replace_2', date),
+            bind=('replace_2', entry, date),
         )
         SmartLabel(
             frames[1], text='состояние опьянения не установлено',
-            bind=(entry, 'replace_2', date),
+            bind=('replace_2', entry, date),
         )
         SmartLabel(
             frames[1], text='установлено состояние опьянения',
-            bind=(entry, 'replace_2', date),
+            bind=('replace_2', entry, date),
         )

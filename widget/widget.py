@@ -44,7 +44,7 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO don't None
+    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO: del None
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'
@@ -57,13 +57,13 @@ class SmartLabel(Label):
         self.bind('<Leave>', self.leave)
         if not bind:  # TODO: delete this if
             return
-        if bind[1] == 'replace':  # 15 uses
-            self.bind('<Button-1>', lambda e: self.replace(bind[0], e.widget))
-        elif bind[1] == 'add':  # 3 uses
-            self.bind('<Button-1>', lambda e: self.add(bind[0], e.widget))
-        elif bind[1] == 'replace_2':  # 3 uses
+        if bind[0] == 'replace':  # 15 uses
+            self.bind('<Button-1>', lambda e: self.replace(bind[1], e.widget))
+        elif bind[0] == 'add':  # 3 uses
+            self.bind('<Button-1>', lambda e: self.add(bind[1], e.widget))
+        elif bind[0] == 'replace_2':  # 3 uses
             self.bind('<Button-1>', lambda e: self.replace_2(
-                bind[0], e.widget, bind[2]))
+                bind[1], e.widget, bind[2]))
 
     @staticmethod
     def add(entry, label):

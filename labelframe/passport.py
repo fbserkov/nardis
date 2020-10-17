@@ -49,21 +49,21 @@ class PassportFrame(LabelFrame):
         entry = Entry(frames[4], font='-size 10', fg='#800000')
         entry.pack(fill=X)
         SmartLabel(
-            frames[3], text='г. Комсомольск-на-Амуре', bind=(entry, 'add'))
-        SmartLabel(frames[3], text='Комсомольский район', bind=(entry, 'add'))
-        SmartLabel(frames[3], text='Хабаровский край', bind=(entry, 'add'))
+            frames[3], text='г. Комсомольск-на-Амуре', bind=('add', entry))
+        SmartLabel(frames[3], text='Комсомольский район', bind=('add', entry))
+        SmartLabel(frames[3], text='Хабаровский край', bind=('add', entry))
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(frames[5], text=line).pack(side=LEFT)
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(frames[5], text='протокола', bind=(entry, 'replace'))
+        SmartLabel(frames[5], text='протокола', bind=('replace', entry))
         SmartLabel(
             frames[6], text='водительского удостоверения',
-            place=LEFT, bind=(entry, 'replace'),
+            place=LEFT, bind=('replace', entry),
         )
         SmartLabel(
-            frames[6], text='паспорта', place=LEFT, bind=(entry, 'replace'))
+            frames[6], text='паспорта', place=LEFT, bind=('replace', entry))
 
     def paragraph_2(self):
         frame = Frame(self, bd=4)
@@ -77,12 +77,12 @@ class PassportFrame(LabelFrame):
         SmartLabel(
             frames[1],
             text='протокол о направлении на медицинское освидетельствование',
-            bind=(entry, 'replace'),
+            bind=('replace', entry),
         )
-        SmartLabel(frames[2], text='личное заявление', bind=(entry, 'replace'))
+        SmartLabel(frames[2], text='личное заявление', bind=('replace', entry))
         SmartLabel(
             frames[2], text='письменное направление работодателя',
-            bind=(entry, 'replace'),
+            bind=('replace', entry),
         )
 
         Label(frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)

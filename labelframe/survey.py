@@ -130,7 +130,11 @@ class SurveyFrame(LabelFrame):
             '(со слов освидетельствуемого)'
         )
         Label(frames[1], text=line).pack(side=LEFT)
-        Entry(frames[2], font='-size 10', fg='#800000').pack(
-            side=LEFT, expand=True, fill=X)
-        SmartLabel(frames[2], text='отрицает', place=LEFT)
-        SmartLabel(frames[2], text='употреблял спиртное', place=LEFT)
+        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry.pack(side=LEFT, expand=True, fill=X)
+        SmartLabel(
+            frames[2], text='отрицает', place=LEFT, bind=(entry, 'replace'))
+        SmartLabel(
+            frames[2], text='употреблял спиртное',
+            place=LEFT, bind=(entry, 'replace'),
+        )

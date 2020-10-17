@@ -43,7 +43,7 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text, place=RIGHT, entry=None, bind=None):  # TODO don't Nones
+    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO don't None
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'
@@ -54,8 +54,17 @@ class SmartLabel(Label):
             self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
-        if entry:  # TODO add and bind, delete if
-            self.bind('<Button-1>', lambda e: self.add(entry, e.widget))
+        if not bind:  # TODO: delete this if
+            return
+        if bind[1] == 'replace':  # 15 uses
+            self.bind('<Button-1>', lambda e: self.replace(bind[0], e.widget))
+        elif bind[1] == 'add':  # 3 uses
+            self.bind('<Button-1>', lambda e: self.add(bind[0], e.widget))
+
+    @staticmethod
+    def add(entry, label):
+        if entry.get().find(label['text']) == -1:
+            entry.insert(END, label['text'] + ', ')
 
     @staticmethod
     def enter(event):
@@ -66,9 +75,9 @@ class SmartLabel(Label):
         event.widget['font'] = '-size 10 -underline true'
 
     @staticmethod
-    def add(entry, label):
-        if entry.get().find(label['text']) == -1:
-            entry.insert(END, label['text'] + ', ')
+    def replace(entry, label):
+        entry.delete(0, END)
+        entry.insert(0, label['text'])
 
 
 class TimeEntry(Entry):

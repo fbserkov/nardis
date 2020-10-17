@@ -39,15 +39,20 @@ class CommonFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 8)
-
         line = '8. Изменения психической деятельности освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
+
         Label(frames[1], text='состояние сознания').pack(side=LEFT)
-        Entry(frames[1], font='-size 10', fg='#800000').pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(frames[1], text='ясное', place=LEFT)
-        SmartLabel(frames[1], text='оглушение', place=LEFT)
-        SmartLabel(frames[1], text='сопор', place=LEFT)
-        SmartLabel(frames[1], text='кома', place=LEFT)
+        entry = Entry(frames[1], font='-size 10', fg='#800000')
+        entry.pack(side=LEFT, expand=True, fill=X)
+        SmartLabel(
+            frames[1], text='ясное', place=LEFT, bind=(entry, 'replace'))
+        SmartLabel(
+            frames[1], text='оглушение', place=LEFT, bind=(entry, 'replace'))
+        SmartLabel(
+            frames[1], text='сопор', place=LEFT, bind=(entry, 'replace'))
+        SmartLabel(frames[1], text='кома', place=LEFT, bind=(entry, 'replace'))
+
         Label(frames[2], text='поведение').pack(side=LEFT)
         SmartLabel(frames[2], text='эйфоричен')
         SmartLabel(frames[2], text='агрессивен')
@@ -64,13 +69,24 @@ class CommonFrame(LabelFrame):
         entry_40.pack(fill=X)
         entry_40.insert(0, 'без особенностей')
         entry_40.config(state='disabled', disabledforeground='#800000')
+
         line = 'ориентировка в месте, времени, ситуации'
         Label(frames[5], text=line).pack(side=LEFT)
-        Entry(frames[6], font='-size 10', fg='#800000').pack(
-            side=LEFT, expand=True, fill=X)
-        SmartLabel(frames[6], text='ориентирован', place=LEFT)
-        SmartLabel(frames[6], text='ориентация снижена', place=LEFT)
-        SmartLabel(frames[6], text='дезориентирован', place=LEFT)
+        entry = Entry(frames[6], font='-size 10', fg='#800000')
+        entry.pack(side=LEFT, expand=True, fill=X)
+        SmartLabel(
+            frames[6], text='ориентирован',
+            place=LEFT, bind=(entry, 'replace'),
+        )
+        SmartLabel(
+            frames[6], text='ориентация снижена',
+            place=LEFT, bind=(entry, 'replace'),
+        )
+        SmartLabel(
+            frames[6], text='дезориентирован',
+            place=LEFT, bind=(entry, 'replace'),
+        )
+
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
         Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(side=LEFT)
         Label(frames[7], text='сек.').pack(side=LEFT)

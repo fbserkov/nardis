@@ -2,11 +2,6 @@ from time import strftime
 from tkinter import END
 
 
-def replace(entry, label):
-    entry.delete(0, END)
-    entry.insert(0, label['text'])
-
-
 def replace_plus(entry1, label, entry2):
     entry1.config(state='normal')
     replace(entry1, label)

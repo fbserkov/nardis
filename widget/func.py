@@ -1,13 +1,4 @@
-from time import strftime
 from tkinter import END
-
-
-def replace_plus(entry1, label, entry2):
-    entry1.config(state='normal')
-    replace(entry1, label)
-    entry1.config(state='disabled')
-    if not entry2.get():
-        entry2.insert(0, strftime('%d.%m.%Y'))
 
 
 def smart_add(entry, label, default):

@@ -1,3 +1,4 @@
+from time import strftime
 from tkinter import END, Entry, Frame, Label, LEFT, RIGHT, X
 
 
@@ -60,6 +61,9 @@ class SmartLabel(Label):
             self.bind('<Button-1>', lambda e: self.replace(bind[0], e.widget))
         elif bind[1] == 'add':  # 3 uses
             self.bind('<Button-1>', lambda e: self.add(bind[0], e.widget))
+        elif bind[1] == 'replace_2':  # 3 uses
+            self.bind('<Button-1>', lambda e: self.replace_2(
+                bind[0], e.widget, bind[2]))
 
     @staticmethod
     def add(entry, label):
@@ -78,6 +82,13 @@ class SmartLabel(Label):
     def replace(entry, label):
         entry.delete(0, END)
         entry.insert(0, label['text'])
+
+    def replace_2(self, entry, label, date):
+        entry.config(state='normal')
+        self.replace(entry, label)
+        entry.config(state='disabled')
+        if not date.get():
+            date.insert(0, strftime('%d.%m.%Y'))
 
 
 class TimeEntry(Entry):

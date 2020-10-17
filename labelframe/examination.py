@@ -27,7 +27,8 @@ class ExaminationFrame(LabelFrame):
 
         line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
-        Label(frames[1], text='13.1. Первое исследование').grid(row=0, column=0)
+        Label(frames[1], text='13.1. Первое исследование').grid(
+            row=0, column=0)
         frame_10 = Frame(frames[1])
         frame_10.grid(row=0, column=2)
         Label(frame_10, text='Время').pack(side=LEFT)
@@ -53,7 +54,8 @@ class ExaminationFrame(LabelFrame):
         )
         checkbutton_30.pack(side=RIGHT)
 
-        Label(frames[4], text='13.2. Второе исследование').grid(row=0, column=0)
+        Label(frames[4], text='13.2. Второе исследование').grid(
+            row=0, column=0)
         frame_40 = Frame(frames[4])
         frame_40.grid(row=0, column=2)
         Label(frame_40, text='Время').pack(side=LEFT)
@@ -115,7 +117,8 @@ class ExaminationFrame(LabelFrame):
         line = 'Результаты химико-токсикологических исследований'
         Label(frames[3], text=line).pack(side=LEFT)
         Label(frames[3], text=time.strftime('/%y')).pack(side=RIGHT)
-        Entry(frames[3], width=5, font='-size 10', fg='#800000').pack(side=RIGHT)
+        Entry(frames[3], width=5, font='-size 10', fg='#800000').pack(
+            side=RIGHT)
         Label(frames[3], text='номер справки').pack(side=RIGHT)
 
         chemicals = database.get_chemicals()
@@ -148,13 +151,22 @@ class ExaminationFrame(LabelFrame):
         frames = get_frames(frame, 3)
 
         Label(frames[0], text='17. Заключение').pack(side=LEFT)
-        SmartLabel(
-            frames[0], text='от медицинского освидетельствования отказался')
-        SmartLabel(frames[1], text='состояние опьянения не установлено')
-        SmartLabel(frames[1], text='установлено состояние опьянения')
-        Entry(
+        entry = Entry(
             frames[2], font='-size 10', fg='#800000',
             state='disabled', disabledforeground='#800000',
-        ).pack(side=LEFT, expand=True, fill=X)
+        )
+        entry.pack(side=LEFT, expand=True, fill=X)
         Label(frames[2], text='Дата').pack(side=LEFT)
-        DateEntry(frames[2])
+        date = DateEntry(frames[2])
+        SmartLabel(
+            frames[0], text='от медицинского освидетельствования отказался',
+            bind=(entry, 'replace_2', date),
+        )
+        SmartLabel(
+            frames[1], text='состояние опьянения не установлено',
+            bind=(entry, 'replace_2', date),
+        )
+        SmartLabel(
+            frames[1], text='установлено состояние опьянения',
+            bind=(entry, 'replace_2', date),
+        )

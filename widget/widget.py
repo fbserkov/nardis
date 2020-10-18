@@ -58,15 +58,15 @@ class SmartLabel(Label):
         if not bind:  # TODO: delete this if
             return
         if bind[0] == 'replace':  # 15 uses
-            self.bind('<Button-1>', lambda e: self.replace(bind[1], e.widget))
+            self.bind('<Button-1>', lambda e: self.replace(e.widget, bind[1]))
         elif bind[0] == 'add':  # 3 uses
-            self.bind('<Button-1>', lambda e: self.add(bind[1], e.widget))
+            self.bind('<Button-1>', lambda e: self.add(e.widget, bind[1]))
         elif bind[0] == 'replace_2':  # 3 uses
             self.bind('<Button-1>', lambda e: self.replace_2(
-                bind[1], e.widget, bind[2]))
+                e.widget, bind[1], bind[2]))
 
     @staticmethod
-    def add(entry, label):
+    def add(label, entry):
         if entry.get().find(label['text']) == -1:
             entry.insert(END, label['text'] + ', ')
 
@@ -79,13 +79,13 @@ class SmartLabel(Label):
         event.widget['font'] = '-size 10 -underline true'
 
     @staticmethod
-    def replace(entry, label):
+    def replace(label, entry):
         entry.delete(0, END)
         entry.insert(0, label['text'])
 
-    def replace_2(self, entry, label, date):
+    def replace_2(self, label, entry, date):
         entry.config(state='normal')
-        self.replace(entry, label)
+        self.replace(label, entry)
         entry.config(state='disabled')
         if not date.get():
             date.insert(0, strftime('%d.%m.%Y'))

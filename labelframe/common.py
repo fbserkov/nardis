@@ -16,13 +16,13 @@ class CommonFrame(LabelFrame):
 
         Label(frames[0], text='6. Внешний вид освидетельствуемого').pack(
             side=LEFT)
-        entry_10 = Entry(frames[1], width=69, font='-size 10', fg='#800000')
-        entry_10.pack(fill=X)
+        entry = Entry(frames[1], width=69, font='-size 10', fg='#800000')
+        entry.pack(fill=X)
         line = (
             'внешний вид и кожные покровы без особенностей, ' +
             'видимых повреждений нет'
         )
-        entry_10.insert(0, line)
+        entry.insert(0, line)
 
     def paragraph_7(self):
         frame = Frame(self, bd=4)
@@ -31,9 +31,9 @@ class CommonFrame(LabelFrame):
 
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(frames[0], text=line).pack(side=LEFT)
-        entry_10 = Entry(frames[1], font='-size 10', fg='#800000')
-        entry_10.pack(fill=X)
-        entry_10.insert(0, 'не предъявляет')
+        entry = Entry(frames[1], font='-size 10', fg='#800000')
+        entry.pack(fill=X)
+        entry.insert(0, 'не предъявляет')
 
     def paragraph_8(self):
         frame = Frame(self, bd=4)

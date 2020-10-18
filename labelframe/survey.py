@@ -15,45 +15,27 @@ class SurveyFrame(LabelFrame):
         frame.pack(fill=X)
         frames = get_frames(frame, 2)
         frames[1].columnconfigure(1, weight=1)
-
         line = '9. Вегетативно-сосудистые реакции освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
+
         Label(frames[1], text='зрачки').grid(row=0, column=0, sticky=W)
         Label(frames[1], text='реакция на свет').grid(
             row=1, column=0, sticky=W)
         Label(frames[1], text='склеры').grid(row=2, column=0, sticky=W)
         Label(frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
-
-        entry_10 = Entry(frames[1], font='-size 10', fg='#800000')
-        entry_10.grid(row=0, column=1, sticky=W+E)
-        entry_10.insert(0, 'в норме')
-        entry_10.config(state='disabled', disabledforeground='#800000')
-        entry_11 = Entry(frames[1], font='-size 10', fg='#800000')
-        entry_11.grid(row=1, column=1, sticky=W+E)
-        entry_11.insert(0, 'живая')
-        entry_11.config(state='disabled', disabledforeground='#800000')
-        entry_12 = Entry(frames[1], font='-size 10', fg='#800000')
-        entry_12.grid(row=2, column=1, sticky=W+E)
-        entry_12.insert(0, 'обычные')
-        entry_12.config(state='disabled', disabledforeground='#800000')
-        entry_13 = Entry(frames[1], font='-size 10', fg='#800000')
-        entry_13.grid(row=3, column=1, sticky=W+E)
-        entry_13.insert(0, 'нет')
-        entry_13.config(state='disabled', disabledforeground='#800000')
-
-        frame_10 = Frame(frames[1])
-        frame_10.grid(row=0, column=2, sticky=E)
-        SmartLabel(frame_10, text='расширены')
-        SmartLabel(frame_10, text='сужены')
-
-        SmartLabel(
-            frames[1], text='вялая', place=dict(row=1, column=2, sticky=E))
-        SmartLabel(
-            frames[1], text='инъекция сосудов конъюнктивы',
-            place=dict(row=2, column=2, sticky=E),
-        )
-        SmartLabel(
-            frames[1], text='есть', place=dict(row=3, column=2, sticky=E))
+        for i, text in enumerate(('в норме', 'живая', 'обычные', 'нет')):
+            entry = Entry(frames[1], font='-size 10', fg='#800000')
+            entry.grid(row=i, column=1, sticky=W + E)
+            entry.insert(0, text)
+            entry.config(state='disabled', disabledforeground='#800000')
+        frame = Frame(frames[1])
+        frame.grid(row=0, column=2, sticky=E)
+        SmartLabel(frame, text='расширены')
+        SmartLabel(frame, text='сужены')
+        for i, text in enumerate(
+                ('вялая', 'инъекция сосудов конъюнктивы', 'есть')):
+            SmartLabel(
+                frames[1], text, place=dict(row=i+1, column=2, sticky=E))
 
     def paragraph_10(self):
         frame = Frame(self, bd=4)
@@ -82,20 +64,20 @@ class SurveyFrame(LabelFrame):
             SmartLabel(frames[3], text, bind=('add_smart', entry, default))
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
-        entry_50 = Entry(frames[5], font='-size 10', fg='#800000')
-        entry_50.pack(side=LEFT, expand=True, fill=X)
-        entry_50.insert(0, 'не проводилось')
-        entry_50.config(state='disabled', disabledforeground='#800000')
+        entry = Entry(frames[5], font='-size 10', fg='#800000')
+        entry.pack(side=LEFT, expand=True, fill=X)
+        entry.insert(0, 'не проводилось')
+        entry.config(state='disabled', disabledforeground='#800000')
         SmartLabel(frames[5], text='устойчив', place=LEFT)
         SmartLabel(frames[5], text='неустойчив', place=LEFT)
         SmartLabel(frames[5], text='падает', place=LEFT)
 
         line = 'точность выполнения координационных проб'
         Label(frames[6], text=line).pack(side=LEFT)
-        entry_70 = Entry(frames[7], font='-size 10', fg='#800000')
-        entry_70.pack(side=LEFT, expand=True, fill=X)
-        entry_70.insert(0, 'не проводилось')
-        entry_70.config(state='disabled', disabledforeground='#800000')
+        entry = Entry(frames[7], font='-size 10', fg='#800000')
+        entry.pack(side=LEFT, expand=True, fill=X)
+        entry.insert(0, 'не проводилось')
+        entry.config(state='disabled', disabledforeground='#800000')
         SmartLabel(frames[7], text='выполняет точно', place=LEFT)
         SmartLabel(frames[7], text='промахивание', place=LEFT)
         SmartLabel(frames[7], text='не выполняет', place=LEFT)
@@ -117,9 +99,9 @@ class SurveyFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
         line = 'перенесённых травм (со слов освидетельствуемого)'
         Label(frames[1], text=line).pack(side=LEFT)
-        entry_20 = Entry(frames[2], font='-size 10', fg='#800000')
-        entry_20.pack(fill=X)
-        entry_20.insert(0, 'нет')
+        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry.pack(fill=X)
+        entry.insert(0, 'нет')
 
     def paragraph_12(self):
         frame = Frame(self, bd=4)

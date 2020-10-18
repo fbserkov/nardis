@@ -57,11 +57,14 @@ class SmartLabel(Label):
         self.bind('<Leave>', self.leave)
         if not bind:  # TODO: delete this if
             return
-        if bind[0] == 'replace':  # 15 uses
+        if bind[0] == 'add_smart':
+            self.bind('<Button-1>', lambda e: self.add_smart(
+                e.widget, bind[1], bind[2]))
+        elif bind[0] == 'replace':
             self.bind('<Button-1>', lambda e: self.replace(e.widget, bind[1]))
-        elif bind[0] == 'add':  # 3 uses
+        elif bind[0] == 'add':
             self.bind('<Button-1>', lambda e: self.add(e.widget, bind[1]))
-        elif bind[0] == 'replace_2':  # 3 uses
+        elif bind[0] == 'replace_2':
             self.bind('<Button-1>', lambda e: self.replace_2(
                 e.widget, bind[1], bind[2]))
 
@@ -69,6 +72,24 @@ class SmartLabel(Label):
     def add(label, entry):
         if entry.get().find(label['text']) == -1:
             entry.insert(END, label['text'] + ', ')
+
+    @staticmethod
+    def add_smart(label, entry, default):
+        entry.config(state='normal')
+        i = entry.get().find(label['text'])
+        if entry.get() == default:
+            entry.delete(0, END)
+            entry.insert(0, label['text'])
+        elif i == -1:
+            entry.insert(END, ', ' + label['text'])
+        else:
+            entry.delete(i, i + len(label['text']) + 2)
+        temp = entry.get().rstrip(', ')
+        entry.delete(0, END)
+        entry.insert(0, temp)
+        if entry.get() == '':
+            entry.insert(0, default)
+        entry.config(state='disabled')
 
     @staticmethod
     def enter(event):

@@ -53,22 +53,22 @@ class CommonFrame(LabelFrame):
             frames[1], text='сопор', place=LEFT, bind=('replace', entry))
         SmartLabel(frames[1], text='кома', place=LEFT, bind=('replace', entry))
 
+        default = 'без особенностей'
+        entry = Entry(frames[4], font='-size 10', fg='#800000')
+        entry.pack(fill=X)
+        entry.insert(0, default)
+        entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[2], text='поведение').pack(side=LEFT)
-        SmartLabel(frames[2], text='эйфоричен')
-        SmartLabel(frames[2], text='агрессивен')
-        SmartLabel(frames[2], text='возбуждён')
-        SmartLabel(frames[2], text='раздражён')
-        SmartLabel(frames[2], text='замкнут')
-        SmartLabel(frames[2], text='напряжён')
-        SmartLabel(frames[3], text='заторможен')
-        SmartLabel(frames[3], text='сонлив')
-        SmartLabel(frames[3], text='настроение неустойчиво')
-        SmartLabel(frames[3], text='суетлив')
-        SmartLabel(frames[3], text='болтлив')
-        entry_40 = Entry(frames[4], font='-size 10', fg='#800000')
-        entry_40.pack(fill=X)
-        entry_40.insert(0, 'без особенностей')
-        entry_40.config(state='disabled', disabledforeground='#800000')
+        for text in (
+                'эйфоричен', 'агрессивен', 'возбуждён',
+                'раздражён', 'замкнут', 'напряжён'
+        ):
+            SmartLabel(frames[2], text,  bind=('add_smart', entry, default))
+        for text in (
+                'заторможен', 'сонлив', 'настроение '
+                'неустойчиво', 'суетлив', 'болтлив',
+        ):
+            SmartLabel(frames[3], text, bind=('add_smart', entry, default))
 
         line = 'ориентировка в месте, времени, ситуации'
         Label(frames[5], text=line).pack(side=LEFT)

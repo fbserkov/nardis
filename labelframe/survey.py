@@ -59,25 +59,28 @@ class SurveyFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 9)
-
         line = '10. Двигательная сфера освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
-        Label(frames[1], text='речь').pack(side=LEFT)
-        SmartLabel(frames[1], text='речь бессвязная')
-        SmartLabel(frames[1], text='смазанность речи')
-        SmartLabel(frames[1], text='нарушение артикуляции')
-        entry_20 = Entry(frames[2], font='-size 10', fg='#800000')
-        entry_20.pack(fill=X)
-        entry_20.insert(0, 'речевая способность сохранена')
-        entry_20.config(state='disabled', disabledforeground='#800000')
 
+        default = 'речевая способность сохранена'
+        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry.pack(fill=X)
+        entry.insert(0, default)
+        entry.config(state='disabled', disabledforeground='#800000')
+        Label(frames[1], text='речь').pack(side=LEFT)
+        for text in \
+                'речь бессвязная', 'смазанность речи', 'нарушение артикуляции':
+            SmartLabel(frames[1], text, bind=('add_smart', entry, default))
+
+        default = 'уверенная'
+        entry = Entry(frames[4], font='-size 10', fg='#800000')
+        entry.pack(fill=X)
+        entry.insert(0, default)
+        entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[3], text='походка').pack(side=LEFT)
-        SmartLabel(frames[3], text='пошатывание при поворотах')
-        SmartLabel(frames[3], text='шатающаяся')
-        entry_40 = Entry(frames[4], font='-size 10', fg='#800000')
-        entry_40.pack(fill=X)
-        entry_40.insert(0, 'уверенная')
-        entry_40.config(state='disabled', disabledforeground='#800000')
+        for text in 'пошатывание при поворотах', 'шатающаяся':
+            SmartLabel(frames[3], text, bind=('add_smart', entry, default))
+
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
         entry_50 = Entry(frames[5], font='-size 10', fg='#800000')
         entry_50.pack(side=LEFT, expand=True, fill=X)
@@ -96,6 +99,7 @@ class SurveyFrame(LabelFrame):
         SmartLabel(frames[7], text='выполняет точно', place=LEFT)
         SmartLabel(frames[7], text='промахивание', place=LEFT)
         SmartLabel(frames[7], text='не выполняет', place=LEFT)
+
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
         Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(
             side=LEFT)

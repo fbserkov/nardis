@@ -44,7 +44,7 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO: del None
+    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO del None
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'
@@ -55,9 +55,10 @@ class SmartLabel(Label):
             self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
-        if not bind:  # TODO: delete this if
-            return
-        if bind[0] == 'add_smart':
+        if bind[0] == 'replace_smart':
+            self.bind('<Button-1>', lambda e: self.replace_smart(
+                e.widget, bind[1], bind[2]))
+        elif bind[0] == 'add_smart':
             self.bind('<Button-1>', lambda e: self.add_smart(
                 e.widget, bind[1], bind[2]))
         elif bind[0] == 'replace':
@@ -110,6 +111,17 @@ class SmartLabel(Label):
         entry.config(state='disabled')
         if not date.get():
             date.insert(0, strftime('%d.%m.%Y'))
+
+    @staticmethod
+    def replace_smart(label, entry, default):
+        entry.config(state='normal')
+        if entry.get() == label['text']:
+            entry.delete(0, END)
+            entry.insert(0, default)
+        else:
+            entry.delete(0, END)
+            entry.insert(0, label['text'])
+        entry.config(state='disabled')
 
 
 class TimeEntry(Entry):

@@ -3,8 +3,7 @@ from tkinter import (
     Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame, LEFT, OptionMenu,
     RIGHT, StringVar, W, X
 )
-from widget.widget import (
-    DateEntry, get_frames, ResultEntry, SmartLabel, TimeEntry)
+from widget import DateEntry, get_frames, ResultEntry, SmartLabel, TimeEntry
 
 minus, plus = '«-»', '«+»'
 
@@ -74,18 +73,17 @@ class ExaminationFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 5)
-        frames[4].columnconfigure(0, weight=1)
-        frames[4].columnconfigure(2, weight=1)
-        frames[4].columnconfigure(4, weight=1)
 
         line = '14. Время отбора биологического объекта'
         Label(frames[0], text=line).pack(side=LEFT)
         TimeEntry(frames[0])
-        SmartLabel(frames[0], text='кровь')
+        default = 'моча'
         entry = Entry(frames[0], width=5, font='-size 10', fg='#800000')
-        entry.pack(side=RIGHT)
-        entry.insert(0, 'моча')
+        entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
+        SmartLabel(
+            frames[0], text='кровь', bind=('replace_smart', entry, default))
+        entry.pack(side=RIGHT)
         Label(frames[0], text='среда').pack(side=RIGHT)
 
         frame = Frame(frames[1])
@@ -114,18 +112,22 @@ class ExaminationFrame(LabelFrame):
             side=RIGHT)
         Label(frames[3], text='номер справки').pack(side=RIGHT)
 
+        frames[4].columnconfigure(0, weight=1)
+        frames[4].columnconfigure(2, weight=1)
+        frames[4].columnconfigure(4, weight=1)
         chemicals = database.get_chemicals()
         for i in range(11):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(frames[4])
             frame.grid(row=row, column=column, sticky=W+E)
             Label(frame, text=chemicals[i]).pack(side=LEFT)
-            SmartLabel(frame, text=plus)
-            SmartLabel(frame, text=minus)
-            Entry(
-                frame, width=3, font='-size 10', fg='#800000',
+            entry = Entry(
+                frame, width=4, font='-size 10', fg='#800000',
                 state='disabled', disabledforeground='#800000',
-            ).pack(side=RIGHT)
+            )
+            SmartLabel(frame, text=plus, bind=('replace_smart', entry, ''))
+            SmartLabel(frame, text=minus, bind=('replace_smart', entry, ''))
+            entry.pack(side=RIGHT)
 
     def paragraph_15(self):
         frame = Frame(self, bd=4)

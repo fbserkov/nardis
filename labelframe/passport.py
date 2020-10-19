@@ -1,7 +1,7 @@
 import time
 from tkinter import (
     Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
-from widget.widget import DateEntry, get_frames, SmartLabel, TimeEntry
+from widget import DateEntry, get_frames, SmartLabel, TimeEntry
 
 
 class PassportFrame(LabelFrame):

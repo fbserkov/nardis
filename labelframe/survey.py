@@ -1,5 +1,5 @@
 from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
-from widget.widget import get_frames, SmartLabel
+from widget import get_frames, SmartLabel
 
 
 class SurveyFrame(LabelFrame):
@@ -23,19 +23,28 @@ class SurveyFrame(LabelFrame):
             row=1, column=0, sticky=W)
         Label(frames[1], text='склеры').grid(row=2, column=0, sticky=W)
         Label(frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
-        for i, text in enumerate(('в норме', 'живая', 'обычные', 'нет')):
-            entry = Entry(frames[1], font='-size 10', fg='#800000')
-            entry.grid(row=i, column=1, sticky=W + E)
-            entry.insert(0, text)
-            entry.config(state='disabled', disabledforeground='#800000')
+        entries, defaults = [], ('в норме', 'живая', 'обычные', 'нет')
+        for i, text in enumerate(defaults):
+            entries.append(Entry(frames[1], font='-size 10', fg='#800000'))
+            entries[i].grid(row=i, column=1, sticky=W + E)
+            entries[i].insert(0, text)
+            entries[i].config(state='disabled', disabledforeground='#800000')
         frame = Frame(frames[1])
         frame.grid(row=0, column=2, sticky=E)
-        SmartLabel(frame, text='расширены')
-        SmartLabel(frame, text='сужены')
+        SmartLabel(
+            frame, text='расширены',
+            bind=('replace_smart', entries[0], defaults[0]),
+        )
+        SmartLabel(
+            frame, text='сужены',
+            bind=('replace_smart', entries[0], defaults[0]),
+        )
         for i, text in enumerate(
                 ('вялая', 'инъекция сосудов конъюнктивы', 'есть')):
             SmartLabel(
-                frames[1], text, place=dict(row=i+1, column=2, sticky=E))
+                frames[1], text, place=dict(row=i+1, column=2, sticky=E),
+                bind=('replace_smart', entries[i+1], defaults[i+1]),
+            )
 
     def paragraph_10(self):
         frame = Frame(self, bd=4)
@@ -64,23 +73,28 @@ class SurveyFrame(LabelFrame):
             SmartLabel(frames[3], text, bind=('add_smart', entry, default))
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
+        default = 'не проводилось'
         entry = Entry(frames[5], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        entry.insert(0, 'не проводилось')
+        entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
-        SmartLabel(frames[5], text='устойчив', place=LEFT)
-        SmartLabel(frames[5], text='неустойчив', place=LEFT)
-        SmartLabel(frames[5], text='падает', place=LEFT)
+        for text in 'устойчив', 'неустойчив', 'падает':
+            SmartLabel(
+                frames[5], text, place=LEFT,
+                bind=('replace_smart', entry, default),
+            )
 
         line = 'точность выполнения координационных проб'
         Label(frames[6], text=line).pack(side=LEFT)
         entry = Entry(frames[7], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        entry.insert(0, 'не проводилось')
+        entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
-        SmartLabel(frames[7], text='выполняет точно', place=LEFT)
-        SmartLabel(frames[7], text='промахивание', place=LEFT)
-        SmartLabel(frames[7], text='не выполняет', place=LEFT)
+        for text in 'выполняет точно', 'промахивание', 'не выполняет':
+            SmartLabel(
+                frames[7], text, place=LEFT,
+                bind=('replace_smart', entry, default),
+            )
 
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
         Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(

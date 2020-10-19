@@ -2,7 +2,7 @@ from time import strftime
 from tkinter import END, Label, LEFT, RIGHT
 
 
-class SmartLabel(Label):
+class LabelBase(Label):
     def __init__(self, master, text, bind, place=RIGHT):
         Label.__init__(
             self, master, text=text, fg='#000080',
@@ -24,9 +24,7 @@ class SmartLabel(Label):
             self.bind('<Button-1>', lambda e: self.replace(e.widget, bind[1]))
         elif bind[0] == 'add':
             self.bind('<Button-1>', lambda e: self.add(e.widget, bind[1]))
-        elif bind[0] == 'replace_2':
-            self.bind('<Button-1>', lambda e: self.replace_2(
-                e.widget, bind[1], bind[2]))
+            # assert 0
 
     @staticmethod
     def add(label, entry):
@@ -64,13 +62,6 @@ class SmartLabel(Label):
         entry.delete(0, END)
         entry.insert(0, label['text'])
 
-    def replace_2(self, label, entry, date):
-        entry.config(state='normal')
-        self.replace(label, entry)
-        entry.config(state='disabled')
-        if not date.get():
-            date.insert(0, strftime('%d.%m.%Y'))
-
     @staticmethod
     def replace_smart(label, entry, default):
         entry.config(state='normal')
@@ -81,3 +72,17 @@ class SmartLabel(Label):
             entry.delete(0, END)
             entry.insert(0, label['text'])
         entry.config(state='disabled')
+
+
+class LabelReplace2(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, bind, place)
+        self.bind('<Button-1>', lambda e: self.replace_2(
+            e.widget, bind[0], bind[1]))
+
+    def replace_2(self, label, entry, date):
+        entry.config(state='normal')
+        self.replace(label, entry)
+        entry.config(state='disabled')
+        if not date.get():
+            date.insert(0, strftime('%d.%m.%Y'))

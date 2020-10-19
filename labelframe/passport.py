@@ -4,7 +4,7 @@ from tkinter import (
 
 from labelframe import get_frames
 from widget.entry import EntryDate, EntryTime
-from widget.label import SmartLabel
+from widget.label import LabelBase
 
 
 class PassportFrame(LabelFrame):
@@ -51,19 +51,19 @@ class PassportFrame(LabelFrame):
         Label(frames[2], text='Адрес места жительства').pack(side=LEFT)
         entry = Entry(frames[4], font='-size 10', fg='#800000')
         entry.pack(fill=X)
-        SmartLabel(
+        LabelBase(
             frames[3], text='г. Комсомольск-на-Амуре', bind=('add', entry))
-        SmartLabel(frames[3], text='Комсомольский район', bind=('add', entry))
-        SmartLabel(frames[3], text='Хабаровский край', bind=('add', entry))
+        LabelBase(frames[3], text='Комсомольский район', bind=('add', entry))
+        LabelBase(frames[3], text='Хабаровский край', bind=('add', entry))
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(frames[5], text=line).pack(side=LEFT)
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(frames[5], text='протокола', bind=('replace', entry))
+        LabelBase(frames[5], text='протокола', bind=('replace', entry))
         line = 'водительского удостоверения'
-        SmartLabel(frames[6], text=line, bind=('replace', entry), place=LEFT)
-        SmartLabel(
+        LabelBase(frames[6], text=line, bind=('replace', entry), place=LEFT)
+        LabelBase(
             frames[6], text='паспорта', bind=('replace', entry), place=LEFT)
 
     def paragraph_2(self):
@@ -76,10 +76,10 @@ class PassportFrame(LabelFrame):
         entry = Entry(frames[3], font='-size 10', fg='#800000')
         entry.pack(fill=X)
         line = 'протокол о направлении на медицинское освидетельствование'
-        SmartLabel(frames[1], text=line, bind=('replace', entry))
-        SmartLabel(frames[2], text='личное заявление', bind=('replace', entry))
+        LabelBase(frames[1], text=line, bind=('replace', entry))
+        LabelBase(frames[2], text='личное заявление', bind=('replace', entry))
         line = 'письменное направление работодателя'
-        SmartLabel(frames[2], text=line, bind=('replace', entry))
+        LabelBase(frames[2], text=line, bind=('replace', entry))
         Label(frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
         Entry(frames[4], font='-size 10', fg='#800000').pack(
             side=LEFT, expand=True, fill=X)

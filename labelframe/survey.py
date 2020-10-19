@@ -1,7 +1,7 @@
 from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
-from widget.label import SmartLabel
+from widget.label import LabelBase
 
 
 class SurveyFrame(LabelFrame):
@@ -33,17 +33,17 @@ class SurveyFrame(LabelFrame):
             entries[i].config(state='disabled', disabledforeground='#800000')
         frame = Frame(frames[1])
         frame.grid(row=0, column=2, sticky=E)
-        SmartLabel(
+        LabelBase(
             frame, text='расширены',
             bind=('replace_smart', entries[0], defaults[0]),
         )
-        SmartLabel(
+        LabelBase(
             frame, text='сужены',
             bind=('replace_smart', entries[0], defaults[0]),
         )
         for i, text in enumerate(
                 ('вялая', 'инъекция сосудов конъюнктивы', 'есть')):
-            SmartLabel(
+            LabelBase(
                 frames[1], text,
                 bind=('replace_smart', entries[i + 1], defaults[i + 1]),
                 place=dict(row=i + 1, column=2, sticky=E),
@@ -64,7 +64,7 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text='речь').pack(side=LEFT)
         for text in \
                 'речь бессвязная', 'смазанность речи', 'нарушение артикуляции':
-            SmartLabel(frames[1], text, bind=('add_smart', entry, default))
+            LabelBase(frames[1], text, bind=('add_smart', entry, default))
 
         default = 'уверенная'
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -73,7 +73,7 @@ class SurveyFrame(LabelFrame):
         entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
-            SmartLabel(frames[3], text, bind=('add_smart', entry, default))
+            LabelBase(frames[3], text, bind=('add_smart', entry, default))
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
         default = 'не проводилось'
@@ -82,7 +82,7 @@ class SurveyFrame(LabelFrame):
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'устойчив', 'неустойчив', 'падает':
-            SmartLabel(
+            LabelBase(
                 frames[5], text,
                 bind=('replace_smart', entry, default), place=LEFT,
             )
@@ -94,7 +94,7 @@ class SurveyFrame(LabelFrame):
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
-            SmartLabel(
+            LabelBase(
                 frames[7], text,
                 bind=('replace_smart', entry, default), place=LEFT,
             )
@@ -137,9 +137,9 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text=line).pack(side=LEFT)
         entry = Entry(frames[2], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(
+        LabelBase(
             frames[2], text='отрицает', bind=('replace', entry), place=LEFT)
-        SmartLabel(
+        LabelBase(
             frames[2], text='употреблял спиртное',
             bind=('replace', entry), place=LEFT,
         )

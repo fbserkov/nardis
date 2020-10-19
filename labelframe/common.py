@@ -1,7 +1,7 @@
 from tkinter import Entry, Frame, Label, LabelFrame, LEFT, X
 
 from labelframe import get_frames
-from widget.label import SmartLabel
+from widget.label import LabelBase
 
 
 class CommonFrame(LabelFrame):
@@ -48,7 +48,7 @@ class CommonFrame(LabelFrame):
         entry = Entry(frames[1], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ясное', 'оглушение', 'сопор', 'кома':
-            SmartLabel(frames[1], text, bind=('replace', entry), place=LEFT)
+            LabelBase(frames[1], text, bind=('replace', entry), place=LEFT)
 
         default = 'без особенностей'
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -60,19 +60,19 @@ class CommonFrame(LabelFrame):
                 'эйфоричен', 'агрессивен', 'возбуждён',
                 'раздражён', 'замкнут', 'напряжён'
         ):
-            SmartLabel(frames[2], text, bind=('add_smart', entry, default))
+            LabelBase(frames[2], text, bind=('add_smart', entry, default))
         for text in (
                 'заторможен', 'сонлив', 'настроение '
                 'неустойчиво', 'суетлив', 'болтлив',
         ):
-            SmartLabel(frames[3], text, bind=('add_smart', entry, default))
+            LabelBase(frames[3], text, bind=('add_smart', entry, default))
 
         line = 'ориентировка в месте, времени, ситуации'
         Label(frames[5], text=line).pack(side=LEFT)
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
-            SmartLabel(frames[6], text, bind=('replace', entry), place=LEFT)
+            LabelBase(frames[6], text, bind=('replace', entry), place=LEFT)
 
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
         Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(

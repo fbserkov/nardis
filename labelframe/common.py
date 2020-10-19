@@ -1,6 +1,7 @@
 from tkinter import Entry, Frame, Label, LabelFrame, LEFT, X
-from _widget import SmartLabel
+
 from labelframe import get_frames
+from widget.label import SmartLabel
 
 
 class CommonFrame(LabelFrame):

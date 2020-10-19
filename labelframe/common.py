@@ -45,13 +45,8 @@ class CommonFrame(LabelFrame):
         Label(frames[1], text='состояние сознания').pack(side=LEFT)
         entry = Entry(frames[1], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(
-            frames[1], text='ясное', place=LEFT, bind=('replace', entry))
-        SmartLabel(
-            frames[1], text='оглушение', place=LEFT, bind=('replace', entry))
-        SmartLabel(
-            frames[1], text='сопор', place=LEFT, bind=('replace', entry))
-        SmartLabel(frames[1], text='кома', place=LEFT, bind=('replace', entry))
+        for text in 'ясное', 'оглушение', 'сопор', 'кома':
+            SmartLabel(frames[1], text, bind=('replace', entry), place=LEFT)
 
         default = 'без особенностей'
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -63,7 +58,7 @@ class CommonFrame(LabelFrame):
                 'эйфоричен', 'агрессивен', 'возбуждён',
                 'раздражён', 'замкнут', 'напряжён'
         ):
-            SmartLabel(frames[2], text,  bind=('add_smart', entry, default))
+            SmartLabel(frames[2], text, bind=('add_smart', entry, default))
         for text in (
                 'заторможен', 'сонлив', 'настроение '
                 'неустойчиво', 'суетлив', 'болтлив',
@@ -74,18 +69,8 @@ class CommonFrame(LabelFrame):
         Label(frames[5], text=line).pack(side=LEFT)
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        SmartLabel(
-            frames[6], text='ориентирован',
-            place=LEFT, bind=('replace', entry),
-        )
-        SmartLabel(
-            frames[6], text='ориентация снижена',
-            place=LEFT, bind=('replace', entry),
-        )
-        SmartLabel(
-            frames[6], text='дезориентирован',
-            place=LEFT, bind=('replace', entry),
-        )
+        for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
+            SmartLabel(frames[6], text, bind=('replace', entry), place=LEFT)
 
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
         Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(

@@ -44,7 +44,7 @@ class ResultEntry(Entry):
 
 
 class SmartLabel(Label):
-    def __init__(self, master, text, place=RIGHT, bind=None):  # TODO del None
+    def __init__(self, master, text, bind, place=RIGHT):
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true'

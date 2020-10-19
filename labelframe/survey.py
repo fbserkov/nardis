@@ -42,8 +42,9 @@ class SurveyFrame(LabelFrame):
         for i, text in enumerate(
                 ('вялая', 'инъекция сосудов конъюнктивы', 'есть')):
             SmartLabel(
-                frames[1], text, place=dict(row=i+1, column=2, sticky=E),
-                bind=('replace_smart', entries[i+1], defaults[i+1]),
+                frames[1], text,
+                bind=('replace_smart', entries[i + 1], defaults[i + 1]),
+                place=dict(row=i + 1, column=2, sticky=E),
             )
 
     def paragraph_10(self):
@@ -80,8 +81,8 @@ class SurveyFrame(LabelFrame):
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'устойчив', 'неустойчив', 'падает':
             SmartLabel(
-                frames[5], text, place=LEFT,
-                bind=('replace_smart', entry, default),
+                frames[5], text,
+                bind=('replace_smart', entry, default), place=LEFT,
             )
 
         line = 'точность выполнения координационных проб'
@@ -92,8 +93,8 @@ class SurveyFrame(LabelFrame):
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
             SmartLabel(
-                frames[7], text, place=LEFT,
-                bind=('replace_smart', entry, default),
+                frames[7], text,
+                bind=('replace_smart', entry, default), place=LEFT,
             )
 
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
@@ -135,8 +136,8 @@ class SurveyFrame(LabelFrame):
         entry = Entry(frames[2], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         SmartLabel(
-            frames[2], text='отрицает', place=LEFT, bind=('replace', entry))
+            frames[2], text='отрицает', bind=('replace', entry), place=LEFT)
         SmartLabel(
             frames[2], text='употреблял спиртное',
-            place=LEFT, bind=('replace', entry),
+            bind=('replace', entry), place=LEFT,
         )

@@ -58,12 +58,10 @@ class PassportFrame(LabelFrame):
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         SmartLabel(frames[5], text='протокола', bind=('replace', entry))
+        line = 'водительского удостоверения'
+        SmartLabel(frames[6], text=line, bind=('replace', entry), place=LEFT)
         SmartLabel(
-            frames[6], text='водительского удостоверения',
-            place=LEFT, bind=('replace', entry),
-        )
-        SmartLabel(
-            frames[6], text='паспорта', place=LEFT, bind=('replace', entry))
+            frames[6], text='паспорта', bind=('replace', entry), place=LEFT)
 
     def paragraph_2(self):
         frame = Frame(self, bd=4)
@@ -74,17 +72,11 @@ class PassportFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
         entry = Entry(frames[3], font='-size 10', fg='#800000')
         entry.pack(fill=X)
-        SmartLabel(
-            frames[1],
-            text='протокол о направлении на медицинское освидетельствование',
-            bind=('replace', entry),
-        )
+        line = 'протокол о направлении на медицинское освидетельствование'
+        SmartLabel(frames[1], text=line, bind=('replace', entry))
         SmartLabel(frames[2], text='личное заявление', bind=('replace', entry))
-        SmartLabel(
-            frames[2], text='письменное направление работодателя',
-            bind=('replace', entry),
-        )
-
+        line = 'письменное направление работодателя'
+        SmartLabel(frames[2], text=line, bind=('replace', entry))
         Label(frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
         Entry(frames[4], font='-size 10', fg='#800000').pack(
             side=LEFT, expand=True, fill=X)

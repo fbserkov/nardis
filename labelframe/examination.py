@@ -4,7 +4,7 @@ from tkinter import (
     RIGHT, StringVar, W, X
 )
 from _widget import get_frames, SmartLabel
-from widget.entry import DateEntry, ResultEntry, TimeEntry
+from widget.entry import EntryDate, EntryResult, EntryTime
 
 minus, plus = '«-»', '«+»'
 
@@ -32,11 +32,11 @@ class ExaminationFrame(LabelFrame):
         frame = Frame(frames[1])
         frame.grid(row=0, column=2)
         Label(frame, text='Время').pack(side=LEFT)
-        TimeEntry(frame, time.strftime('%H:%M'))
+        EntryTime(frame, time.strftime('%H:%M'))
         frame = Frame(frames[1])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        ResultEntry(frame)
+        EntryResult(frame)
         Label(frame, text='мг/л').pack(side=LEFT)
 
         Label(frames[2], text='техническое средство').pack(side=LEFT)
@@ -57,11 +57,11 @@ class ExaminationFrame(LabelFrame):
         frame = Frame(frames[4])
         frame.grid(row=0, column=2)
         Label(frame, text='Время').pack(side=LEFT)
-        TimeEntry(frame)
+        EntryTime(frame)
         frame = Frame(frames[4])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        ResultEntry(frame)
+        EntryResult(frame)
         Label(frame, text='мг/л').pack(side=LEFT)
 
         Label(frames[5], text='техническое средство').pack(side=LEFT)
@@ -77,7 +77,7 @@ class ExaminationFrame(LabelFrame):
 
         line = '14. Время отбора биологического объекта'
         Label(frames[0], text=line).pack(side=LEFT)
-        TimeEntry(frames[0])
+        EntryTime(frames[0])
         default = 'моча'
         entry = Entry(frames[0], width=5, font='-size 10', fg='#800000')
         entry.insert(0, default)
@@ -152,7 +152,7 @@ class ExaminationFrame(LabelFrame):
         )
         entry.pack(side=LEFT, expand=True, fill=X)
         Label(frames[2], text='Дата').pack(side=LEFT)
-        date = DateEntry(frames[2])
+        date = EntryDate(frames[2])
         for i, text in (
                 (0, 'от медицинского освидетельствования отказался'),
                 (1, 'состояние опьянения не установлено'),

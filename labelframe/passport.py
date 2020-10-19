@@ -2,7 +2,7 @@ import time
 from tkinter import (
     Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
 from _widget import get_frames, SmartLabel
-from widget.entry import DateEntry, TimeEntry
+from widget.entry import EntryDate, EntryTime
 
 
 class PassportFrame(LabelFrame):
@@ -44,7 +44,7 @@ class PassportFrame(LabelFrame):
         Label(frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
         Entry(frames[1], font='-size 10', fg='#800000').pack(
             side=LEFT, expand=True, fill=X)
-        DateEntry(frames[1])
+        EntryDate(frames[1])
 
         Label(frames[2], text='Адрес места жительства').pack(side=LEFT)
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -89,9 +89,9 @@ class PassportFrame(LabelFrame):
 
         Label(frame, text='4. Начало освидетельствования').pack()
         Label(frame, text='Дата').pack(side=LEFT)
-        DateEntry(frame, time.strftime('%d.%m.%Y'))
+        EntryDate(frame, time.strftime('%d.%m.%Y'))
         Label(frame, text='Время').pack(side=LEFT)
-        TimeEntry(frame, time.strftime('%H:%M'))
+        EntryTime(frame, time.strftime('%H:%M'))
 
     def paragraph_5(self, database):
         frame = Frame(self, bd=4)
@@ -114,6 +114,6 @@ class PassportFrame(LabelFrame):
 
         Label(frame, text='16. Окончание освидетельствования').pack()
         Label(frame, text='Дата').pack(side=LEFT)
-        DateEntry(frame, time.strftime('%d.%m.%Y'))
+        EntryDate(frame, time.strftime('%d.%m.%Y'))
         Label(frame, text='Время').pack(side=LEFT)
-        TimeEntry(frame, time.strftime('%H:%M'))
+        EntryTime(frame, time.strftime('%H:%M'))

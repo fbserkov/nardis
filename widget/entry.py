@@ -1,7 +1,7 @@
 from tkinter import Entry, LEFT, END
 
 
-class DateEntry(Entry):
+class EntryDate(Entry):
     def __init__(self, master, text=None):
         Entry.__init__(self, master, width=10, font='-size 10', fg='#800000')
         self.pack(side=LEFT)
@@ -18,7 +18,7 @@ class DateEntry(Entry):
             event.widget.delete(10, END)
 
 
-class ResultEntry(Entry):
+class EntryResult(Entry):
     def __init__(self, master):
         Entry.__init__(self, master, width=4, font='-size 10', fg='#800000')
         self.pack(side=LEFT)
@@ -33,7 +33,7 @@ class ResultEntry(Entry):
             event.widget.delete(4, END)
 
 
-class TimeEntry(Entry):
+class EntryTime(Entry):
     def __init__(self, master, text=None):
         Entry.__init__(self, master, width=5, font='-size 10', fg='#800000')
         self.pack(side=LEFT)

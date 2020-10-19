@@ -6,7 +6,7 @@ class LabelBase(Label):
     def __init__(self, master, text, bind, place=RIGHT):
         Label.__init__(
             self, master, text=text, fg='#000080',
-            font='-size 10 -underline true'
+            font='-size 10 -underline true',
         )
         if place == LEFT or place == RIGHT:
             self.pack(side=place)
@@ -22,13 +22,6 @@ class LabelBase(Label):
         elif bind[0] == 'add_smart':
             self.bind('<Button-1>', lambda e: self.add_smart(
                 e.widget, bind[1], bind[2]))
-        elif bind[0] == 'add':
-            self.bind('<Button-1>', lambda e: self.add(e.widget, bind[1]))
-
-    @staticmethod
-    def add(label, entry):
-        if entry.get().find(label['text']) == -1:
-            entry.insert(END, label['text'] + ', ')
 
     @staticmethod
     def add_smart(label, entry, default):
@@ -71,6 +64,17 @@ class LabelBase(Label):
             entry.delete(0, END)
             entry.insert(0, label['text'])
         entry.config(state='disabled')
+
+
+class LabelAdd(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, bind, place)
+        self.bind('<Button-1>', lambda e: self.add(e.widget, bind))
+
+    @staticmethod
+    def add(label, entry):
+        if entry.get().find(label['text']) == -1:
+            entry.insert(END, label['text'] + ', ')
 
 
 class LabelReplace(LabelBase):

@@ -4,7 +4,7 @@ from tkinter import (
 
 from labelframe import get_frames
 from widget.entry import EntryDate, EntryTime
-from widget.label import LabelBase, LabelReplace
+from widget.label import LabelAdd, LabelReplace
 
 
 class PassportFrame(LabelFrame):
@@ -51,10 +51,9 @@ class PassportFrame(LabelFrame):
         Label(frames[2], text='Адрес места жительства').pack(side=LEFT)
         entry = Entry(frames[4], font='-size 10', fg='#800000')
         entry.pack(fill=X)
-        LabelBase(
-            frames[3], text='г. Комсомольск-на-Амуре', bind=('add', entry))
-        LabelBase(frames[3], text='Комсомольский район', bind=('add', entry))
-        LabelBase(frames[3], text='Хабаровский край', bind=('add', entry))
+        LabelAdd(frames[3], text='г. Комсомольск-на-Амуре', bind=entry)
+        LabelAdd(frames[3], text='Комсомольский район', bind=entry)
+        LabelAdd(frames[3], text='Хабаровский край', bind=entry)
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(frames[5], text=line).pack(side=LEFT)

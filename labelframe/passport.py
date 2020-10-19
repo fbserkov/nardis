@@ -1,7 +1,8 @@
 import time
 from tkinter import (
     Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
-from _widget import get_frames, SmartLabel
+from _widget import SmartLabel
+from labelframe import get_frames
 from widget.entry import EntryDate, EntryTime
 
 

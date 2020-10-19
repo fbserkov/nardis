@@ -3,7 +3,8 @@ from tkinter import (
     Checkbutton, E, Entry, Frame, IntVar, Label, LabelFrame, LEFT, OptionMenu,
     RIGHT, StringVar, W, X
 )
-from _widget import get_frames, SmartLabel
+from _widget import SmartLabel
+from labelframe import get_frames
 from widget.entry import EntryDate, EntryResult, EntryTime
 
 minus, plus = '«-»', '«+»'

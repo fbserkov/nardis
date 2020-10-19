@@ -1,14 +1,5 @@
 from time import strftime
-from tkinter import END, Frame, Label, LEFT, RIGHT, X
-
-
-def get_frames(master, length):
-    frames = []
-    for i in range(length):
-        frame = Frame(master)
-        frame.pack(fill=X)
-        frames.append(frame)
-    return frames
+from tkinter import END, Label, LEFT, RIGHT
 
 
 class SmartLabel(Label):

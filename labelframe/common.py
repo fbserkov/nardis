@@ -1,7 +1,7 @@
 from tkinter import Entry, Frame, Label, LabelFrame, LEFT, X
 
 from labelframe import get_frames
-from widget.label import LabelBase
+from widget.label import LabelBase, LabelReplace
 
 
 class CommonFrame(LabelFrame):
@@ -48,7 +48,7 @@ class CommonFrame(LabelFrame):
         entry = Entry(frames[1], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ясное', 'оглушение', 'сопор', 'кома':
-            LabelBase(frames[1], text, bind=('replace', entry), place=LEFT)
+            LabelReplace(frames[1], text, bind=entry, place=LEFT)
 
         default = 'без особенностей'
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -72,7 +72,7 @@ class CommonFrame(LabelFrame):
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
-            LabelBase(frames[6], text, bind=('replace', entry), place=LEFT)
+            LabelReplace(frames[6], text, bind=entry, place=LEFT)
 
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
         Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(

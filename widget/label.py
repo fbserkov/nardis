@@ -14,17 +14,16 @@ class LabelBase(Label):
             self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
+        if type(bind) != tuple:  # TODO delete
+            return
         if bind[0] == 'replace_smart':
             self.bind('<Button-1>', lambda e: self.replace_smart(
                 e.widget, bind[1], bind[2]))
         elif bind[0] == 'add_smart':
             self.bind('<Button-1>', lambda e: self.add_smart(
                 e.widget, bind[1], bind[2]))
-        elif bind[0] == 'replace':
-            self.bind('<Button-1>', lambda e: self.replace(e.widget, bind[1]))
         elif bind[0] == 'add':
             self.bind('<Button-1>', lambda e: self.add(e.widget, bind[1]))
-            # assert 0
 
     @staticmethod
     def add(label, entry):
@@ -72,6 +71,12 @@ class LabelBase(Label):
             entry.delete(0, END)
             entry.insert(0, label['text'])
         entry.config(state='disabled')
+
+
+class LabelReplace(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, bind, place)
+        self.bind('<Button-1>', lambda e: self.replace(e.widget, bind))
 
 
 class LabelReplace2(LabelBase):

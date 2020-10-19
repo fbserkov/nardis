@@ -4,7 +4,7 @@ from tkinter import (
 
 from labelframe import get_frames
 from widget.entry import EntryDate, EntryTime
-from widget.label import LabelBase
+from widget.label import LabelBase, LabelReplace
 
 
 class PassportFrame(LabelFrame):
@@ -60,11 +60,10 @@ class PassportFrame(LabelFrame):
         Label(frames[5], text=line).pack(side=LEFT)
         entry = Entry(frames[6], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        LabelBase(frames[5], text='протокола', bind=('replace', entry))
+        LabelReplace(frames[5], text='протокола', bind=entry)
         line = 'водительского удостоверения'
-        LabelBase(frames[6], text=line, bind=('replace', entry), place=LEFT)
-        LabelBase(
-            frames[6], text='паспорта', bind=('replace', entry), place=LEFT)
+        LabelReplace(frames[6], text=line, bind=entry, place=LEFT)
+        LabelReplace(frames[6], text='паспорта', bind=entry, place=LEFT)
 
     def paragraph_2(self):
         frame = Frame(self, bd=4)
@@ -76,10 +75,10 @@ class PassportFrame(LabelFrame):
         entry = Entry(frames[3], font='-size 10', fg='#800000')
         entry.pack(fill=X)
         line = 'протокол о направлении на медицинское освидетельствование'
-        LabelBase(frames[1], text=line, bind=('replace', entry))
-        LabelBase(frames[2], text='личное заявление', bind=('replace', entry))
+        LabelReplace(frames[1], text=line, bind=entry)
+        LabelReplace(frames[2], text='личное заявление', bind=entry)
         line = 'письменное направление работодателя'
-        LabelBase(frames[2], text=line, bind=('replace', entry))
+        LabelReplace(frames[2], text=line, bind=entry)
         Label(frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
         Entry(frames[4], font='-size 10', fg='#800000').pack(
             side=LEFT, expand=True, fill=X)

@@ -1,7 +1,7 @@
 from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
-from widget.label import LabelBase
+from widget.label import LabelBase, LabelReplace
 
 
 class SurveyFrame(LabelFrame):
@@ -137,9 +137,6 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text=line).pack(side=LEFT)
         entry = Entry(frames[2], font='-size 10', fg='#800000')
         entry.pack(side=LEFT, expand=True, fill=X)
-        LabelBase(
-            frames[2], text='отрицает', bind=('replace', entry), place=LEFT)
-        LabelBase(
-            frames[2], text='употреблял спиртное',
-            bind=('replace', entry), place=LEFT,
-        )
+        LabelReplace(frames[2], text='отрицает', bind=entry, place=LEFT)
+        LabelReplace(
+            frames[2], text='употреблял спиртное', bind=entry, place=LEFT)

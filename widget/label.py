@@ -71,20 +71,6 @@ class LabelReplace(LabelBase):
         self.bind('<Button-1>', lambda e: self.replace(e.widget, bind))
 
 
-class LabelReplace2(LabelBase):
-    def __init__(self, master, text, bind, place=RIGHT):
-        LabelBase.__init__(self, master, text, place)
-        self.bind('<Button-1>', lambda e: self.replace_2(
-            e.widget, bind[0], bind[1]))
-
-    def replace_2(self, label, entry, date):
-        entry.config(state='normal')
-        self.replace(label, entry)
-        entry.config(state='disabled')
-        if not date.get():
-            date.insert(0, strftime('%d.%m.%Y'))
-
-
 class LabelReplaceSmart(LabelBase):
     def __init__(self, master, text, bind, place=RIGHT):
         LabelBase.__init__(self, master, text, place)
@@ -101,3 +87,17 @@ class LabelReplaceSmart(LabelBase):
             entry.delete(0, END)
             entry.insert(0, label['text'])
         entry.config(state='disabled')
+
+
+class LabelReplaceSmartDate(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, place)
+        self.bind('<Button-1>', lambda e: self.replace_2(
+            e.widget, bind[0], bind[1]))
+
+    def replace_2(self, label, entry, date):  # TODO changes needed
+        entry.config(state='normal')
+        self.replace(label, entry)
+        entry.config(state='disabled')
+        if not date.get():
+            date.insert(0, strftime('%d.%m.%Y'))

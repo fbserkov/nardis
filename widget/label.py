@@ -79,25 +79,29 @@ class LabelReplaceSmart(LabelBase):
 
     @staticmethod
     def replace_smart(label, entry, default):
+        to_default = False
         entry.config(state='normal')
         if entry.get() == label['text']:
             entry.delete(0, END)
             entry.insert(0, default)
+            to_default = True
         else:
             entry.delete(0, END)
             entry.insert(0, label['text'])
         entry.config(state='disabled')
+        return to_default
 
 
-class LabelReplaceSmartDate(LabelBase):
+class LabelReplaceSmartDate(LabelReplaceSmart):
     def __init__(self, master, text, bind, place=RIGHT):
         LabelBase.__init__(self, master, text, place)
-        self.bind('<Button-1>', lambda e: self.replace_2(
-            e.widget, bind[0], bind[1]))
+        self.bind('<Button-1>', lambda e: self.replace_smart_date(
+            e.widget, bind[0], bind[1], bind[2]))
 
-    def replace_2(self, label, entry, date):  # TODO changes needed
-        entry.config(state='normal')
-        self.replace(label, entry)
-        entry.config(state='disabled')
-        if not date.get():
+    def replace_smart_date(self, label, entry, default, date):
+        if self.replace_smart(label, entry, default):
+            date.delete(0, END)
+            return
+        if len(date.get()) < 10:
+            date.delete(0, END)
             date.insert(0, strftime('%d.%m.%Y'))

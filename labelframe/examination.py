@@ -159,4 +159,4 @@ class ExaminationFrame(LabelFrame):
                 (1, 'состояние опьянения не установлено'),
                 (1, 'установлено состояние опьянения'),
         ):
-            LabelReplaceSmartDate(frames[i], text, bind=(entry, date))
+            LabelReplaceSmartDate(frames[i], text, bind=(entry, '', date))

@@ -1,7 +1,7 @@
 from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
-from widget.label import LabelBase, LabelReplace, LabelReplaceSmart
+from widget.label import LabelAddSmart, LabelReplace, LabelReplaceSmart
 
 
 class SurveyFrame(LabelFrame):
@@ -58,7 +58,7 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text='речь').pack(side=LEFT)
         for text in \
                 'речь бессвязная', 'смазанность речи', 'нарушение артикуляции':
-            LabelBase(frames[1], text, bind=('add_smart', entry, default))
+            LabelAddSmart(frames[1], text, bind=(entry, default))
 
         default = 'уверенная'
         entry = Entry(frames[4], font='-size 10', fg='#800000')
@@ -67,7 +67,7 @@ class SurveyFrame(LabelFrame):
         entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
-            LabelBase(frames[3], text, bind=('add_smart', entry, default))
+            LabelAddSmart(frames[3], text, bind=(entry, default))
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
         default = 'не проводилось'

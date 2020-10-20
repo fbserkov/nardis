@@ -1,7 +1,7 @@
 from tkinter import Entry, Frame, Label, LabelFrame, LEFT, X
 
 from labelframe import get_frames
-from widget.label import LabelBase, LabelReplace
+from widget.label import LabelAddSmart, LabelReplace
 
 
 class CommonFrame(LabelFrame):
@@ -60,12 +60,12 @@ class CommonFrame(LabelFrame):
                 'эйфоричен', 'агрессивен', 'возбуждён',
                 'раздражён', 'замкнут', 'напряжён'
         ):
-            LabelBase(frames[2], text, bind=('add_smart', entry, default))
+            LabelAddSmart(frames[2], text, bind=(entry, default))
         for text in (
                 'заторможен', 'сонлив', 'настроение '
                 'неустойчиво', 'суетлив', 'болтлив',
         ):
-            LabelBase(frames[3], text, bind=('add_smart', entry, default))
+            LabelAddSmart(frames[3], text, bind=(entry, default))
 
         line = 'ориентировка в месте, времени, ситуации'
         Label(frames[5], text=line).pack(side=LEFT)

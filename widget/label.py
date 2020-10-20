@@ -3,7 +3,7 @@ from tkinter import END, Label, LEFT, RIGHT
 
 
 class LabelBase(Label):
-    def __init__(self, master, text, bind, place=RIGHT):
+    def __init__(self, master, text, place=RIGHT):
         Label.__init__(
             self, master, text=text, fg='#000080',
             font='-size 10 -underline true',
@@ -14,11 +14,37 @@ class LabelBase(Label):
             self.grid(**place)
         self.bind('<Enter>', self.enter)
         self.bind('<Leave>', self.leave)
-        if type(bind) != tuple:  # TODO delete
-            return
-        elif bind[0] == 'add_smart':
-            self.bind('<Button-1>', lambda e: self.add_smart(
-                e.widget, bind[1], bind[2]))
+
+    @staticmethod
+    def enter(event):
+        event.widget['font'] = '-size 10 -underline false'
+
+    @staticmethod
+    def leave(event):
+        event.widget['font'] = '-size 10 -underline true'
+
+    @staticmethod
+    def replace(label, entry):
+        entry.delete(0, END)
+        entry.insert(0, label['text'])
+
+
+class LabelAdd(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, place)
+        self.bind('<Button-1>', lambda e: self.add(e.widget, bind))
+
+    @staticmethod
+    def add(label, entry):
+        if entry.get().find(label['text']) == -1:
+            entry.insert(END, label['text'] + ', ')
+
+
+class LabelAddSmart(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, place)
+        self.bind('<Button-1>', lambda e: self.add_smart(
+            e.widget, bind[0], bind[1]))
 
     @staticmethod
     def add_smart(label, entry, default):
@@ -38,40 +64,16 @@ class LabelBase(Label):
             entry.insert(0, default)
         entry.config(state='disabled')
 
-    @staticmethod
-    def enter(event):
-        event.widget['font'] = '-size 10 -underline false'
-
-    @staticmethod
-    def leave(event):
-        event.widget['font'] = '-size 10 -underline true'
-
-    @staticmethod
-    def replace(label, entry):
-        entry.delete(0, END)
-        entry.insert(0, label['text'])
-
-
-class LabelAdd(LabelBase):
-    def __init__(self, master, text, bind, place=RIGHT):
-        LabelBase.__init__(self, master, text, bind, place)
-        self.bind('<Button-1>', lambda e: self.add(e.widget, bind))
-
-    @staticmethod
-    def add(label, entry):
-        if entry.get().find(label['text']) == -1:
-            entry.insert(END, label['text'] + ', ')
-
 
 class LabelReplace(LabelBase):
     def __init__(self, master, text, bind, place=RIGHT):
-        LabelBase.__init__(self, master, text, bind, place)
+        LabelBase.__init__(self, master, text, place)
         self.bind('<Button-1>', lambda e: self.replace(e.widget, bind))
 
 
 class LabelReplace2(LabelBase):
     def __init__(self, master, text, bind, place=RIGHT):
-        LabelBase.__init__(self, master, text, bind, place)
+        LabelBase.__init__(self, master, text, place)
         self.bind('<Button-1>', lambda e: self.replace_2(
             e.widget, bind[0], bind[1]))
 
@@ -85,7 +87,7 @@ class LabelReplace2(LabelBase):
 
 class LabelReplaceSmart(LabelBase):
     def __init__(self, master, text, bind, place=RIGHT):
-        LabelBase.__init__(self, master, text, bind, place)
+        LabelBase.__init__(self, master, text, place)
         self.bind('<Button-1>', lambda e: self.replace_smart(
             e.widget, bind[0], bind[1]))
 

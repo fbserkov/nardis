@@ -1,7 +1,7 @@
 from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
-from widget.label import LabelBase, LabelReplace
+from widget.label import LabelBase, LabelReplace, LabelReplaceSmart
 
 
 class SurveyFrame(LabelFrame):
@@ -33,19 +33,13 @@ class SurveyFrame(LabelFrame):
             entries[i].config(state='disabled', disabledforeground='#800000')
         frame = Frame(frames[1])
         frame.grid(row=0, column=2, sticky=E)
-        LabelBase(
-            frame, text='расширены',
-            bind=('replace_smart', entries[0], defaults[0]),
-        )
-        LabelBase(
-            frame, text='сужены',
-            bind=('replace_smart', entries[0], defaults[0]),
-        )
+        LabelReplaceSmart(
+            frame, text='расширены', bind=(entries[0], defaults[0]))
+        LabelReplaceSmart(frame, text='сужены', bind=(entries[0], defaults[0]))
         for i, text in enumerate(
                 ('вялая', 'инъекция сосудов конъюнктивы', 'есть')):
-            LabelBase(
-                frames[1], text,
-                bind=('replace_smart', entries[i + 1], defaults[i + 1]),
+            LabelReplaceSmart(
+                frames[1], text, bind=(entries[i + 1], defaults[i + 1]),
                 place=dict(row=i + 1, column=2, sticky=E),
             )
 
@@ -82,10 +76,8 @@ class SurveyFrame(LabelFrame):
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'устойчив', 'неустойчив', 'падает':
-            LabelBase(
-                frames[5], text,
-                bind=('replace_smart', entry, default), place=LEFT,
-            )
+            LabelReplaceSmart(
+                frames[5], text, bind=(entry, default), place=LEFT)
 
         line = 'точность выполнения координационных проб'
         Label(frames[6], text=line).pack(side=LEFT)
@@ -94,10 +86,8 @@ class SurveyFrame(LabelFrame):
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
-            LabelBase(
-                frames[7], text,
-                bind=('replace_smart', entry, default), place=LEFT,
-            )
+            LabelReplaceSmart(
+                frames[7], text, bind=(entry, default), place=LEFT)
 
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
         Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(

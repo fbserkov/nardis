@@ -6,7 +6,7 @@ from tkinter import (
 
 from labelframe import get_frames
 from widget.entry import EntryDate, EntryResult, EntryTime
-from widget.label import LabelBase, LabelReplace2
+from widget.label import LabelReplace2, LabelReplaceSmart
 
 minus, plus = '«-»', '«+»'
 
@@ -84,8 +84,7 @@ class ExaminationFrame(LabelFrame):
         entry = Entry(frames[0], width=5, font='-size 10', fg='#800000')
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
-        LabelBase(
-            frames[0], text='кровь', bind=('replace_smart', entry, default))
+        LabelReplaceSmart(frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(frames[0], text='среда').pack(side=RIGHT)
 
@@ -128,8 +127,8 @@ class ExaminationFrame(LabelFrame):
                 frame, width=4, font='-size 10', fg='#800000',
                 state='disabled', disabledforeground='#800000',
             )
-            LabelBase(frame, text=plus, bind=('replace_smart', entry, ''))
-            LabelBase(frame, text=minus, bind=('replace_smart', entry, ''))
+            LabelReplaceSmart(frame, text=plus, bind=(entry, ''))
+            LabelReplaceSmart(frame, text=minus, bind=(entry, ''))
             entry.pack(side=RIGHT)
 
     def paragraph_15(self):

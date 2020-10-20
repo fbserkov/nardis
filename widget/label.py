@@ -16,9 +16,6 @@ class LabelBase(Label):
         self.bind('<Leave>', self.leave)
         if type(bind) != tuple:  # TODO delete
             return
-        if bind[0] == 'replace_smart':
-            self.bind('<Button-1>', lambda e: self.replace_smart(
-                e.widget, bind[1], bind[2]))
         elif bind[0] == 'add_smart':
             self.bind('<Button-1>', lambda e: self.add_smart(
                 e.widget, bind[1], bind[2]))
@@ -54,17 +51,6 @@ class LabelBase(Label):
         entry.delete(0, END)
         entry.insert(0, label['text'])
 
-    @staticmethod
-    def replace_smart(label, entry, default):
-        entry.config(state='normal')
-        if entry.get() == label['text']:
-            entry.delete(0, END)
-            entry.insert(0, default)
-        else:
-            entry.delete(0, END)
-            entry.insert(0, label['text'])
-        entry.config(state='disabled')
-
 
 class LabelAdd(LabelBase):
     def __init__(self, master, text, bind, place=RIGHT):
@@ -95,3 +81,21 @@ class LabelReplace2(LabelBase):
         entry.config(state='disabled')
         if not date.get():
             date.insert(0, strftime('%d.%m.%Y'))
+
+
+class LabelReplaceSmart(LabelBase):
+    def __init__(self, master, text, bind, place=RIGHT):
+        LabelBase.__init__(self, master, text, bind, place)
+        self.bind('<Button-1>', lambda e: self.replace_smart(
+            e.widget, bind[0], bind[1]))
+
+    @staticmethod
+    def replace_smart(label, entry, default):
+        entry.config(state='normal')
+        if entry.get() == label['text']:
+            entry.delete(0, END)
+            entry.insert(0, default)
+        else:
+            entry.delete(0, END)
+            entry.insert(0, label['text'])
+        entry.config(state='disabled')

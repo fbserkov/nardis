@@ -1,9 +1,9 @@
 import time
 from tkinter import (
-    Entry, Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
+    Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
 
 from labelframe import get_frames
-from widget.entry import EntryDate, EntryTime
+from widget.entry import EntryBase, EntryDate, EntryTime
 from widget.label import LabelAdd, LabelReplace
 
 
@@ -29,10 +29,9 @@ class PassportFrame(LabelFrame):
         frame.grid(row=0, column=0)
 
         Label(frame, text='Акт №').grid(row=0, column=0, columnspan=2)
-        Entry(
-            frame, width=4, font='-size 10', fg='#800000',
-            state='disabled', disabledforeground='#800000'
-        ).grid(row=1, column=0)
+        entry = EntryBase(frame, width=4)
+        entry.config(state='disabled', disabledforeground='#800000')
+        entry.grid(row=1, column=0)
         Label(frame, text=time.strftime('/%y')).grid(row=1, column=1)
 
     def paragraph_1(self):
@@ -44,12 +43,11 @@ class PassportFrame(LabelFrame):
             side=LEFT)
         Label(frames[0], text='Дата рождения').pack(side=RIGHT)
         Label(frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
-        Entry(frames[1], font='-size 10', fg='#800000').pack(
-            side=LEFT, expand=True, fill=X)
+        EntryBase(frames[1]).pack(side=LEFT, expand=True, fill=X)
         EntryDate(frames[1])
 
         Label(frames[2], text='Адрес места жительства').pack(side=LEFT)
-        entry = Entry(frames[4], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[4])
         entry.pack(fill=X)
         LabelAdd(frames[3], text='г. Комсомольск-на-Амуре', bind=entry)
         LabelAdd(frames[3], text='Комсомольский район', bind=entry)
@@ -57,7 +55,7 @@ class PassportFrame(LabelFrame):
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(frames[5], text=line).pack(side=LEFT)
-        entry = Entry(frames[6], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[6])
         entry.pack(side=LEFT, expand=True, fill=X)
         LabelReplace(frames[5], text='протокола', bind=entry)
         line = 'водительского удостоверения'
@@ -71,7 +69,7 @@ class PassportFrame(LabelFrame):
 
         line = '2. Основание для медицинского освидетельствования'
         Label(frames[0], text=line).pack(side=LEFT)
-        entry = Entry(frames[3], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[3])
         entry.pack(fill=X)
         line = 'протокол о направлении на медицинское освидетельствование'
         LabelReplace(frames[1], text=line, bind=entry)
@@ -79,8 +77,7 @@ class PassportFrame(LabelFrame):
         line = 'письменное направление работодателя'
         LabelReplace(frames[2], text=line, bind=entry)
         Label(frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
-        Entry(frames[4], font='-size 10', fg='#800000').pack(
-            side=LEFT, expand=True, fill=X)
+        EntryBase(frames[4]).pack(side=LEFT, expand=True, fill=X)
 
     @staticmethod
     def paragraph_4(frame):

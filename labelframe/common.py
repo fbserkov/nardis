@@ -1,6 +1,7 @@
-from tkinter import Entry, Frame, Label, LabelFrame, LEFT, X
+from tkinter import Frame, Label, LabelFrame, LEFT, X
 
 from labelframe import get_frames
+from widget.entry import EntryBase
 from widget.label import LabelAddSmart, LabelReplace
 
 
@@ -18,13 +19,12 @@ class CommonFrame(LabelFrame):
 
         Label(frames[0], text='6. Внешний вид освидетельствуемого').pack(
             side=LEFT)
-        entry = Entry(frames[1], width=69, font='-size 10', fg='#800000')
+        entry = EntryBase(frames[1], width=69)
         entry.pack(fill=X)
-        line = (
-            'внешний вид и кожные покровы без особенностей, ' +
-            'видимых повреждений нет'
+        entry.insert(
+            0, 'внешний вид и кожные покровы без особенностей, ' +
+            'видимых повреждений нет',
         )
-        entry.insert(0, line)
 
     def paragraph_7(self):
         frame = Frame(self, bd=4)
@@ -33,7 +33,7 @@ class CommonFrame(LabelFrame):
 
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(frames[0], text=line).pack(side=LEFT)
-        entry = Entry(frames[1], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[1])
         entry.pack(fill=X)
         entry.insert(0, 'не предъявляет')
 
@@ -45,13 +45,13 @@ class CommonFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
 
         Label(frames[1], text='состояние сознания').pack(side=LEFT)
-        entry = Entry(frames[1], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[1])
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ясное', 'оглушение', 'сопор', 'кома':
             LabelReplace(frames[1], text, bind=entry, place=LEFT)
 
         default = 'без особенностей'
-        entry = Entry(frames[4], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[4])
         entry.pack(fill=X)
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
@@ -69,12 +69,11 @@ class CommonFrame(LabelFrame):
 
         line = 'ориентировка в месте, времени, ситуации'
         Label(frames[5], text=line).pack(side=LEFT)
-        entry = Entry(frames[6], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[6])
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
             LabelReplace(frames[6], text, bind=entry, place=LEFT)
 
         Label(frames[7], text='результат пробы Шульте').pack(side=LEFT)
-        Entry(frames[7], width=2, font='-size 10', fg='#800000').pack(
-            side=LEFT)
+        EntryBase(frames[7], width=2).pack(side=LEFT)
         Label(frames[7], text='сек.').pack(side=LEFT)

@@ -2,9 +2,10 @@ from tkinter import Entry, LEFT, END
 
 
 class EntryBase(Entry):
-    def __init__(self, master, width):
-        Entry.__init__(
-            self, master, width=width, font='-size 10', fg='#800000')
+    def __init__(self, master, width=None):
+        Entry.__init__(self, master, font='-size 10', fg='#800000')
+        if width:
+            self['width'] = width
 
 
 class EntrySmart(EntryBase):

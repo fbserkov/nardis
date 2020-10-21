@@ -1,6 +1,7 @@
-from tkinter import E, Entry, Frame, Label, LabelFrame, LEFT, W, X
+from tkinter import E, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
+from widget.entry import EntryBase
 from widget.label import LabelAddSmart, LabelReplace, LabelReplaceSmart
 
 
@@ -27,7 +28,7 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
         entries, defaults = [], ('в норме', 'живая', 'обычные', 'нет')
         for i, text in enumerate(defaults):
-            entries.append(Entry(frames[1], font='-size 10', fg='#800000'))
+            entries.append(EntryBase(frames[1]))
             entries[i].grid(row=i, column=1, sticky=W + E)
             entries[i].insert(0, text)
             entries[i].config(state='disabled', disabledforeground='#800000')
@@ -51,7 +52,7 @@ class SurveyFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
 
         default = 'речевая способность сохранена'
-        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[2])
         entry.pack(fill=X)
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
@@ -61,7 +62,7 @@ class SurveyFrame(LabelFrame):
             LabelAddSmart(frames[1], text, bind=(entry, default))
 
         default = 'уверенная'
-        entry = Entry(frames[4], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[4])
         entry.pack(fill=X)
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
@@ -71,7 +72,7 @@ class SurveyFrame(LabelFrame):
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
         default = 'не проводилось'
-        entry = Entry(frames[5], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[5])
         entry.pack(side=LEFT, expand=True, fill=X)
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
@@ -81,7 +82,7 @@ class SurveyFrame(LabelFrame):
 
         line = 'точность выполнения координационных проб'
         Label(frames[6], text=line).pack(side=LEFT)
-        entry = Entry(frames[7], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[7])
         entry.pack(side=LEFT, expand=True, fill=X)
         entry.insert(0, default)
         entry.config(state='disabled', disabledforeground='#800000')
@@ -90,8 +91,7 @@ class SurveyFrame(LabelFrame):
                 frames[7], text, bind=(entry, default), place=LEFT)
 
         Label(frames[8], text='результат пробы Ташена').pack(side=LEFT)
-        Entry(frames[8], width=2, font='-size 10', fg='#800000').pack(
-            side=LEFT)
+        EntryBase(frames[8], width=2).pack(side=LEFT)
         Label(frames[8], text='сек.').pack(side=LEFT)
 
     def paragraph_11(self):
@@ -106,7 +106,7 @@ class SurveyFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
         line = 'перенесённых травм (со слов освидетельствуемого)'
         Label(frames[1], text=line).pack(side=LEFT)
-        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[2])
         entry.pack(fill=X)
         entry.insert(0, 'нет')
 
@@ -125,7 +125,7 @@ class SurveyFrame(LabelFrame):
             '(со слов освидетельствуемого)'
         )
         Label(frames[1], text=line).pack(side=LEFT)
-        entry = Entry(frames[2], font='-size 10', fg='#800000')
+        entry = EntryBase(frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)
         LabelReplace(frames[2], text='отрицает', bind=entry, place=LEFT)
         LabelReplace(

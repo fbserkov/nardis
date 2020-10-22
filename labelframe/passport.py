@@ -3,7 +3,8 @@ from tkinter import (
     Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
 
 from labelframe import get_frames
-from widget.entry import EntryBase, EntryDate, EntryDisabled, EntryTime
+from widget.entry import (
+    EntryBase, EntryDate, EntryDisabled, EntryTime, EntryYear)
 from widget.label import LabelAdd, LabelReplace
 
 
@@ -29,7 +30,8 @@ class PassportFrame(LabelFrame):
         frame.grid(row=0, column=0)
         Label(frame, text='Акт №').grid(row=0, column=0, columnspan=2)
         EntryDisabled(frame, width=4).grid(row=1, column=0)
-        Label(frame, text=time.strftime('/%y')).grid(row=1, column=1)
+        Label(frame, text='/').grid(row=1, column=1)
+        EntryYear(frame, default=time.strftime('%y')).grid(row=1, column=2)
 
     def paragraph_1(self):
         frame = Frame(self, bd=4)

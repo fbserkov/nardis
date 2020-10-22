@@ -22,7 +22,6 @@ class EntrySmart(EntryBase):
         EntryBase.__init__(self, master, width=self.length)
         if default:
             self.insert(0, default)
-        self.pack(side=LEFT)
         self.bind('<KeyRelease>', self.key_release)
 
     def key_release(self, event):
@@ -41,12 +40,14 @@ class EntryDate(EntrySmart):
     def __init__(self, master, default=None):
         EntrySmart.__init__(self, master, width=10, default=default)
         self.condition = lambda length: length == 2 or length == 5
+        self.pack(side=LEFT)
 
 
 class EntryResult(EntrySmart):
     def __init__(self, master):
         EntrySmart.__init__(self, master, width=4)
         self.condition = lambda length: length == 1
+        self.pack(side=LEFT)
 
 
 class EntryTime(EntrySmart):
@@ -54,3 +55,10 @@ class EntryTime(EntrySmart):
         EntrySmart.__init__(self, master, width=5, default=default)
         self.separator = ':'
         self.condition = lambda length: length == 2
+        self.pack(side=LEFT)
+
+
+class EntryYear(EntrySmart):
+    def __init__(self, master, default=None):
+        EntrySmart.__init__(self, master, width=2, default=default)
+        self.condition = lambda length: False

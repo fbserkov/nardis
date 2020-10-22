@@ -6,7 +6,7 @@ from tkinter import (
 
 from labelframe import get_frames
 from widget.entry import (
-    EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime)
+    EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear)
 from widget.label import LabelReplaceSmart, LabelReplaceSmartDate
 
 minus, plus = '«-»', '«+»'
@@ -108,7 +108,8 @@ class ExaminationFrame(LabelFrame):
 
         line = 'Результаты химико-токсикологических исследований'
         Label(frames[3], text=line).pack(side=LEFT)
-        Label(frames[3], text=time.strftime('/%y')).pack(side=RIGHT)
+        EntryYear(frames[3], default=time.strftime('%y')).pack(side=RIGHT)
+        Label(frames[3], text=time.strftime('/')).pack(side=RIGHT)
         EntryBase(frames[3], width=5).pack(side=RIGHT)
         Label(frames[3], text='номер справки').pack(side=RIGHT)
 

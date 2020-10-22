@@ -5,7 +5,8 @@ from tkinter import (
 )
 
 from labelframe import get_frames
-from widget.entry import EntryBase, EntryDate, EntryResult, EntryTime
+from widget.entry import (
+    EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime)
 from widget.label import LabelReplaceSmart, LabelReplaceSmartDate
 
 minus, plus = '«-»', '«+»'
@@ -81,9 +82,7 @@ class ExaminationFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
         EntryTime(frames[0])
         default = 'моча'
-        entry = EntryBase(frames[0], width=5)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
+        entry = EntryDisabled(frames[0], width=5, default=default)
         LabelReplaceSmart(frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(frames[0], text='среда').pack(side=RIGHT)
@@ -122,8 +121,7 @@ class ExaminationFrame(LabelFrame):
             frame = Frame(frames[4])
             frame.grid(row=row, column=column, sticky=W+E)
             Label(frame, text=chemicals[i]).pack(side=LEFT)
-            entry = EntryBase(frame, width=4)
-            entry.config(state='disabled', disabledforeground='#800000')
+            entry = EntryDisabled(frame, width=4)
             LabelReplaceSmart(frame, text=plus, bind=(entry, ''))
             LabelReplaceSmart(frame, text=minus, bind=(entry, ''))
             entry.pack(side=RIGHT)
@@ -144,8 +142,7 @@ class ExaminationFrame(LabelFrame):
         frames = get_frames(frame, 3)
 
         Label(frames[0], text='17. Заключение').pack(side=LEFT)
-        entry = EntryBase(frames[2])
-        entry.config(state='disabled', disabledforeground='#800000')
+        entry = EntryDisabled(frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)
         Label(frames[2], text='Дата').pack(side=LEFT)
         date = EntryDate(frames[2])

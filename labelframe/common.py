@@ -1,7 +1,7 @@
 from tkinter import Frame, Label, LabelFrame, LEFT, X
 
 from labelframe import get_frames
-from widget.entry import EntryBase
+from widget.entry import EntryBase, EntryDisabled
 from widget.label import LabelAddSmart, LabelReplace
 
 
@@ -51,10 +51,8 @@ class CommonFrame(LabelFrame):
             LabelReplace(frames[1], text, bind=entry, place=LEFT)
 
         default = 'без особенностей'
-        entry = EntryBase(frames[4])
+        entry = EntryDisabled(frames[4], default=default)
         entry.pack(fill=X)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[2], text='поведение').pack(side=LEFT)
         for text in (
                 'эйфоричен', 'агрессивен', 'возбуждён',

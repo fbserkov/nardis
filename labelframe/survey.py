@@ -1,7 +1,7 @@
 from tkinter import E, Frame, Label, LabelFrame, LEFT, W, X
 
 from labelframe import get_frames
-from widget.entry import EntryBase
+from widget.entry import EntryBase, EntryDisabled
 from widget.label import LabelAddSmart, LabelReplace, LabelReplaceSmart
 
 
@@ -27,11 +27,9 @@ class SurveyFrame(LabelFrame):
         Label(frames[1], text='склеры').grid(row=2, column=0, sticky=W)
         Label(frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
         entries, defaults = [], ('в норме', 'живая', 'обычные', 'нет')
-        for i, text in enumerate(defaults):
-            entries.append(EntryBase(frames[1]))
+        for i, default in enumerate(defaults):
+            entries.append(EntryDisabled(frames[1], default=default))
             entries[i].grid(row=i, column=1, sticky=W + E)
-            entries[i].insert(0, text)
-            entries[i].config(state='disabled', disabledforeground='#800000')
         frame = Frame(frames[1])
         frame.grid(row=0, column=2, sticky=E)
         LabelReplaceSmart(
@@ -52,40 +50,32 @@ class SurveyFrame(LabelFrame):
         Label(frames[0], text=line).pack(side=LEFT)
 
         default = 'речевая способность сохранена'
-        entry = EntryBase(frames[2])
+        entry = EntryDisabled(frames[2], default=default)
         entry.pack(fill=X)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[1], text='речь').pack(side=LEFT)
         for text in \
                 'речь бессвязная', 'смазанность речи', 'нарушение артикуляции':
             LabelAddSmart(frames[1], text, bind=(entry, default))
 
         default = 'уверенная'
-        entry = EntryBase(frames[4])
+        entry = EntryDisabled(frames[4], default=default)
         entry.pack(fill=X)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
         Label(frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
             LabelAddSmart(frames[3], text, bind=(entry, default))
 
         Label(frames[5], text='устойчивость в позе Ромберга').pack(side=LEFT)
         default = 'не проводилось'
-        entry = EntryBase(frames[5])
+        entry = EntryDisabled(frames[5], default=default)
         entry.pack(side=LEFT, expand=True, fill=X)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
         for text in 'устойчив', 'неустойчив', 'падает':
             LabelReplaceSmart(
                 frames[5], text, bind=(entry, default), place=LEFT)
 
         line = 'точность выполнения координационных проб'
         Label(frames[6], text=line).pack(side=LEFT)
-        entry = EntryBase(frames[7])
+        entry = EntryDisabled(frames[7], default=default)
         entry.pack(side=LEFT, expand=True, fill=X)
-        entry.insert(0, default)
-        entry.config(state='disabled', disabledforeground='#800000')
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
             LabelReplaceSmart(
                 frames[7], text, bind=(entry, default), place=LEFT)

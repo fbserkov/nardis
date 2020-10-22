@@ -8,12 +8,20 @@ class EntryBase(Entry):
             self['width'] = width
 
 
+class EntryDisabled(EntryBase):
+    def __init__(self, master, width=None, default=None):
+        EntryBase.__init__(self, master, width)
+        if default:
+            self.insert(0, default)
+        self.config(state='disabled', disabledforeground='#800000')
+
+
 class EntrySmart(EntryBase):
-    def __init__(self, master, width, text=None):
+    def __init__(self, master, width, default=None):
         self.length, self.separator = width, '.'
         EntryBase.__init__(self, master, width=self.length)
-        if text:
-            self.insert(0, text)
+        if default:
+            self.insert(0, default)
         self.pack(side=LEFT)
         self.bind('<KeyRelease>', self.key_release)
 
@@ -30,8 +38,8 @@ class EntrySmart(EntryBase):
 
 
 class EntryDate(EntrySmart):
-    def __init__(self, master, text=None):
-        EntrySmart.__init__(self, master, width=10, text=text)
+    def __init__(self, master, default=None):
+        EntrySmart.__init__(self, master, width=10, default=default)
         self.condition = lambda length: length == 2 or length == 5
 
 
@@ -42,7 +50,7 @@ class EntryResult(EntrySmart):
 
 
 class EntryTime(EntrySmart):
-    def __init__(self, master, text=None):
-        EntrySmart.__init__(self, master, width=5, text=text)
+    def __init__(self, master, default=None):
+        EntrySmart.__init__(self, master, width=5, default=default)
         self.separator = ':'
         self.condition = lambda length: length == 2

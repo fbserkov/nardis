@@ -1,17 +1,16 @@
 import time
-from tkinter import (
-    Frame, Label, LabelFrame, LEFT, OptionMenu, RIGHT, StringVar, X)
+from tkinter import Frame, Label, LabelFrame, LEFT, RIGHT, X
 
 from labelframe import get_frames
 from widget.entry import (
     EntryBase, EntryDate, EntryDisabled, EntryTime, EntryYear)
 from widget.label import LabelAdd, LabelReplace
+from widget.option_menu import OptionMenuSmart
 
 
 class PassportFrame(LabelFrame):
     def __init__(self, database):
         LabelFrame.__init__(self, text='Паспортная часть')
-
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frame.columnconfigure(1, weight=1)
@@ -19,7 +18,6 @@ class PassportFrame(LabelFrame):
         self.paragraph_0(frame)
         self.paragraph_4(frame)
         self.paragraph_16(frame)
-
         self.paragraph_1()
         self.paragraph_2()
         self.paragraph_5(database)
@@ -65,7 +63,6 @@ class PassportFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 5)
-
         line = '2. Основание для медицинского освидетельствования'
         Label(frames[0], text=line).pack(side=LEFT)
         entry = EntryBase(frames[3])
@@ -82,7 +79,6 @@ class PassportFrame(LabelFrame):
     def paragraph_4(frame):
         frame = Frame(frame)
         frame.grid(row=0, column=2)
-
         Label(frame, text='4. Начало освидетельствования').pack()
         Label(frame, text='Дата').pack(side=LEFT)
         EntryDate(frame, time.strftime('%d.%m.%Y'))
@@ -93,21 +89,15 @@ class PassportFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 2)
-
         Label(frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         doctors = database.get_doctors()
-        string_var_10 = StringVar(frames[1])
-        if len(doctors) == 1:
-            string_var_10.set(doctors[0])
-        option_menu_10 = OptionMenu(frames[1], string_var_10, *doctors)
-        option_menu_10.config(font='-size 10', fg='#800000')
-        option_menu_10.pack(fill=X)
+        OptionMenuSmart(
+            frames[1], doctors, doctors[0] if len(doctors) == 1 else None)
 
     @staticmethod
     def paragraph_16(frame):
         frame = Frame(frame)
         frame.grid(row=0, column=4)
-
         Label(frame, text='16. Окончание освидетельствования').pack()
         Label(frame, text='Дата').pack(side=LEFT)
         EntryDate(frame, time.strftime('%d.%m.%Y'))

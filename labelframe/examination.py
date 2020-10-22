@@ -1,13 +1,12 @@
 import time
 from tkinter import (
-    Checkbutton, E, Frame, IntVar, Label, LabelFrame,
-    LEFT, OptionMenu, RIGHT, StringVar, W, X
-)
+    Checkbutton, E, Frame, IntVar, Label, LabelFrame, LEFT, RIGHT, W, X)
 
 from labelframe import get_frames
 from widget.entry import (
     EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear)
 from widget.label import LabelReplaceSmart, LabelReplaceSmartDate
+from widget.option_menu import OptionMenuSmart
 
 minus, plus = '«-»', '«+»'
 
@@ -41,19 +40,13 @@ class ExaminationFrame(LabelFrame):
         Label(frame, text='Результат').pack(side=LEFT)
         EntryResult(frame)
         Label(frame, text='мг/л').pack(side=LEFT)
-
         Label(frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = database.get_technical_means()
-        option_menu = OptionMenu(
-            frames[2], StringVar(frames[2]), *technical_means)
-        option_menu.config(font='-size 10', fg='#800000')
-        option_menu.pack(fill=X)
-
-        checkbutton = Checkbutton(
+        OptionMenuSmart(frames[2], technical_means)
+        Checkbutton(
             frames[3], variable=IntVar(frames[3]), onvalue=1, offvalue=0,
             text='фальсификация выдоха',
-        )
-        checkbutton.pack(side=RIGHT)
+        ).pack(side=RIGHT)
 
         Label(frames[4], text='13.2. Второе исследование').grid(
             row=0, column=0)
@@ -66,12 +59,8 @@ class ExaminationFrame(LabelFrame):
         Label(frame, text='Результат').pack(side=LEFT)
         EntryResult(frame)
         Label(frame, text='мг/л').pack(side=LEFT)
-
         Label(frames[5], text='техническое средство').pack(side=LEFT)
-        option_menu = OptionMenu(
-            frames[5], StringVar(frames[5]), *technical_means)
-        option_menu.config(font='-size 10', fg='#800000')
-        option_menu.pack(fill=X)
+        OptionMenuSmart(frames[5], technical_means)
 
     def paragraph_14(self, database):
         frame = Frame(self, bd=4)
@@ -86,7 +75,6 @@ class ExaminationFrame(LabelFrame):
         LabelReplaceSmart(frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(frames[0], text='среда').pack(side=RIGHT)
-
         frame = Frame(frames[1])
         frame.pack(side=RIGHT)
         checkbutton = Checkbutton(
@@ -99,12 +87,8 @@ class ExaminationFrame(LabelFrame):
             text='фальсификация пробы биологического объекта (мочи)',
         )
         checkbutton.grid(row=1)
-
         Label(frames[2], text='метод исследования').pack(side=LEFT)
-        methods = database.get_methods()
-        option_menu = OptionMenu(frames[2], StringVar(frames[2]), *methods)
-        option_menu.config(font='-size 10', fg='#800000')
-        option_menu.pack(fill=X)
+        OptionMenuSmart(frames[2], database.get_methods())
 
         line = 'Результаты химико-токсикологических исследований'
         Label(frames[3], text=line).pack(side=LEFT)
@@ -112,7 +96,6 @@ class ExaminationFrame(LabelFrame):
         Label(frames[3], text=time.strftime('/')).pack(side=RIGHT)
         EntryBase(frames[3], width=5).pack(side=RIGHT)
         Label(frames[3], text='номер справки').pack(side=RIGHT)
-
         frames[4].columnconfigure(0, weight=1)
         frames[4].columnconfigure(2, weight=1)
         frames[4].columnconfigure(4, weight=1)
@@ -131,7 +114,6 @@ class ExaminationFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 2)
-
         Label(frames[0], text='15. Другие данные').pack(side=LEFT)
         entry = EntryBase(frames[1])
         entry.pack(fill=X)
@@ -141,7 +123,6 @@ class ExaminationFrame(LabelFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frames = get_frames(frame, 3)
-
         Label(frames[0], text='17. Заключение').pack(side=LEFT)
         entry = EntryDisabled(frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)

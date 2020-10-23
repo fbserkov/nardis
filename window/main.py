@@ -11,15 +11,18 @@ class Main(Window):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.centering(width=604, height=612)
-
         frame = Frame()
         frame.pack(fill=X)
+
+        button = Button(frame, text='Новый')
+        button.pack(side=LEFT, expand=True, fill=X)
+        button.bind('<Button-1>', lambda e: self.init())
+
         self.buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
             Button(frame, text='III'), Button(frame, text='IV')
         )
         for button in self.buttons:
-            button.config(font='-size 10')
             button.pack(side=LEFT, expand=True, fill=X)
             button.bind('<Button-1>', lambda e: self.show_label_frame(
                 self.buttons.index(e.widget)))
@@ -30,6 +33,10 @@ class Main(Window):
         )
         self.show_label_frame(0)
         self.root.mainloop()
+
+    def init(self):
+        print('init')
+        pass
 
     def show_label_frame(self, index):
         for i in range(len(self.label_frames)):

@@ -2,7 +2,7 @@ import time
 from tkinter import (
     Checkbutton, E, Frame, IntVar, Label, LabelFrame, LEFT, RIGHT, W, X)
 
-from labelframe import get_frames
+from item import ItemBase
 from widget.entry import (
     EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear)
 from widget.label import LabelReplaceSmart, LabelReplaceSmartDate
@@ -28,7 +28,7 @@ class ExaminationFrame(LabelFrame):
     def paragraph_13(self, database):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 6)
+        frames = ItemBase.get_frames(frame, length=6)
         for i in 1, 4:
             frames[i].columnconfigure(1, weight=1)
             frames[i].columnconfigure(3, weight=1)
@@ -71,7 +71,7 @@ class ExaminationFrame(LabelFrame):
     def paragraph_14(self, database):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 5)
+        frames = ItemBase.get_frames(frame, length=5)
 
         line = '14. Время отбора биологического объекта'
         Label(frames[0], text=line).pack(side=LEFT)
@@ -119,7 +119,7 @@ class ExaminationFrame(LabelFrame):
     def paragraph_15(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 2)
+        frames = ItemBase.get_frames(frame, length=2)
         Label(frames[0], text='15. Другие данные').pack(side=LEFT)
         entry = EntryBase(frames[1])
         entry.pack(fill=X)
@@ -128,7 +128,7 @@ class ExaminationFrame(LabelFrame):
     def paragraph_17(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 3)
+        frames = ItemBase.get_frames(frame, length=3)
         Label(frames[0], text='17. Заключение').pack(side=LEFT)
         entry = EntryDisabled(frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)

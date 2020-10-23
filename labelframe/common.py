@@ -1,6 +1,6 @@
 from tkinter import Frame, Label, LabelFrame, LEFT, X
 
-from labelframe import get_frames
+from item import ItemBase
 from widget.entry import EntryBase, EntryDisabled
 from widget.label import LabelAddSmart, LabelReplace
 
@@ -19,7 +19,7 @@ class CommonFrame(LabelFrame):
     def paragraph_6(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 2)
+        frames = ItemBase.get_frames(frame, length=2)
 
         Label(frames[0], text='6. Внешний вид освидетельствуемого').pack(
             side=LEFT)
@@ -33,7 +33,7 @@ class CommonFrame(LabelFrame):
     def paragraph_7(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 2)
+        frames = ItemBase.get_frames(frame, length=2)
 
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(frames[0], text=line).pack(side=LEFT)
@@ -44,7 +44,7 @@ class CommonFrame(LabelFrame):
     def paragraph_8(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 8)
+        frames = ItemBase.get_frames(frame, length=8)
         line = '8. Изменения психической деятельности освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
 

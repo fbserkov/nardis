@@ -1,6 +1,6 @@
 from tkinter import E, Frame, Label, LabelFrame, LEFT, W, X
 
-from labelframe import get_frames
+from item import ItemBase
 from widget.entry import EntryBase, EntryDisabled
 from widget.label import LabelAddSmart, LabelReplace, LabelReplaceSmart
 
@@ -20,7 +20,7 @@ class SurveyFrame(LabelFrame):
     def paragraph_9(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 2)
+        frames = ItemBase.get_frames(frame, length=2)
         frames[1].columnconfigure(1, weight=1)
         line = '9. Вегетативно-сосудистые реакции освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
@@ -49,7 +49,7 @@ class SurveyFrame(LabelFrame):
     def paragraph_10(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 9)
+        frames = ItemBase.get_frames(frame, length=9)
         line = '10. Двигательная сфера освидетельствуемого'
         Label(frames[0], text=line).pack(side=LEFT)
 
@@ -91,7 +91,7 @@ class SurveyFrame(LabelFrame):
     def paragraph_11(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 3)
+        frames = ItemBase.get_frames(frame, length=3)
 
         line = (
             '11. Наличие заболеваний нервной системы, ' +
@@ -107,7 +107,7 @@ class SurveyFrame(LabelFrame):
     def paragraph_12(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
-        frames = get_frames(frame, 3)
+        frames = ItemBase.get_frames(frame, length=3)
 
         line = (
             '12. Сведения о последнем употреблении алкоголя, ' +

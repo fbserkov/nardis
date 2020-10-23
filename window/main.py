@@ -10,40 +10,32 @@ class Main(Window):
     def __init__(self, database):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
-        self.create(database)
-        self.centering(width=604, height=612)   # height < 768
-        self.root.mainloop()
+        self.centering(width=604, height=612)
 
-    @staticmethod
-    def create(database):
-        label_frames = [PassportFrame(database),
-                        CommonFrame(),
-                        SurveyFrame(),
-                        ExaminationFrame(database)]
-        for frame in label_frames:
-            frame.config(font='-weight bold -size 10')
-
-        label_frame_buttons_frame = Frame()
-        label_frame_buttons_frame.pack(fill=X)
-
-        label_frame_buttons = [Button(label_frame_buttons_frame, text='I'),
-                               Button(label_frame_buttons_frame, text='II'),
-                               Button(label_frame_buttons_frame, text='III'),
-                               Button(label_frame_buttons_frame, text='IV')]
-
-        def show_label_frame(n):
-            for i in range(len(label_frames)):
-                if i == n:
-                    label_frame_buttons[i].config(font='-weight bold -size 10')
-                    label_frames[i].pack(fill=X)
-                else:
-                    label_frame_buttons[i].config(font='-size 10')
-                    label_frames[i].forget()
-
-        for button in label_frame_buttons:
+        frame = Frame()
+        frame.pack(fill=X)
+        self.buttons = (
+            Button(frame, text='I'), Button(frame, text='II'),
+            Button(frame, text='III'), Button(frame, text='IV')
+        )
+        for button in self.buttons:
             button.config(font='-size 10')
             button.pack(side=LEFT, expand=True, fill=X)
-            button.bind('<Button-1>', lambda e: show_label_frame(
-                label_frame_buttons.index(e.widget)))
+            button.bind('<Button-1>', lambda e: self.show_label_frame(
+                self.buttons.index(e.widget)))
 
-        show_label_frame(0)
+        self.label_frames = (
+            PassportFrame(database), CommonFrame(),
+            SurveyFrame(), ExaminationFrame(database),
+        )
+        self.show_label_frame(0)
+        self.root.mainloop()
+
+    def show_label_frame(self, index):
+        for i in range(len(self.label_frames)):
+            if i == index:
+                self.buttons[i].config(font='-size 10 -weight bold')
+                self.label_frames[i].pack(fill=X)
+            else:
+                self.buttons[i].config(font='-size 10')
+                self.label_frames[i].forget()

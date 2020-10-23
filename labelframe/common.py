@@ -7,7 +7,8 @@ from widget.label import LabelAddSmart, LabelReplace
 
 class CommonFrame(LabelFrame):
     def __init__(self):
-        LabelFrame.__init__(self, text='Общие данные')
+        LabelFrame.__init__(
+            self, font='-size 10 -weight bold', text='Общие данные')
         self.paragraph_6()
         self.paragraph_7()
         self.paragraph_8()

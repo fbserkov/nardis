@@ -7,7 +7,8 @@ from widget.label import LabelAddSmart, LabelReplace, LabelReplaceSmart
 
 class SurveyFrame(LabelFrame):
     def __init__(self):
-        LabelFrame.__init__(self, text='Объективный осмотр')
+        LabelFrame.__init__(
+            self, font='-size 10 -weight bold', text='Объективный осмотр')
         self.paragraph_9()
         self.paragraph_10()
         self.paragraph_11()

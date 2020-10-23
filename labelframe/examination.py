@@ -13,11 +13,17 @@ minus, plus = '«-»', '«+»'
 
 class ExaminationFrame(LabelFrame):
     def __init__(self, database):
-        LabelFrame.__init__(self, text='Данные освидетельствования')
+        LabelFrame.__init__(
+            self, font='-size 10 -weight bold',
+            text='Данные освидетельствования',
+        )
         self.paragraph_13(database)
         self.paragraph_14(database)
         self.paragraph_15()
         self.paragraph_17()
+
+    def init(self):
+        pass
 
     def paragraph_13(self, database):
         frame = Frame(self, bd=4)

@@ -10,7 +10,8 @@ from widget.option_menu import OptionMenuSmart
 
 class PassportFrame(LabelFrame):
     def __init__(self, database):
-        LabelFrame.__init__(self, text='Паспортная часть')
+        LabelFrame.__init__(
+            self, font='-size 10 -weight bold', text='Паспортная часть')
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         frame.columnconfigure(1, weight=1)
@@ -21,6 +22,9 @@ class PassportFrame(LabelFrame):
         self.paragraph_1()
         self.paragraph_2()
         self.paragraph_5(database)
+
+    def init(self):
+        pass
 
     @staticmethod
     def paragraph_0(frame):

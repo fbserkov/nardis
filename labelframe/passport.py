@@ -23,6 +23,9 @@ class PassportFrame(LabelFrame):
         self.paragraph_2()
         self.paragraph_5(database)
 
+    def init(self):
+        pass
+
     @staticmethod
     def paragraph_0(frame):
         frame = Frame(frame)

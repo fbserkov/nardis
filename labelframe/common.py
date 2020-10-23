@@ -13,6 +13,9 @@ class CommonFrame(LabelFrame):
         self.paragraph_7()
         self.paragraph_8()
 
+    def init(self):
+        pass
+
     def paragraph_6(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)

@@ -22,6 +22,9 @@ class ExaminationFrame(LabelFrame):
         self.paragraph_15()
         self.paragraph_17()
 
+    def init(self):
+        pass
+
     def paragraph_13(self, database):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)

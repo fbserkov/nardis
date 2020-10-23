@@ -14,6 +14,9 @@ class SurveyFrame(LabelFrame):
         self.paragraph_11()
         self.paragraph_12()
 
+    def init(self):
+        pass
+
     def paragraph_9(self):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)

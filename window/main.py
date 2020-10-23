@@ -35,8 +35,8 @@ class Main(Window):
         self.root.mainloop()
 
     def init(self):
-        print('init')
-        pass
+        for label_frame in self.label_frames:
+            label_frame.init()
 
     def show_label_frame(self, index):
         for i in range(len(self.label_frames)):

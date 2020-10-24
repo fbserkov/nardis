@@ -1,6 +1,6 @@
 from label_frame import (
     CommonFrame, ExaminationFrame, PassportFrame, SurveyFrame)
-from tkinter import Button, Frame, LEFT, X
+from tkinter import Button, Frame, LEFT, RIGHT, X
 from window.window import Window
 
 
@@ -13,7 +13,7 @@ class Main(Window):
         frame.pack(fill=X)
 
         button = Button(frame, text='Новый')
-        button.pack(side=LEFT, expand=True, fill=X)
+        button.pack(side=RIGHT, expand=True, fill=X)
         button.bind('<Button-1>', lambda e: self.init())
 
         self.buttons = (

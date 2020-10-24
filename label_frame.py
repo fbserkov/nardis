@@ -1,17 +1,14 @@
 from tkinter import LabelFrame
-from item import (
-    Item0, Item1, Item2, Item4, Item5, Item6, Item7, Item8, Item9,
-    Item10, Item11, Item12, Item13, Item14, Item15, Item16, Item17,
-)
+from item import create_item
 
 
 class CommonFrame(LabelFrame):
     def __init__(self):
         LabelFrame.__init__(
             self, font='-size 10 -weight bold', text='Общие данные')
-        self.paragraph_6 = Item6(self)
-        self.paragraph_7 = Item7(self)
-        self.paragraph_8 = Item8(self)
+        self.item_6 = create_item(self, 6)
+        self.item_7 = create_item(self, 7)
+        self.item_8 = create_item(self, 8)
 
     def init(self):
         pass
@@ -23,10 +20,10 @@ class ExaminationFrame(LabelFrame):
             self, font='-size 10 -weight bold',
             text='Данные освидетельствования',
         )
-        self.paragraph_13 = Item13(self, database)
-        self.paragraph_14 = Item14(self, database)
-        self.paragraph_15 = Item15(self)
-        self.paragraph_17 = Item17(self)
+        self.item_13 = create_item(self, 13, database)
+        self.item_14 = create_item(self, 14, database)
+        self.item_15 = create_item(self, 15)
+        self.item_17 = create_item(self, 17)
 
     def init(self):
         pass
@@ -36,12 +33,12 @@ class PassportFrame(LabelFrame):
     def __init__(self, database):
         LabelFrame.__init__(
             self, font='-size 10 -weight bold', text='Паспортная часть')
-        self.paragraph_0 = Item0(self)
-        self.paragraph_4 = Item4(self)
-        self.paragraph_16 = Item16(self)
-        self.paragraph_1 = Item1(self)
-        self.paragraph_2 = Item2(self)
-        self.paragraph_5 = Item5(self, database)
+        self.item_0 = create_item(self, 0)
+        self.item_4 = create_item(self, 4)
+        self.item_16 = create_item(self, 16)
+        self.item_1 = create_item(self, 1)
+        self.item_2 = create_item(self, 2)
+        self.item_5 = create_item(self, 5, database)
 
     def init(self):
         pass
@@ -51,10 +48,10 @@ class SurveyFrame(LabelFrame):
     def __init__(self):
         LabelFrame.__init__(
             self, font='-size 10 -weight bold', text='Объективный осмотр')
-        self.paragraph_9 = Item9(self)
-        self.paragraph_10 = Item10(self)
-        self.paragraph_11 = Item11(self)
-        self.paragraph_12 = Item12(self)
+        self.item_9 = create_item(self, 9)
+        self.item_10 = create_item(self, 10)
+        self.item_11 = create_item(self, 11)
+        self.item_12 = create_item(self, 12)
 
     def init(self):
         pass

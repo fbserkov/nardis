@@ -405,3 +405,8 @@ class Item17(ItemBase):
                 (1, 'установлено состояние опьянения'),
         ):
             LabelReplaceSmartDate(self.frames[i], text, bind=(entry, '', date))
+
+
+def create_item(master, num, db=None):
+    class_ = globals()[f'Item{num}']
+    return class_(master, db) if db else class_(master)

@@ -1,7 +1,5 @@
-from labelframe.common import CommonFrame
-from labelframe.examination import ExaminationFrame
-from labelframe.passport import PassportFrame
-from labelframe.survey import SurveyFrame
+from label_frame import (
+    CommonFrame, ExaminationFrame, PassportFrame, SurveyFrame)
 from tkinter import Button, Frame, LEFT, X
 from window.window import Window
 

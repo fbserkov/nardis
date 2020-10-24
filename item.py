@@ -1,10 +1,12 @@
 import time
-from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
+from tkinter import Checkbutton, E, Frame, IntVar, Label, LEFT, RIGHT, W, X
 
 from widget.entry import (
-    EntryBase, EntryDate, EntryDisabled, EntryTime, EntryYear)
+    EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear)
 from widget.label import (
-    LabelAdd, LabelAddSmart, LabelReplace, LabelReplaceSmart)
+    LabelAdd, LabelAddSmart, LabelReplace,
+    LabelReplaceSmart, LabelReplaceSmartDate,
+)
 from widget.option_menu import OptionMenuSmart
 
 
@@ -280,15 +282,102 @@ class Item12(ItemBase):
 
 
 class Item13(ItemBase):
-    pass
+    def __init__(self, master, database):
+        ItemBase.__init__(self, master, frames_number=6)
+        for i in 1, 4:
+            self.frames[i].columnconfigure(1, weight=1)
+            self.frames[i].columnconfigure(3, weight=1)
+        line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
+        Label(self.frames[0], text=line).pack(side=LEFT)
+
+        Label(self.frames[1], text='13.1. Первое исследование').grid(
+            row=0, column=0)
+        frame = Frame(self.frames[1])
+        frame.grid(row=0, column=2)
+        Label(frame, text='Время').pack(side=LEFT)
+        EntryTime(frame, time.strftime('%H:%M'))
+        frame = Frame(self.frames[1])
+        frame.grid(row=0, column=4)
+        Label(frame, text='Результат').pack(side=LEFT)
+        EntryResult(frame)
+        Label(frame, text='мг/л').pack(side=LEFT)
+        Label(self.frames[2], text='техническое средство').pack(side=LEFT)
+        technical_means = database.get_technical_means()
+        OptionMenuSmart(self.frames[2], technical_means)
+        Checkbutton(
+            self.frames[3], variable=IntVar(self.frames[3]),
+            onvalue=1, offvalue=0, text='фальсификация выдоха',
+        ).pack(side=RIGHT)
+
+        Label(self.frames[4], text='13.2. Второе исследование').grid(
+            row=0, column=0)
+        frame = Frame(self.frames[4])
+        frame.grid(row=0, column=2)
+        Label(frame, text='Время').pack(side=LEFT)
+        EntryTime(frame)
+        frame = Frame(self.frames[4])
+        frame.grid(row=0, column=4)
+        Label(frame, text='Результат').pack(side=LEFT)
+        EntryResult(frame)
+        Label(frame, text='мг/л').pack(side=LEFT)
+        Label(self.frames[5], text='техническое средство').pack(side=LEFT)
+        OptionMenuSmart(self.frames[5], technical_means)
 
 
 class Item14(ItemBase):
-    pass
+    def __init__(self, master, database):
+        ItemBase.__init__(self, master, frames_number=5)
+        line = '14. Время отбора биологического объекта'
+        Label(self.frames[0], text=line).pack(side=LEFT)
+        EntryTime(self.frames[0])
+        default = 'моча'
+        entry = EntryDisabled(self.frames[0], width=5, default=default)
+        LabelReplaceSmart(self.frames[0], text='кровь', bind=(entry, default))
+        entry.pack(side=RIGHT)
+        Label(self.frames[0], text='среда').pack(side=RIGHT)
+        frame = Frame(self.frames[1])
+        frame.pack(side=RIGHT)
+        checkbutton = Checkbutton(
+            frame, variable=IntVar(frame), onvalue=1, offvalue=0,
+            text='отказ от сдачи пробы биологического объекта (мочи)',
+        )
+        checkbutton.grid(row=0, sticky=W)
+        checkbutton = Checkbutton(
+            frame, variable=IntVar(frame), onvalue=1, offvalue=0,
+            text='фальсификация пробы биологического объекта (мочи)',
+        )
+        checkbutton.grid(row=1)
+        Label(self.frames[2], text='метод исследования').pack(side=LEFT)
+        OptionMenuSmart(self.frames[2], database.get_methods())
+
+        line = 'Результаты химико-токсикологических исследований'
+        Label(self.frames[3], text=line).pack(side=LEFT)
+        EntryYear(self.frames[3], default=time.strftime('%y')).pack(side=RIGHT)
+        Label(self.frames[3], text=time.strftime('/')).pack(side=RIGHT)
+        EntryBase(self.frames[3], width=5).pack(side=RIGHT)
+        Label(self.frames[3], text='номер справки').pack(side=RIGHT)
+        self.frames[4].columnconfigure(0, weight=1)
+        self.frames[4].columnconfigure(2, weight=1)
+        self.frames[4].columnconfigure(4, weight=1)
+        chemicals = database.get_chemicals()
+        for i in range(11):
+            row, column = int(i / 2), (i % 2) * 2 + 1
+            frame = Frame(self.frames[4])
+            frame.grid(row=row, column=column, sticky=W + E)
+            Label(frame, text=chemicals[i]).pack(side=LEFT)
+            entry = EntryDisabled(frame, width=4)
+            LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
+            LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
+            entry.pack(side=RIGHT)
 
 
 class Item15(ItemBase):
-    pass
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=2)
+        Label(self.frames[0], text='15. Другие данные').pack(side=LEFT)
+        entry = EntryBase(self.frames[1])
+        entry.pack(fill=X)
+        entry.insert(0, 'нет')
 
 
 class Item16(ItemBase):
@@ -300,3 +389,19 @@ class Item16(ItemBase):
         EntryDate(self.frame, time.strftime('%d.%m.%Y'))
         Label(self.frame, text='Время').pack(side=LEFT)
         EntryTime(self.frame, time.strftime('%H:%M'))
+
+
+class Item17(ItemBase):
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=3)
+        Label(self.frames[0], text='17. Заключение').pack(side=LEFT)
+        entry = EntryDisabled(self.frames[2])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        Label(self.frames[2], text='Дата').pack(side=LEFT)
+        date = EntryDate(self.frames[2])
+        for i, text in (
+                (0, 'от медицинского освидетельствования отказался'),
+                (1, 'состояние опьянения не установлено'),
+                (1, 'установлено состояние опьянения'),
+        ):
+            LabelReplaceSmartDate(self.frames[i], text, bind=(entry, '', date))

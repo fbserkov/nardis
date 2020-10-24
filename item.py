@@ -3,7 +3,7 @@ from tkinter import Frame, Label, LEFT, RIGHT, X
 
 from widget.entry import (
     EntryBase, EntryDate, EntryDisabled, EntryTime, EntryYear)
-from widget.label import LabelAdd, LabelReplace
+from widget.label import LabelAdd, LabelAddSmart, LabelReplace
 from widget.option_menu import OptionMenuSmart
 
 
@@ -114,15 +114,65 @@ class Item5(ItemBase):
 
 
 class Item6(ItemBase):
-    pass
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=2)
+        Label(self.frames[0], text='6. Внешний вид освидетельствуемого').pack(
+            side=LEFT)
+        entry = EntryBase(self.frames[1], width=69)
+        entry.pack(fill=X)
+        entry.insert(
+            0, 'внешний вид и кожные покровы без особенностей, ' +
+            'видимых повреждений нет',
+        )
 
 
 class Item7(ItemBase):
-    pass
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=2)
+        line = '7. Жалобы освидетельствуемого на своё состояние'
+        Label(self.frames[0], text=line).pack(side=LEFT)
+        entry = EntryBase(self.frames[1])
+        entry.pack(fill=X)
+        entry.insert(0, 'не предъявляет')
 
 
 class Item8(ItemBase):
-    pass
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=8)
+        line = '8. Изменения психической деятельности освидетельствуемого'
+        Label(self.frames[0], text=line).pack(side=LEFT)
+
+        Label(self.frames[1], text='состояние сознания').pack(side=LEFT)
+        entry = EntryBase(self.frames[1])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        for text in 'ясное', 'оглушение', 'сопор', 'кома':
+            LabelReplace(self.frames[1], text, bind=entry, place=LEFT)
+
+        default = 'без особенностей'
+        entry = EntryDisabled(self.frames[4], default=default)
+        entry.pack(fill=X)
+        Label(self.frames[2], text='поведение').pack(side=LEFT)
+        for text in (
+                'эйфоричен', 'агрессивен', 'возбуждён',
+                'раздражён', 'замкнут', 'напряжён'
+        ):
+            LabelAddSmart(self.frames[2], text, bind=(entry, default))
+        for text in (
+                'заторможен', 'сонлив', 'настроение '
+                                        'неустойчиво', 'суетлив', 'болтлив',
+        ):
+            LabelAddSmart(self.frames[3], text, bind=(entry, default))
+
+        line = 'ориентировка в месте, времени, ситуации'
+        Label(self.frames[5], text=line).pack(side=LEFT)
+        entry = EntryBase(self.frames[6])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
+            LabelReplace(self.frames[6], text, bind=entry, place=LEFT)
+
+        Label(self.frames[7], text='результат пробы Шульте').pack(side=LEFT)
+        EntryBase(self.frames[7], width=2).pack(side=LEFT)
+        Label(self.frames[7], text='сек.').pack(side=LEFT)
 
 
 class Item9(ItemBase):

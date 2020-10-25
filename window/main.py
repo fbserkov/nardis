@@ -1,4 +1,4 @@
-from label_frame import (
+from labelframe import (
     CommonFrame, ExaminationFrame, PassportFrame, SurveyFrame)
 from tkinter import Button, Frame, LEFT, RIGHT, X
 from window.window import Window

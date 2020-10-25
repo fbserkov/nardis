@@ -1,5 +1,5 @@
 from time import strftime
-from tkinter import END, Label, LEFT, RIGHT
+from tkinter import END, Label, LEFT, OptionMenu, RIGHT, StringVar, X
 
 
 class LabelBase(Label):
@@ -105,3 +105,13 @@ class LabelReplaceSmartDate(LabelReplaceSmart):
         if len(date.get()) < 10:
             date.delete(0, END)
             date.insert(0, strftime('%d.%m.%Y'))
+
+
+class OptionMenuSmart(OptionMenu):
+    def __init__(self, master, values, default=None):
+        string_var = StringVar(master)
+        if default:
+            string_var.set(default)
+        OptionMenu.__init__(self, master, string_var, *values)
+        self.config(font='-size 10', fg='#800000')
+        self.pack(fill=X)

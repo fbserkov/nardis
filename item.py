@@ -5,9 +5,8 @@ from widget.entry import (
     EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear)
 from widget.label import (
     LabelAdd, LabelAddSmart, LabelReplace,
-    LabelReplaceSmart, LabelReplaceSmartDate,
+    LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
 )
-from widget.option_menu import OptionMenuSmart
 
 
 class ItemBase:

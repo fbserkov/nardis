@@ -1,7 +1,7 @@
 import time
 from tkinter import Checkbutton, E, Frame, IntVar, Label, LEFT, RIGHT, W, X
 
-from widget.entry import (
+from widget import (
     EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear,
     LabelAdd, LabelAddSmart, LabelReplace, LabelReplaceSmart,
     LabelReplaceSmartDate, OptionMenuSmart,

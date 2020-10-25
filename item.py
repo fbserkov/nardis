@@ -40,11 +40,10 @@ class Item0(ItemBase):
     def __init__(self, master):
         ItemBase.__init__(self, master)
         self.frame.grid(row=0, column=0)
-        Label(self.frame, text='Акт №').grid(row=0, column=0, columnspan=2)
-        EntryDisabled(self.frame, width=4).grid(row=1, column=0)
-        Label(self.frame, text='/').grid(row=1, column=1)
-        EntryYear(
-            self.frame, default=time.strftime('%y')).grid(row=1, column=2)
+        Label(self.frame, text='Акт №').pack()
+        EntryDisabled(self.frame, width=4).pack(side=LEFT)
+        Label(self.frame, text='/').pack(side=LEFT)
+        EntryYear(self.frame, default=time.strftime('%y')).pack(side=LEFT)
 
 
 class Item1(ItemBase):

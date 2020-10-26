@@ -3,13 +3,19 @@ from tkinter import END, Entry, Label, LEFT, OptionMenu, RIGHT, StringVar, X
 
 
 class EntryBase(Entry):
-    def __init__(self, master, width=None):
+    def __init__(self, master, width=None, default=None):
         Entry.__init__(self, master, font='-size 10', fg='#800000')
+        self.default = default
         if width:
             self['width'] = width
 
+    def init(self):
+        self.delete(0, END)
+        if self.default:
+            self.insert(0, self.default)
 
-class EntryDisabled(EntryBase):
+
+class EntryDisabled(EntryBase):  # TODO default logic
     def __init__(self, master, width=None, default=None):
         EntryBase.__init__(self, master, width)
         if default:
@@ -19,8 +25,8 @@ class EntryDisabled(EntryBase):
 
 class EntrySmart(EntryBase):
     def __init__(self, master, width, default=None):
+        EntryBase.__init__(self, master, width=width, default=default)
         self.length, self.default, self.separator = width, default, '.'
-        EntryBase.__init__(self, master, width=self.length)
         self.bind('<KeyRelease>', self.key_release)
 
     def init(self):

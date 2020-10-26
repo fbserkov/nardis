@@ -59,12 +59,15 @@ class Item1(ItemBase):
         ).pack(side=LEFT)
         Label(self.frames[0], text='Дата рождения').pack(side=RIGHT)
         Label(self.frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
-        EntryBase(self.frames[1]).pack(side=LEFT, expand=True, fill=X)
+        entry = EntryBase(self.frames[1])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
         self.init_widgets.append(EntryDate(self.frames[1]))
 
         Label(self.frames[2], text='Адрес места жительства').pack(side=LEFT)
         entry = EntryBase(self.frames[4])
         entry.pack(fill=X)
+        self.init_widgets.append(entry)
         LabelAdd(self.frames[3], text='г. Комсомольск-на-Амуре', bind=entry)
         LabelAdd(self.frames[3], text='Комсомольский район', bind=entry)
         LabelAdd(self.frames[3], text='Хабаровский край', bind=entry)
@@ -73,6 +76,7 @@ class Item1(ItemBase):
         Label(self.frames[5], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[6])
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
         LabelReplace(self.frames[5], text='протокола', bind=entry)
         line = 'водительского удостоверения'
         LabelReplace(self.frames[6], text=line, bind=entry, place=LEFT)
@@ -86,13 +90,16 @@ class Item2(ItemBase):
         Label(self.frames[0], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[3])
         entry.pack(fill=X)
+        self.init_widgets.append(entry)
         line = 'протокол о направлении на медицинское освидетельствование'
         LabelReplace(self.frames[1], text=line, bind=entry)
         LabelReplace(self.frames[2], text='личное заявление', bind=entry)
         line = 'письменное направление работодателя'
         LabelReplace(self.frames[2], text=line, bind=entry)
         Label(self.frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
-        EntryBase(self.frames[4]).pack(side=LEFT, expand=True, fill=X)
+        entry = EntryBase(self.frames[4])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
 
 
 class Item3(ItemBase):
@@ -124,12 +131,11 @@ class Item6(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='6. Внешний вид освидетельствуемого').pack(
             side=LEFT)
-        entry = EntryBase(self.frames[1], width=69)
+        line = 'внешний вид и кожные покровы без особенностей, '\
+            'видимых повреждений нет'
+        entry = EntryBase(self.frames[1], width=69, default=line)
         entry.pack(fill=X)
-        entry.insert(
-            0, 'внешний вид и кожные покровы без особенностей, ' +
-            'видимых повреждений нет',
-        )
+        self.init_widgets.append(entry)
 
 
 class Item7(ItemBase):
@@ -137,9 +143,9 @@ class Item7(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        entry = EntryBase(self.frames[1])
+        entry = EntryBase(self.frames[1], default='не предъявляет')
         entry.pack(fill=X)
-        entry.insert(0, 'не предъявляет')
+        self.init_widgets.append(entry)
 
 
 class Item8(ItemBase):
@@ -151,6 +157,7 @@ class Item8(ItemBase):
         Label(self.frames[1], text='состояние сознания').pack(side=LEFT)
         entry = EntryBase(self.frames[1])
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
         for text in 'ясное', 'оглушение', 'сопор', 'кома':
             LabelReplace(self.frames[1], text, bind=entry, place=LEFT)
 
@@ -173,11 +180,14 @@ class Item8(ItemBase):
         Label(self.frames[5], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[6])
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
         for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
             LabelReplace(self.frames[6], text, bind=entry, place=LEFT)
 
         Label(self.frames[7], text='результат пробы Шульте').pack(side=LEFT)
-        EntryBase(self.frames[7], width=2).pack(side=LEFT)
+        entry = EntryBase(self.frames[7], width=2)
+        entry.pack(side=LEFT)
+        self.init_widgets.append(entry)
         Label(self.frames[7], text='сек.').pack(side=LEFT)
 
 
@@ -249,7 +259,9 @@ class Item10(ItemBase):
                 self.frames[7], text, bind=(entry, default), place=LEFT)
 
         Label(self.frames[8], text='результат пробы Ташена').pack(side=LEFT)
-        EntryBase(self.frames[8], width=2).pack(side=LEFT)
+        entry = EntryBase(self.frames[8], width=2)
+        entry.pack(side=LEFT)
+        self.init_widgets.append(entry)
         Label(self.frames[8], text='сек.').pack(side=LEFT)
 
 
@@ -261,9 +273,9 @@ class Item11(ItemBase):
         Label(self.frames[0], text=line).pack(side=LEFT)
         line = 'перенесённых травм (со слов освидетельствуемого)'
         Label(self.frames[1], text=line).pack(side=LEFT)
-        entry = EntryBase(self.frames[2])
+        entry = EntryBase(self.frames[2], default='нет')
         entry.pack(fill=X)
-        entry.insert(0, 'нет')
+        self.init_widgets.append(entry)
 
 
 class Item12(ItemBase):
@@ -279,6 +291,7 @@ class Item12(ItemBase):
         Label(self.frames[1], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(entry)
         LabelReplace(self.frames[2], text='отрицает', bind=entry, place=LEFT)
         LabelReplace(
             self.frames[2], text='употреблял спиртное', bind=entry, place=LEFT)
@@ -359,7 +372,9 @@ class Item14(ItemBase):
         entry.pack(side=RIGHT)
         self.init_widgets.append(entry)
         Label(self.frames[3], text='/').pack(side=RIGHT)
-        EntryBase(self.frames[3], width=5).pack(side=RIGHT)
+        entry = EntryBase(self.frames[3], width=5)
+        entry.pack(side=RIGHT)
+        self.init_widgets.append(entry)
         Label(self.frames[3], text='номер справки').pack(side=RIGHT)
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
@@ -380,9 +395,9 @@ class Item15(ItemBase):
     def __init__(self, master):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='15. Другие данные').pack(side=LEFT)
-        entry = EntryBase(self.frames[1])
+        entry = EntryBase(self.frames[1], default='нет')
         entry.pack(fill=X)
-        entry.insert(0, 'нет')
+        self.init_widgets.append(entry)
 
 
 class Item16(ItemBase):

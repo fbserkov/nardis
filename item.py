@@ -122,8 +122,9 @@ class Item5(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         doctors = database.get_doctors()
-        OptionMenuSmart(
-            self.frames[1], doctors, doctors[0] if len(doctors) == 1 else None)
+        default = doctors[0] if len(doctors) == 1 else None
+        self.init_widgets.append(
+            OptionMenuSmart(self.frames[1], doctors, default))
 
 
 class Item6(ItemBase):
@@ -319,7 +320,8 @@ class Item13(ItemBase):
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = database.get_technical_means()
-        OptionMenuSmart(self.frames[2], technical_means)
+        self.init_widgets.append(
+            OptionMenuSmart(self.frames[2], technical_means))
         Checkbutton(
             self.frames[3], variable=IntVar(self.frames[3]),
             onvalue=1, offvalue=0, text='фальсификация выдоха',
@@ -337,7 +339,8 @@ class Item13(ItemBase):
         EntryResult(frame)
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[5], text='техническое средство').pack(side=LEFT)
-        OptionMenuSmart(self.frames[5], technical_means)
+        self.init_widgets.append(
+            OptionMenuSmart(self.frames[5], technical_means))
 
 
 class Item14(ItemBase):
@@ -364,7 +367,8 @@ class Item14(ItemBase):
         )
         checkbutton.grid(row=1)
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
-        OptionMenuSmart(self.frames[2], database.get_methods())
+        self.init_widgets.append(
+            OptionMenuSmart(self.frames[2], database.get_methods()))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)

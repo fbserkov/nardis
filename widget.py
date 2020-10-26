@@ -24,8 +24,9 @@ class EntrySmart(EntryBase):
         self.bind('<KeyRelease>', self.key_release)
 
     def init(self):
+        self.delete(0, END)
         if self.default:
-            self.insert(0, self.default)  # TODO delete old line?
+            self.insert(0, strftime(self.default))
 
     def key_release(self, event):
         length = len(event.widget.get())

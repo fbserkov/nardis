@@ -24,6 +24,9 @@ class ItemBase:
                 ItemBase.frame.columnconfigure(3, weight=1)
             self.frame = Frame(ItemBase.frame)
 
+    def init(self):
+        pass
+
     @staticmethod
     def get_frames(master, length):
         frames = []

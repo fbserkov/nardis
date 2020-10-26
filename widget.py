@@ -15,17 +15,20 @@ class EntryBase(Entry):
             self.insert(0, self.default)
 
 
-class EntryDisabled(EntryBase):  # TODO default logic
+class EntryDisabled(EntryBase):
     def __init__(self, master, width=None, default=None):
-        EntryBase.__init__(self, master, width)
-        if default:
-            self.insert(0, default)
+        EntryBase.__init__(self, master, width, default)
         self.config(state='disabled', disabledforeground='#800000')
+
+    def init(self):
+        self.config(state='normal')
+        EntryBase.init(self)
+        self.config(state='disabled')
 
 
 class EntrySmart(EntryBase):
     def __init__(self, master, width, default=None):
-        EntryBase.__init__(self, master, width=width, default=default)
+        EntryBase.__init__(self, master, width, default)
         self.length, self.default, self.separator = width, default, '.'
         self.bind('<KeyRelease>', self.key_release)
 

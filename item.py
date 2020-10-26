@@ -1,5 +1,4 @@
 from tkinter import Checkbutton, E, Frame, IntVar, Label, LEFT, RIGHT, W, X
-
 from widget import (
     EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear,
     LabelAdd, LabelAddSmart, LabelReplace, LabelReplaceSmart,
@@ -43,7 +42,9 @@ class Item0(ItemBase):
         ItemBase.__init__(self, master)
         self.frame.grid(row=0, column=0)
         Label(self.frame, text='Акт №').pack()
-        EntryDisabled(self.frame, width=4).pack(side=LEFT)
+        entry = EntryDisabled(self.frame, width=4)
+        self.init_widgets.append(entry)
+        entry.pack(side=LEFT)
         Label(self.frame, text='/').pack(side=LEFT)
         entry = EntryYear(self.frame, '%y')
         entry.pack(side=LEFT)
@@ -164,6 +165,7 @@ class Item8(ItemBase):
 
         default = 'без особенностей'
         entry = EntryDisabled(self.frames[4], default=default)
+        self.init_widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[2], text='поведение').pack(side=LEFT)
         for text in (
@@ -206,8 +208,10 @@ class Item9(ItemBase):
         Label(self.frames[1], text='нистагм').grid(row=3, column=0, sticky=W)
         entries, defaults = [], ('в норме', 'живая', 'обычные', 'нет')
         for i, default in enumerate(defaults):
-            entries.append(EntryDisabled(self.frames[1], default=default))
-            entries[i].grid(row=i, column=1, sticky=W + E)
+            entry = EntryDisabled(self.frames[1], default=default)
+            self.init_widgets.append(entry)
+            entry.grid(row=i, column=1, sticky=W + E)
+            entries.append(entry)
         frame = Frame(self.frames[1])
         frame.grid(row=0, column=2, sticky=E)
         LabelReplaceSmart(
@@ -229,6 +233,7 @@ class Item10(ItemBase):
 
         default = 'речевая способность сохранена'
         entry = EntryDisabled(self.frames[2], default=default)
+        self.init_widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[1], text='речь').pack(side=LEFT)
         for text in \
@@ -237,6 +242,7 @@ class Item10(ItemBase):
 
         default = 'уверенная'
         entry = EntryDisabled(self.frames[4], default=default)
+        self.init_widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
@@ -246,6 +252,7 @@ class Item10(ItemBase):
             side=LEFT)
         default = 'не проводилось'
         entry = EntryDisabled(self.frames[5], default=default)
+        self.init_widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'устойчив', 'неустойчив', 'падает':
             LabelReplaceSmart(
@@ -254,6 +261,7 @@ class Item10(ItemBase):
         line = 'точность выполнения координационных проб'
         Label(self.frames[6], text=line).pack(side=LEFT)
         entry = EntryDisabled(self.frames[7], default=default)
+        self.init_widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
             LabelReplaceSmart(
@@ -351,6 +359,7 @@ class Item14(ItemBase):
         self.init_widgets.append(EntryTime(self.frames[0]))
         default = 'моча'
         entry = EntryDisabled(self.frames[0], width=5, default=default)
+        self.init_widgets.append(entry)
         LabelReplaceSmart(self.frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(self.frames[0], text='среда').pack(side=RIGHT)
@@ -390,6 +399,7 @@ class Item14(ItemBase):
             frame.grid(row=row, column=column, sticky=W + E)
             Label(frame, text=chemicals[i]).pack(side=LEFT)
             entry = EntryDisabled(frame, width=4)
+            self.init_widgets.append(entry)
             LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
             LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
             entry.pack(side=RIGHT)
@@ -420,6 +430,7 @@ class Item17(ItemBase):
         ItemBase.__init__(self, master, frames_number=3)
         Label(self.frames[0], text='17. Заключение').pack(side=LEFT)
         entry = EntryDisabled(self.frames[2])
+        self.init_widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         Label(self.frames[2], text='Дата').pack(side=LEFT)
         date = EntryDate(self.frames[2])

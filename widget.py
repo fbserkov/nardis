@@ -19,11 +19,13 @@ class EntryDisabled(EntryBase):
 
 class EntrySmart(EntryBase):
     def __init__(self, master, width, default=None):
-        self.length, self.separator = width, '.'
+        self.length, self.default, self.separator = width, default, '.'
         EntryBase.__init__(self, master, width=self.length)
-        if default:
-            self.insert(0, default)
         self.bind('<KeyRelease>', self.key_release)
+
+    def init(self):
+        if self.default:
+            self.insert(0, self.default)  # TODO delete old line?
 
     def key_release(self, event):
         length = len(event.widget.get())

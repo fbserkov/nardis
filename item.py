@@ -41,7 +41,11 @@ class Item0(ItemBase):
         Label(self.frame, text='Акт №').pack()
         EntryDisabled(self.frame, width=4).pack(side=LEFT)
         Label(self.frame, text='/').pack(side=LEFT)
-        EntryYear(self.frame, default=time.strftime('%y')).pack(side=LEFT)
+        self.entry = EntryYear(self.frame, default=time.strftime('%y'))
+        self.entry.pack(side=LEFT)
+
+    def init(self):
+        self.entry.init()
 
 
 class Item1(ItemBase):
@@ -349,7 +353,8 @@ class Item14(ItemBase):
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
-        EntryYear(self.frames[3], default=time.strftime('%y')).pack(side=RIGHT)
+        self.entry = EntryYear(self.frames[3], default=time.strftime('%y'))
+        self.entry.pack(side=RIGHT)
         Label(self.frames[3], text=time.strftime('/')).pack(side=RIGHT)
         EntryBase(self.frames[3], width=5).pack(side=RIGHT)
         Label(self.frames[3], text='номер справки').pack(side=RIGHT)
@@ -366,6 +371,9 @@ class Item14(ItemBase):
             LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
             LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
             entry.pack(side=RIGHT)
+
+    def init(self):
+        self.entry.init()
 
 
 class Item15(ItemBase):

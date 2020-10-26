@@ -26,7 +26,7 @@ class ExaminationFrame(LabelFrame):
         self.item_17 = create_item(self, 17)
 
     def init(self):
-        pass
+        self.item_14.init()
 
 
 class PassportFrame(LabelFrame):
@@ -41,7 +41,7 @@ class PassportFrame(LabelFrame):
         self.item_5 = create_item(self, 5, database)
 
     def init(self):
-        pass
+        self.item_0.init()
 
 
 class SurveyFrame(LabelFrame):

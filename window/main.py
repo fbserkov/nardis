@@ -1,5 +1,5 @@
 from labelframe import (
-    CommonFrame, ExaminationFrame, PassportFrame, SurveyFrame)
+    CommonPart, ExaminationPart, PassportPart, SurveyPart)
 from tkinter import Button, Frame, LEFT, RIGHT, X
 from window.window import Window
 
@@ -26,8 +26,8 @@ class Main(Window):
                 self.buttons.index(e.widget)))
 
         self.label_frames = (
-            PassportFrame(database), CommonFrame(),
-            SurveyFrame(), ExaminationFrame(database),
+            PassportPart(database), CommonPart(),
+            SurveyPart(), ExaminationPart(database),
         )
         self.show_label_frame(0)
         self.root.mainloop()

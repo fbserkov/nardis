@@ -1,10 +1,10 @@
 from tkinter import Button, Entry, OptionMenu, StringVar, X
-from window.window import Window
+from window.window import WindowBase
 
 
-class Entrance(Window):
+class Entrance(WindowBase):
     def __init__(self, database):
-        Window.__init__(self)
+        WindowBase.__init__(self)
         self.root.title('Введите пароль')
 
         years = database.get_years()

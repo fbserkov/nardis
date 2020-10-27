@@ -1,12 +1,12 @@
 from labelframe import (
     CommonPart, ExaminationPart, PassportPart, SurveyPart)
 from tkinter import Button, Frame, LEFT, X
-from window.window import Window
+from window.window import WindowBase
 
 
-class Main(Window):
+class Main(WindowBase):
     def __init__(self, database):
-        Window.__init__(self)
+        WindowBase.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.centering(width=604, height=643)
         frame = Frame()

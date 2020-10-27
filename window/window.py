@@ -3,7 +3,7 @@ from tkinter import Tk
 from tkinter.messagebox import showinfo
 
 
-class Window:
+class WindowBase:
     def __init__(self):
         self.root = Tk()
         if not sys.platform == 'linux':

@@ -324,7 +324,7 @@ class Item13(ItemBase):
         frame = Frame(self.frames[1])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        EntryResult(frame)
+        self.init_widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = database.get_technical_means()
@@ -344,7 +344,7 @@ class Item13(ItemBase):
         frame = Frame(self.frames[4])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        EntryResult(frame)
+        self.init_widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[5], text='техническое средство').pack(side=LEFT)
         self.init_widgets.append(

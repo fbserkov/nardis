@@ -119,10 +119,10 @@ class Item4(ItemBase):
 
 
 class Item5(ItemBase):
-    def __init__(self, master, database):
+    def __init__(self, master, data):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
-        doctors = database.get_doctors()
+        doctors = data.get_doctors()
         default = doctors[0] if len(doctors) == 1 else None
         self.init_widgets.append(
             OptionMenuSmart(self.frames[1], doctors, default))
@@ -307,7 +307,7 @@ class Item12(ItemBase):
 
 
 class Item13(ItemBase):
-    def __init__(self, master, database):
+    def __init__(self, master, data):
         ItemBase.__init__(self, master, frames_number=6)
         for i in 1, 4:
             self.frames[i].columnconfigure(1, weight=1)
@@ -327,7 +327,7 @@ class Item13(ItemBase):
         self.init_widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
-        technical_means = database.get_technical_means()
+        technical_means = data.get_technical_means()
         self.init_widgets.append(
             OptionMenuSmart(self.frames[2], technical_means))
         checkbutton = CheckbuttonSmart(
@@ -352,7 +352,7 @@ class Item13(ItemBase):
 
 
 class Item14(ItemBase):
-    def __init__(self, master, database):
+    def __init__(self, master, data):
         ItemBase.__init__(self, master, frames_number=5)
         line = '14. Время отбора биологического объекта'
         Label(self.frames[0], text=line).pack(side=LEFT)
@@ -375,7 +375,7 @@ class Item14(ItemBase):
         checkbutton.grid(row=1)
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.init_widgets.append(
-            OptionMenuSmart(self.frames[2], database.get_methods()))
+            OptionMenuSmart(self.frames[2], data.get_methods()))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
@@ -390,7 +390,7 @@ class Item14(ItemBase):
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
         self.frames[4].columnconfigure(4, weight=1)
-        chemicals = database.get_chemicals()
+        chemicals = data.get_chemicals()
         for i in range(11):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(self.frames[4])

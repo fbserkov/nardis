@@ -60,7 +60,7 @@ class WindowAuth(WindowBase):
 
 
 class WindowMain(WindowBase):
-    def __init__(self, database):
+    def __init__(self, data):
         WindowBase.__init__(self)
         self.root.title('Наркологическая экспертиза')
         self.centering(width=604, height=643)
@@ -84,8 +84,8 @@ class WindowMain(WindowBase):
                 self.buttons.index(e.widget)))
 
         self.label_frames = (
-            PassportPart(database), CommonPart(),
-            SurveyPart(), ExaminationPart(database),
+            PassportPart(data), CommonPart(),
+            SurveyPart(), ExaminationPart(data),
         )
         self.show_label_frame(0)
         self.root.mainloop()

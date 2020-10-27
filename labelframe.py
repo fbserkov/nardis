@@ -20,21 +20,21 @@ class CommonPart(PartBase):
 
 
 class ExaminationPart(PartBase):
-    def __init__(self, database):
+    def __init__(self, data):
         PartBase.__init__(self, 'Данные освидетельствования')
         self.items = (
-            create_item(self, 13, database), create_item(self, 14, database),
+            create_item(self, 13, data), create_item(self, 14, data),
             create_item(self, 15), create_item(self, 17),
         )
 
 
 class PassportPart(PartBase):
-    def __init__(self, database):
+    def __init__(self, data):
         PartBase.__init__(self, 'Паспортная часть')
         self.items = (
             create_item(self, 0), create_item(self, 4), create_item(self, 16),
             create_item(self, 1), create_item(self, 2),
-            create_item(self, 5, database),
+            create_item(self, 5, data),
         )
 
 

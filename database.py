@@ -35,15 +35,8 @@ class Database:
         return False
 
     def get_doctors(self):
-        doctors = None
-        if self.current_user == 'admin':
-            doctors = list(self.settings['Врачи'].values())
-            doctors.remove('admin')
-        else:
-            for line in self.settings['Врачи'].values():
-                if line.find(self.current_user) != -1:
-                    doctors = [line]
-                    break
+        doctors = list(self.settings['Врачи'].values())
+        doctors.remove('admin')
         return doctors
 
     def get_technical_means(self):

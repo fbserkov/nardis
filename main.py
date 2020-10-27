@@ -1,7 +1,7 @@
 import os
 
 from database import Database
-from window import WindowAuth, WindowBase, WindowMain
+from window import WindowBase, WindowMain
 
 
 class App:
@@ -14,7 +14,7 @@ class App:
         self.data = self.load_data()
         if self.file_not_found_error:
             return
-        self.run()
+        WindowMain(self.data)
 
     def check_lock(self):
         try:
@@ -37,11 +37,6 @@ class App:
                 alone=True,
             )
             self.file_not_found_error = True
-
-    def run(self):
-        WindowAuth(self.data)
-        if self.data.current_user:
-            WindowMain(self.data)
 
     def __del__(self):
         if self.file_exists_error:

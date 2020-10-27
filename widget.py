@@ -1,5 +1,20 @@
 from time import strftime
-from tkinter import END, Entry, Label, LEFT, OptionMenu, RIGHT, StringVar, X
+from tkinter import (
+    Checkbutton, END, Entry, IntVar, Label,
+    LEFT, OptionMenu, RIGHT, StringVar, X,
+)
+
+
+class CheckbuttonSmart(Checkbutton):
+    def __init__(self, master, text):
+        self.variable = IntVar(master)
+        Checkbutton.__init__(
+            self, master, text=text,
+            variable=self.variable, onvalue=1, offvalue=0,
+        )
+
+    def init(self):
+        self.variable.set(0)
 
 
 class EntryBase(Entry):

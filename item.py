@@ -1,8 +1,8 @@
-from tkinter import Checkbutton, E, Frame, IntVar, Label, LEFT, RIGHT, W, X
+from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 from widget import (
-    EntryBase, EntryDate, EntryDisabled, EntryResult, EntryTime, EntryYear,
-    LabelAdd, LabelAddSmart, LabelReplace, LabelReplaceSmart,
-    LabelReplaceSmartDate, OptionMenuSmart,
+    CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
+    EntryTime, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
+    LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
 )
 
 
@@ -330,10 +330,10 @@ class Item13(ItemBase):
         technical_means = database.get_technical_means()
         self.init_widgets.append(
             OptionMenuSmart(self.frames[2], technical_means))
-        Checkbutton(
-            self.frames[3], variable=IntVar(self.frames[3]),
-            onvalue=1, offvalue=0, text='фальсификация выдоха',
-        ).pack(side=RIGHT)
+        checkbutton = CheckbuttonSmart(
+            self.frames[3], text='фальсификация выдоха')
+        self.init_widgets.append(checkbutton)
+        checkbutton.pack(side=RIGHT)
 
         Label(self.frames[4], text='13.2. Второе исследование').grid(
             row=0, column=0)
@@ -365,15 +365,13 @@ class Item14(ItemBase):
         Label(self.frames[0], text='среда').pack(side=RIGHT)
         frame = Frame(self.frames[1])
         frame.pack(side=RIGHT)
-        checkbutton = Checkbutton(
-            frame, variable=IntVar(frame), onvalue=1, offvalue=0,
-            text='отказ от сдачи пробы биологического объекта (мочи)',
-        )
+        checkbutton = CheckbuttonSmart(
+            frame, text='отказ от сдачи пробы биологического объекта (мочи)')
+        self.init_widgets.append(checkbutton)
         checkbutton.grid(row=0, sticky=W)
-        checkbutton = Checkbutton(
-            frame, variable=IntVar(frame), onvalue=1, offvalue=0,
-            text='фальсификация пробы биологического объекта (мочи)',
-        )
+        checkbutton = CheckbuttonSmart(
+            frame, text='фальсификация пробы биологического объекта (мочи)')
+        self.init_widgets.append(checkbutton)
         checkbutton.grid(row=1)
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.init_widgets.append(

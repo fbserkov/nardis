@@ -1,6 +1,6 @@
 from labelframe import (
     CommonPart, ExaminationPart, PassportPart, SurveyPart)
-from tkinter import Button, Frame, LEFT, RIGHT, X
+from tkinter import Button, Frame, LEFT, X
 from window.window import Window
 
 
@@ -8,14 +8,17 @@ class Main(Window):
     def __init__(self, database):
         Window.__init__(self)
         self.root.title('Наркологическая экспертиза')
-        self.centering(width=604, height=612)
+        self.centering(width=604, height=643)
         frame = Frame()
         frame.pack(fill=X)
 
+        Button(frame, text='Вход').pack(side=LEFT, expand=True, fill=X)
         button = Button(frame, text='Новый')
-        button.pack(side=RIGHT, expand=True, fill=X)
+        button.pack(side=LEFT, expand=True, fill=X)
         button.bind('<Button-1>', lambda e: self.init())
 
+        frame = Frame()
+        frame.pack(fill=X)
         self.buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
             Button(frame, text='III'), Button(frame, text='IV')

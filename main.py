@@ -1,8 +1,6 @@
 from database import Database
 import os
-from window.entrance import WindowAuth
-from window.main import WindowMain
-from window.window import WindowBase
+from window.window import WindowAuth, WindowBase, WindowMain
 
 try:
     open('file.lock', 'x').close()

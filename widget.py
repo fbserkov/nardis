@@ -45,6 +45,7 @@ class EntrySmart(EntryBase):
     def __init__(self, master, width, default=None):
         EntryBase.__init__(self, master, width, default)
         self.length, self.default, self.separator = width, default, '.'
+        self.condition = lambda length: False
         self.bind('<KeyRelease>', self.key_release)
 
     def init(self):
@@ -58,10 +59,6 @@ class EntrySmart(EntryBase):
             event.widget.insert(END, self.separator)
         if length > self.length:
             event.widget.delete(self.length, END)
-
-    @staticmethod
-    def condition(_):
-        assert False, 'method must be overridden'
 
 
 class EntryDate(EntrySmart):
@@ -86,10 +83,14 @@ class EntryTime(EntrySmart):
         self.pack(side=LEFT)
 
 
+class EntryTimer(EntrySmart):
+    def __init__(self, master):
+        EntrySmart.__init__(self, master, width=2)
+
+
 class EntryYear(EntrySmart):
     def __init__(self, master, default=None):
         EntrySmart.__init__(self, master, width=2, default=default)
-        self.condition = lambda length: False
 
 
 class LabelBase(Label):

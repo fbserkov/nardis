@@ -1,7 +1,7 @@
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
-    EntryTime, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
+    EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
     LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
 )
 
@@ -188,9 +188,9 @@ class Item8(ItemBase):
             LabelReplace(self.frames[6], text, bind=entry, place=LEFT)
 
         Label(self.frames[7], text='результат пробы Шульте').pack(side=LEFT)
-        entry = EntryBase(self.frames[7], width=2)
-        entry.pack(side=LEFT)
+        entry = EntryTimer(self.frames[7])
         self.init_widgets.append(entry)
+        entry.pack(side=LEFT)
         Label(self.frames[7], text='сек.').pack(side=LEFT)
 
 
@@ -268,9 +268,9 @@ class Item10(ItemBase):
                 self.frames[7], text, bind=(entry, default), place=LEFT)
 
         Label(self.frames[8], text='результат пробы Ташена').pack(side=LEFT)
-        entry = EntryBase(self.frames[8], width=2)
-        entry.pack(side=LEFT)
+        entry = EntryTimer(self.frames[8])
         self.init_widgets.append(entry)
+        entry.pack(side=LEFT)
         Label(self.frames[8], text='сек.').pack(side=LEFT)
 
 

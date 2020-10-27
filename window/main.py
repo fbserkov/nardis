@@ -4,7 +4,7 @@ from tkinter import Button, Frame, LEFT, X
 from window.window import WindowBase
 
 
-class Main(WindowBase):
+class WindowMain(WindowBase):
     def __init__(self, database):
         WindowBase.__init__(self)
         self.root.title('Наркологическая экспертиза')

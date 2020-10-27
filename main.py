@@ -1,15 +1,15 @@
 from database import Database
 import os
-from window.entrance import Entrance
-from window.main import Main
+from window.entrance import WindowAuth
+from window.main import WindowMain
 from window.window import WindowBase
 
 try:
     open('file.lock', 'x').close()
     database = Database('nardis.db')
-    Entrance(database)
+    WindowAuth(database)
     if database.current_user:
-        Main(database)
+        WindowMain(database)
     os.remove('file.lock')
 except FileExistsError:
     WindowBase().show_popup(

@@ -2,7 +2,7 @@ from tkinter import Button, Entry, OptionMenu, StringVar, X
 from window.window import WindowBase
 
 
-class Entrance(WindowBase):
+class WindowAuth(WindowBase):
     def __init__(self, database):
         WindowBase.__init__(self)
         self.root.title('Введите пароль')

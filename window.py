@@ -1,82 +1,51 @@
 import sys
-
-from tkinter import Button, Entry, Frame, LEFT, OptionMenu, StringVar, Tk, X
-from tkinter.messagebox import showinfo
-
+from tkinter import Button, Entry, Frame, LEFT, Toplevel, X
 from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
 
 
-class WindowBase:
-    def __init__(self):
-        self.root = Tk()
-        if not sys.platform == 'linux':
-            self.root.iconbitmap('nardis.ico')
+class WindowAuth(Toplevel):
+    def __init__(self, root, data):
+        Toplevel.__init__(self)
+        self.title('Введите пароль')
+        self.data, self.status = data, False
 
-    def centering(self, width=0, height=0):
-        if not (width and height):
-            self.root.update()
-            width = self.root.winfo_width()
-            height = self.root.winfo_height()
-            print('{}x{}'.format(width, height))
-        if sys.platform == 'linux':
-            frame, title = 0, 37  # Ubuntu
+        self.entry = Entry(self, font='-size 14', show='●')
+        self.entry.bind('<Key-Return>', self.auth)
+        self.entry.pack()
+        self.entry.focus()
+        self.button = Button(
+            self, font='-size 10', text='OK', command=self.auth)
+        self.button.pack(fill=X)
+
+        self.transient(root)
+        self.wait_visibility()
+        self.grab_set()
+        self.wait_window()
+
+    def auth(self):
+        if self.data.check_password(self.entry.get()):
+            self.status = True
+            self.destroy()
         else:
-            frame, title = 3, 26  # Windows XP
-        left = (self.root.winfo_screenwidth() - (width + 2 * frame)) / 2
-        top = (
-            self.root.winfo_screenheight() - (height + 2 * frame + title)) / 2
-        self.root.geometry('%ix%i+%i+%i' % (width, height, left, top))
-        self.root.resizable(False, False)
-
-    def show_popup(self, title, message, alone=False):
-        if alone:
-            self.root.withdraw()
-        showinfo(title, message)
+            self.button['text'] = 'Неверный пароль'
 
 
-class WindowAuth(WindowBase):  # TODO modal
-    def __init__(self, data):
-        WindowBase.__init__(self)
-        self.root.title('Введите пароль')
-
-        years = data.get_years()
-        sv = StringVar(self.root)
-        sv.set(years[-1])
-        om = OptionMenu(self.root, sv, *years)
-        om.config(font='-size 10', fg='#800000')
-        om.pack(fill=X)
-
-        def cb():
-            if data.authentication(e.get(), int(sv.get())):
-                self.root.destroy()
-                self.root.quit()
-        e = Entry(self.root, font='-size 14', show='●')
-        e.bind('<Key-Return>', lambda _: cb())
-        e.pack()
-        e.focus()
-
-        Button(self.root, font='-size 10', text='OK', command=cb).pack(fill=X)
-        self.centering(width=200, height=88)
-        self.root.mainloop()
-
-
-class WindowMain(WindowBase):
-    def __init__(self, data):
-        WindowBase.__init__(self)
-        self.root.title('Наркологическая экспертиза')
-        self.centering(width=604, height=643)
-        self.data, self.index = data, 0
+class WindowMain:
+    def __init__(self, root, data):
+        self.root, self.data = root, data
+        root.title('Наркологическая экспертиза')
+        root.geometry(f'610x650')
+        root.resizable(width=False, height=False)
+        if not sys.platform == 'linux':
+            root.iconbitmap('nardis.ico')
+        self.index, self.auth_status = 0, False
 
         frame = Frame()
         frame.pack(fill=X)
-        self.auth_button = Button(frame, text='Вход')
+        self.auth_button = Button(frame, text='Вход', command=self.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
-        self.auth_button.bind('<Button-1>', lambda e: self.login())
-
-        button = Button(frame, text='Новый', state='disabled')
-        button.pack(side=LEFT, expand=True, fill=X)
-        # button.bind('<Button-1>', lambda e: self.init())
-        # button.unbind('<Button-1>')
+        self.new_button = Button(frame, text='Новый', state='disabled')
+        self.new_button.pack(side=LEFT, expand=True, fill=X)
 
         self.frame = Frame()
         self.buttons = (
@@ -92,26 +61,30 @@ class WindowMain(WindowBase):
             PassportPart(self.data), CommonPart(),
             SurveyPart(), ExaminationPart(self.data),
         )
-        self.root.mainloop()
+        root.mainloop()
+
+    def auth(self):
+        if self.auth_status:
+            self.auth_status = False
+            self.new_button['state'] = 'disabled'
+            self.new_button.unbind('<Button-1>')
+            self.frame.forget()
+            self.show_label_frame(0)
+            self.auth_button['text'] = 'Вход'
+        else:
+            if not WindowAuth(self.root, self.data).status:
+                return
+            self.auth_status = True
+            self.new_button['state'] = 'normal'
+            self.new_button.bind('<Button-1>', lambda _: self.init())
+            self.init()
+            self.frame.pack(fill=X)
+            self.show_label_frame(0)
+            self.auth_button['text'] = 'Выход'
 
     def init(self):
         for label_frame in self.label_frames:
             label_frame.init()
-
-    def login(self):
-        WindowAuth(self.data)
-        # TODO if self.data.current_user:
-
-        self.frame.pack(fill=X)
-        self.show_label_frame(0)
-        self.auth_button['text'] = 'Выход'
-        self.auth_button.bind('<Button-1>', lambda e: self.logout())
-
-    def logout(self):
-        self.frame.forget()
-        self.show_label_frame(0)
-        self.auth_button['text'] = 'Вход'
-        self.auth_button.bind('<Button-1>', lambda e: self.login())
 
     def show_label_frame(self, index):
         if self.index == index:

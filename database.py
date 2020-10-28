@@ -26,11 +26,10 @@ class Database:
             years.append(current_year)
         return years
 
-    def authentication(self, password, current_year):
+    def check_password(self, password):
         if password in self.settings['Врачи'].keys():
             self.current_user = (
                 self.settings['Врачи'][password].partition(',')[0])
-            self.current_year = current_year
             return True
         return False
 

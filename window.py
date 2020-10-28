@@ -66,21 +66,23 @@ class WindowMain:
     def auth(self):
         if self.auth_status:
             self.auth_status = False
+            self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
             self.new_button.unbind('<Button-1>')
             self.frame.forget()
             self.show_label_frame(0)
-            self.auth_button['text'] = 'Вход'
+
         else:
             if not WindowAuth(self.root, self.data).status:
                 return
             self.auth_status = True
+            self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
             self.new_button.bind('<Button-1>', lambda _: self.init())
-            self.init()
             self.frame.pack(fill=X)
-            self.show_label_frame(0)
-            self.auth_button['text'] = 'Выход'
+            self.show_label_frame(1)
+            self.init()
+            self.label_frames[0].update_user()
 
     def init(self):
         for label_frame in self.label_frames:

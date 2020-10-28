@@ -29,7 +29,7 @@ class Database:
     def check_password(self, password):
         if password in self.settings['Врачи'].keys():
             self.current_user = (
-                self.settings['Врачи'][password].partition(',')[0])
+                self.settings['Врачи'][password])
             return True
         return False
 

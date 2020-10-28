@@ -37,6 +37,9 @@ class PassportPart(PartBase):
             create_item(self, 5, data),
         )
 
+    def update_user(self):
+        self.items[-1].update_user()
+
 
 class SurveyPart(PartBase):
     def __init__(self):

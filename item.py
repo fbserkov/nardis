@@ -120,12 +120,21 @@ class Item4(ItemBase):
 
 class Item5(ItemBase):
     def __init__(self, master, data):
+        self.data = data
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
-        doctors = data.get_doctors()
-        default = doctors[0] if len(doctors) == 1 else None
-        self.init_widgets.append(
-            OptionMenuSmart(self.frames[1], doctors, default))
+        self.option_menu = OptionMenuSmart(
+            self.frames[1], self.data.get_doctors())
+        self.init_widgets.append(self.option_menu)
+
+    def update_user(self):
+        user = self.data.current_user
+        if user == 'admin':
+            self.option_menu.string_var.set('')
+            self.option_menu['state'] = 'normal'
+        else:
+            self.option_menu.string_var.set(user)
+            self.option_menu['state'] = 'disabled'
 
 
 class Item6(ItemBase):

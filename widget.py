@@ -199,14 +199,9 @@ class LabelReplaceSmartDate(LabelReplaceSmart):
 
 
 class OptionMenuSmart(OptionMenu):
-    def __init__(self, master, values, default=None):
-        self.string_var, self.default = StringVar(master), default
+    def __init__(self, master, values):
+        self.string_var, self.init = StringVar(master), lambda: None
         OptionMenu.__init__(self, master, self.string_var, *values)
-        self.config(font='-size 10', fg='#800000')
+        self.config(
+            font='-size 10', fg='#800000', disabledforeground='#800000')
         self.pack(fill=X)
-
-    def init(self):
-        if self.default:
-            self.string_var.set(self.default)
-        else:
-            self.string_var.set('')

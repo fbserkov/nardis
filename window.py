@@ -10,7 +10,7 @@ class WindowAuth(Toplevel):
         self.data, self.status = data, False
 
         self.entry = Entry(self, font='-size 14', show='●')
-        self.entry.bind('<Key-Return>', self.auth)
+        self.entry.bind('<Key-Return>', lambda _: self.auth())
         self.entry.pack()
         self.entry.focus()
         self.button = Button(

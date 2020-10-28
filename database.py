@@ -19,13 +19,6 @@ class Database:
         with open(self.filename, 'wb') as file:
             pickle.dump((self.settings, self.folders), file)
 
-    def get_years(self):
-        years = sorted(self.folders.keys())
-        current_year = int(time.strftime('%Y'))
-        if current_year not in years:
-            years.append(current_year)
-        return years
-
     def check_password(self, password):
         if password in self.settings['Врачи'].keys():
             self.current_user = (
@@ -33,16 +26,26 @@ class Database:
             return True
         return False
 
+    def get_chemicals(self):
+        return self.settings['Вещества']
+
     def get_doctors(self):
         doctors = list(self.settings['Врачи'].values())
         doctors.remove('admin')
         return doctors
 
-    def get_technical_means(self):
-        return self.settings['Технические средства']
+    def get_index(self):
+        return self.settings['Номер следующего акта']
 
     def get_methods(self):
         return self.settings['Методы']
 
-    def get_chemicals(self):
-        return self.settings['Вещества']
+    def get_technical_means(self):
+        return self.settings['Технические средства']
+
+    def get_years(self):
+        years = sorted(self.folders.keys())
+        current_year = int(time.strftime('%Y'))
+        if current_year not in years:
+            years.append(current_year)
+        return years

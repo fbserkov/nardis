@@ -32,12 +32,13 @@ class PassportPart(PartBase):
     def __init__(self, data):
         PartBase.__init__(self, 'Паспортная часть')
         self.items = (
-            create_item(self, 0), create_item(self, 4), create_item(self, 16),
-            create_item(self, 1), create_item(self, 2),
-            create_item(self, 5, data),
+            create_item(self, 0, data), create_item(self, 4),
+            create_item(self, 16), create_item(self, 1),
+            create_item(self, 2), create_item(self, 5, data),
         )
 
-    def update_user(self):
+    def update(self):
+        self.items[0].update_index()
         self.items[-1].update_user()
 
 

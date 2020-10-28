@@ -44,7 +44,8 @@ class WindowMain:
         frame.pack(fill=X)
         self.auth_button = Button(frame, text='Вход', command=self.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
-        self.new_button = Button(frame, text='Новый', state='disabled')
+        self.new_button = Button(
+            frame, text='Новый', command=self.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
 
         self.frame = Frame()
@@ -68,7 +69,6 @@ class WindowMain:
             self.auth_status = False
             self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
-            self.new_button.unbind('<Button-1>')
             self.frame.forget()
             self.show_label_frame(0)
 
@@ -78,15 +78,14 @@ class WindowMain:
             self.auth_status = True
             self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
-            self.new_button.bind('<Button-1>', lambda _: self.init())
             self.frame.pack(fill=X)
             self.show_label_frame(1)
             self.init()
-            self.label_frames[0].update_user()
 
     def init(self):
         for label_frame in self.label_frames:
             label_frame.init()
+        self.label_frames[0].update()
 
     def show_label_frame(self, index):
         if self.index == index:

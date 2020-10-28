@@ -6,6 +6,11 @@ from widget import (
 )
 
 
+def create_item(master, num, data=None):
+    class_ = globals()[f'Item{num}']
+    return class_(master, data) if data else class_(master)
+
+
 class ItemBase:
     frame = None
 
@@ -38,17 +43,23 @@ class ItemBase:
 
 
 class Item0(ItemBase):
-    def __init__(self, master):
+    def __init__(self, master, data):
+        self.data = data
         ItemBase.__init__(self, master)
         self.frame.grid(row=0, column=0)
         Label(self.frame, text='Акт №').pack()
-        entry = EntryDisabled(self.frame, width=4)
-        self.init_widgets.append(entry)
-        entry.pack(side=LEFT)
+        self.entry = EntryDisabled(self.frame, width=4)
+        self.init_widgets.append(self.entry)
+        self.entry.pack(side=LEFT)
         Label(self.frame, text='/').pack(side=LEFT)
         entry = EntryYear(self.frame, '%y')
         entry.pack(side=LEFT)
         self.init_widgets.append(entry)
+
+    def update_index(self):
+        self.entry.config(state='normal')
+        self.entry.insert(0, self.data.get_index())
+        self.entry.config(state='disabled')
 
 
 class Item1(ItemBase):
@@ -448,8 +459,3 @@ class Item17(ItemBase):
                 (1, 'установлено состояние опьянения'),
         ):
             LabelReplaceSmartDate(self.frames[i], text, bind=(entry, '', date))
-
-
-def create_item(master, num, db=None):
-    class_ = globals()[f'Item{num}']
-    return class_(master, db) if db else class_(master)

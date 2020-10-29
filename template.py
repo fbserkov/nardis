@@ -1,62 +1,67 @@
-# Добавление стилей абзаца
-# Регистрация русифицированных шрифтов
-# Определение функций форматирования
-# Сохранение акта в формате PDF
-
-from reportlab.lib.enums  import TA_CENTER
+from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units  import cm
-from reportlab.pdfbase    import ttfonts, pdfmetrics
-from reportlab.platypus   import (Paragraph, SimpleDocTemplate,
-                                  Spacer, Table, TableStyle)
+from reportlab.lib.units import cm
+from reportlab.pdfbase import ttfonts, pdfmetrics
+from reportlab.platypus import (
+    Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
 
-# Добавление стилей абзаца
 styles = getSampleStyleSheet()
-styles.add(ParagraphStyle('Normal+',    # нормальный
-                          leading=14))
-styles.add(ParagraphStyle('Center',     # центрированный
-                          leading=14, alignment=TA_CENTER))
-styles.add(ParagraphStyle('Indent',     # с отступом
-                          leading=14, leftIndent=12.5*cm))
+styles.add(ParagraphStyle('Normal+', leading=14))
+styles.add(ParagraphStyle('Center', leading=14, alignment=TA_CENTER))
+styles.add(ParagraphStyle('Indent', leading=14, leftIndent=12.5*cm))
 
-# Регистрация русифицированных шрифтов
 pdfmetrics.registerFont(ttfonts.TTFont('arial',   'ArialMT.ttf'))
 pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
 
-# Определение функций форматирования
-def tbl(line1, line2):                  # таблица
+story, signature = [], None
+
+
+def tbl(line1, line2):
     temp = Table([[line1, line2]])
-    temp.setStyle(TableStyle([('FONTNAME', (0,0), (1,0), 'arial'),
-                              ('ALIGN',    (0,0), (1,0), 'CENTER'),
-                              ('SIZE',     (0,0), (1,0), 12),
-                              ('LEADING',  (0,0), (1,0), 14)]))
+    temp.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (1, 0), 'arial'),
+        ('ALIGN',    (0, 0), (1, 0), 'CENTER'),
+        ('SIZE',     (0, 0), (1, 0), 12),
+        ('LEADING',  (0, 0), (1, 0), 14)
+    ]))
     story.append(temp)
-def spcr(n):                            # разделитель
+
+
+def spcr(n):
     for i in range(n):
         story.append(Spacer(1, 14))
-def prgr(style, line1, line2 = ''):     # абзац
+
+
+def prgr(style, line1, line2=''):
     if line1:
         line1 = '<font name="arial" size=12>' + line1 + '</font>'
     if line2:
         line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
     story.append(Paragraph(line1 + line2, styles[style]))
-def page1(canvas, doc):                 # колонтитул (стр. 1)
+
+
+def page1(canvas, _):
     canvas.setFont('arial', 12)
-    canvas.drawString( 2.5*cm, 1*cm + 28, 'Подпись врача ______________')
+    canvas.drawString(2.5*cm, 1*cm + 28, 'Подпись врача ______________')
     canvas.drawString(14.0*cm, 1*cm + 14, 'М.П.')
     canvas.drawString(16.5*cm, 1*cm, 'Страница 1 из 2')
     canvas.setFont('arialbd', 12)
-    canvas.drawString( 9.0*cm, 1*cm + 28, signature)
-def page2(canvas, doc):                 # колонтитул (стр. 2)
+    canvas.drawString(9.0*cm, 1*cm + 28, signature)
+
+
+def page2(canvas, _):
     canvas.setFont('arial', 12)
     canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
 
-# Сохранение акта в формате PDF
-def createPDF(data, filename):
-    global story, signature
-    doc = SimpleDocTemplate(filename, leftMargin=1.5*cm, rightMargin=1*cm,
-                            topMargin=1.5*cm, bottomMargin=3*cm)
-    story = []
+
+def create_pdf(filename):
+    data = [[f'{j}-{i}' for i in range(5)] for j in range(19)]
+
+    doc = SimpleDocTemplate(
+        filename, leftMargin=1.5*cm, rightMargin=1*cm,
+        topMargin=1.5*cm, bottomMargin=3*cm,
+    )
+
     tbl(data[0][0], '''\
         Медицинская документация
         Учетная форма № 307/у-05
@@ -156,5 +161,7 @@ def createPDF(data, filename):
     spcr(1)
     prgr('Normal+', '18. Подпись врача ______________', data[18][0])
     prgr('Indent', 'М.П.')
+
+    global signature
     signature = data[18][0]
     doc.build(story, onFirstPage=page1, onLaterPages=page2)

@@ -50,7 +50,7 @@ class WindowMain:
             frame, text='Новый', command=self.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
         self.pdf_button = Button(
-            frame, text='Сохранить', command=self.pdf, state='disabled')
+            frame, text='Сохранить', command=self.save, state='disabled')
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
 
         self.frame = Frame()
@@ -94,8 +94,12 @@ class WindowMain:
             label_frame.init()
         self.label_frames[0].update()
 
-    @staticmethod
-    def pdf():
+    def save(self):
+        report = self.data.get_report()
+        for label_frame in self.label_frames:
+            for item in label_frame.items:
+                report[item] = label_frame.items[item].dump()
+        self.data.save()
         create_pdf('test.pdf')
 
     def show_label_frame(self, index):

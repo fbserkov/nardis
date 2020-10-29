@@ -28,10 +28,6 @@ class ItemBase:
                 ItemBase.frame.columnconfigure(3, weight=1)
             self.frame = Frame(ItemBase.frame)
 
-    def init(self):
-        for widget in self.init_widgets:
-            widget.init()
-
     @staticmethod
     def get_frames(master, length):
         frames = []
@@ -40,6 +36,14 @@ class ItemBase:
             frame.pack(fill=X)
             frames.append(frame)
         return frames
+
+    @staticmethod
+    def dump():
+        return 'dump'
+
+    def init(self):
+        for widget in self.init_widgets:
+            widget.init()
 
 
 class Item0(ItemBase):

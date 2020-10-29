@@ -1,23 +1,14 @@
 import pickle
-import time
 
 
 class Database:
     def __init__(self, filename):
         self.filename = filename
         self.current_user = None
-        self.changed = False
         with open(self.filename, 'rb') as f:
-            database = pickle.load(f)
-        self.settings, self.folders = database
+            self.settings, self.reports = pickle.load(f)
         self.current_year = -1
         self.current_index = -1
-
-    def __del__(self):
-        if not self.changed:
-            return
-        with open(self.filename, 'wb') as file:
-            pickle.dump((self.settings, self.folders), file)
 
     def check_password(self, password):
         if password in self.settings['Врачи'].keys():
@@ -40,12 +31,15 @@ class Database:
     def get_methods(self):
         return self.settings['Методы']
 
+    def get_report(self):
+        index = self.settings['Номер следующего акта']
+        self.settings['Номер следующего акта'] = index + 1
+        self.reports.append({})
+        return self.reports[-1]
+
     def get_technical_means(self):
         return self.settings['Технические средства']
 
-    def get_years(self):
-        years = sorted(self.folders.keys())
-        current_year = int(time.strftime('%Y'))
-        if current_year not in years:
-            years.append(current_year)
-        return years
+    def save(self):
+        with open(self.filename, 'wb') as file:
+            pickle.dump((self.settings, self.reports), file)

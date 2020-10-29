@@ -4,48 +4,39 @@ from item import create_item
 
 class PartBase(LabelFrame):
     def __init__(self, label):
-        self.items = ()
+        self.items = {}
         LabelFrame.__init__(self, font='-size 10 -weight bold', text=label)
 
     def init(self):
-        for item in self.items:
+        for item in self.items.values():
             item.init()
 
 
 class CommonPart(PartBase):
     def __init__(self):
         PartBase.__init__(self, 'Общие данные')
-        self.items = (
-            create_item(self, 6), create_item(self, 7), create_item(self, 8))
+        self.items = {i: create_item(self, i) for i in (6, 7, 8)}
 
 
 class ExaminationPart(PartBase):
     def __init__(self, data):
         PartBase.__init__(self, 'Данные освидетельствования')
-        self.items = (
-            create_item(self, 13, data), create_item(self, 14, data),
-            create_item(self, 15), create_item(self, 17),
-        )
+        self.items = {i: create_item(self, i, data) for i in (13, 14)}
+        self.items.update({i: create_item(self, i) for i in (15, 17)})
 
 
 class PassportPart(PartBase):
     def __init__(self, data):
         PartBase.__init__(self, 'Паспортная часть')
-        self.items = (
-            create_item(self, 0, data), create_item(self, 4),
-            create_item(self, 16), create_item(self, 1),
-            create_item(self, 2), create_item(self, 5, data),
-        )
+        self.items = {i: create_item(self, i, data) for i in (0, 5)}
+        self.items.update({i: create_item(self, i) for i in (1, 2, 4, 16)})
 
     def update(self):
         self.items[0].update_index()
-        self.items[-1].update_user()
+        self.items[5].update_user()
 
 
 class SurveyPart(PartBase):
     def __init__(self):
         PartBase.__init__(self, 'Объективный осмотр')
-        self.items = (
-            create_item(self, 9), create_item(self, 10),
-            create_item(self, 11), create_item(self, 12),
-        )
+        self.items = {i: create_item(self, i) for i in (9, 10, 11, 12)}

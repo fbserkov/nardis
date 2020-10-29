@@ -1,6 +1,8 @@
 import sys
 from tkinter import Button, Entry, Frame, LEFT, Toplevel, X
+
 from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
+from template import create_pdf
 
 
 class WindowAuth(Toplevel):
@@ -47,6 +49,9 @@ class WindowMain:
         self.new_button = Button(
             frame, text='Новый', command=self.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
+        self.pdf_button = Button(
+            frame, text='Сохранить', command=self.pdf, state='disabled')
+        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
 
         self.frame = Frame()
         self.buttons = (
@@ -69,6 +74,7 @@ class WindowMain:
             self.auth_status = False
             self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
             self.frame.forget()
             self.show_label_frame(0)
 
@@ -78,6 +84,7 @@ class WindowMain:
             self.auth_status = True
             self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
             self.frame.pack(fill=X)
             self.show_label_frame(1)
             self.init()
@@ -86,6 +93,10 @@ class WindowMain:
         for label_frame in self.label_frames:
             label_frame.init()
         self.label_frames[0].update()
+
+    @staticmethod
+    def pdf():
+        create_pdf('test.pdf')
 
     def show_label_frame(self, index):
         if self.index == index:

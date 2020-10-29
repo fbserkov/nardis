@@ -20,8 +20,8 @@ styles.add(ParagraphStyle('Indent',     # с отступом
                           leading=14, leftIndent=12.5*cm))
 
 # Регистрация русифицированных шрифтов
-pdfmetrics.registerFont(ttfonts.TTFont('arial',   'arial.ttf'))
-pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'arialbd.ttf'))
+pdfmetrics.registerFont(ttfonts.TTFont('arial',   'ArialMT.ttf'))
+pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
 
 # Определение функций форматирования
 def tbl(line1, line2):                  # таблица

@@ -35,38 +35,15 @@ class WindowAuth(Toplevel):
 class WindowMain:
     def __init__(self, root, data):
         self.root, self.data = root, data
-        root.title('Наркологическая экспертиза')
-        root.geometry(f'610x650')
-        root.resizable(width=False, height=False)
-        if not sys.platform == 'linux':
-            root.iconbitmap('nardis.ico')
-        self.index, self.auth_status = 0, False
+        self.customize()
 
-        frame = Frame()
-        frame.pack(fill=X)
-        self.auth_button = Button(frame, text='Вход', command=self.auth)
-        self.auth_button.pack(side=LEFT, expand=True, fill=X)
-        self.new_button = Button(
-            frame, text='Новый', command=self.init, state='disabled')
-        self.new_button.pack(side=LEFT, expand=True, fill=X)
-        self.pdf_button = Button(
-            frame, text='Сохранить', command=self.save, state='disabled')
-        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+        self.auth_button, self.auth_status = None, False
+        self.new_button, self.pdf_button = None, None
+        self.create_menu()
 
-        self.frame = Frame()
-        self.buttons = (
-            Button(self.frame, text='I'), Button(self.frame, text='II'),
-            Button(self.frame, text='III'), Button(self.frame, text='IV')
-        )
-        for button in self.buttons:
-            button.pack(side=LEFT, expand=True, fill=X)
-            button.bind('<Button-1>', lambda e: self.show_label_frame(
-                self.buttons.index(e.widget) + 1))
-
-        self.label_frames = (
-            PassportPart(self.data), CommonPart(),
-            SurveyPart(), ExaminationPart(self.data),
-        )
+        self.frame, self.buttons = None, None
+        self.label_frames, self.index = None, 0
+        self.create_parts()
         root.mainloop()
 
     def auth(self):
@@ -88,6 +65,40 @@ class WindowMain:
             self.frame.pack(fill=X)
             self.show_label_frame(1)
             self.init()
+
+    def create_menu(self):
+        frame = Frame()
+        frame.pack(fill=X)
+        self.auth_button = Button(frame, text='Вход', command=self.auth)
+        self.auth_button.pack(side=LEFT, expand=True, fill=X)
+        self.new_button = Button(
+            frame, text='Новый', command=self.init, state='disabled')
+        self.new_button.pack(side=LEFT, expand=True, fill=X)
+        self.pdf_button = Button(
+            frame, text='Сохранить', command=self.save, state='disabled')
+        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+
+    def create_parts(self):
+        self.frame = Frame()
+        self.buttons = (
+            Button(self.frame, text='I'), Button(self.frame, text='II'),
+            Button(self.frame, text='III'), Button(self.frame, text='IV')
+        )
+        for button in self.buttons:
+            button.pack(side=LEFT, expand=True, fill=X)
+            button.bind('<Button-1>', lambda e: self.show_label_frame(
+                self.buttons.index(e.widget) + 1))
+        self.label_frames = (
+            PassportPart(self.data), CommonPart(),
+            SurveyPart(), ExaminationPart(self.data),
+        )
+
+    def customize(self):
+        self.root.title('Наркологическая экспертиза')
+        self.root.geometry('610x650')
+        self.root.resizable(width=False, height=False)
+        if not sys.platform == 'linux':
+            self.root.iconbitmap('nardis.ico')
 
     def init(self):
         for label_frame in self.label_frames:

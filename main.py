@@ -41,7 +41,7 @@ class FramePart(Frame):
             for item in label_frame.items:
                 report[item] = label_frame.items[item].dump()
         self.data.save()
-        create_pdf('test.pdf')
+        create_pdf('test.pdf', self.data)
 
     def show_label_frame(self, index):
         if self.index == index:

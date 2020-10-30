@@ -7,8 +7,6 @@ class Database:
         self.current_user = None
         with open(self.filename, 'rb') as f:
             self.settings, self.reports = pickle.load(f)
-        self.current_year = -1
-        self.current_index = -1
 
     def check_password(self, password):
         if password in self.settings['Врачи'].keys():
@@ -31,10 +29,11 @@ class Database:
     def get_methods(self):
         return self.settings['Методы']
 
-    def get_report(self):
-        index = self.settings['Номер следующего акта']
-        self.settings['Номер следующего акта'] = index + 1
-        self.reports.append({})
+    def get_report(self):  # TODO test mode now
+        # index = self.settings['Номер следующего акта']
+        # self.settings['Номер следующего акта'] = index + 1
+        if not self.reports:
+            self.reports.append({})
         return self.reports[-1]
 
     def get_technical_means(self):

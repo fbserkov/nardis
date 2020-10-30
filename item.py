@@ -38,7 +38,7 @@ class ItemBase:
         return frames
 
     @staticmethod
-    def dump():
+    def dump():  # TODO delete
         return 'dump'
 
     def init(self):
@@ -52,18 +52,21 @@ class Item0(ItemBase):
         ItemBase.__init__(self, master)
         self.frame.grid(row=0, column=0)
         Label(self.frame, text='Акт №').pack()
-        self.entry = EntryDisabled(self.frame, width=4)
-        self.init_widgets.append(self.entry)
-        self.entry.pack(side=LEFT)
+        self.number = EntryDisabled(self.frame, width=4)
+        self.init_widgets.append(self.number)
+        self.number.pack(side=LEFT)
         Label(self.frame, text='/').pack(side=LEFT)
-        entry = EntryYear(self.frame, '%y')
-        entry.pack(side=LEFT)
-        self.init_widgets.append(entry)
+        self.year = EntryYear(self.frame, '%y')
+        self.year.pack(side=LEFT)
+        self.init_widgets.append(self.year)
+
+    def dump(self):
+        return self.number.get() + '/' + self.year.get()
 
     def update_index(self):
-        self.entry.config(state='normal')
-        self.entry.insert(0, self.data.get_index())
-        self.entry.config(state='disabled')
+        self.number.config(state='normal')
+        self.number.insert(0, self.data.get_index())
+        self.number.config(state='disabled')
 
 
 class Item1(ItemBase):

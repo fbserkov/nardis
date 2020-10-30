@@ -16,44 +16,6 @@ pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
 story = []
 
 
-def tbl(line1, line2):
-    temp = Table([[line1, line2]])
-    temp.setStyle(TableStyle([
-        ('FONTNAME', (0, 0), (1, 0), 'arial'),
-        ('ALIGN', (0, 0), (1, 0), 'CENTER'),
-        ('SIZE', (0, 0), (1, 0), 12),
-        ('LEADING', (0, 0), (1, 0), 14)
-    ]))
-    story.append(temp)
-
-
-def spcr(n):
-    for i in range(n):
-        story.append(Spacer(1, 14))
-
-
-def prgr(style, line1, line2=''):
-    if line1:
-        line1 = '<font name="arial" size=12>' + line1 + '</font>'
-    if line2:
-        line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
-    story.append(Paragraph(line1 + line2, styles[style]))
-
-
-def page_1(canvas, signature):
-    canvas.setFont('arial', 12)
-    canvas.drawString(2.5*cm, 1*cm + 28, 'Подпись врача ______________')
-    canvas.drawString(14.0*cm, 1*cm + 14, 'М.П.')
-    canvas.drawString(16.5*cm, 1*cm, 'Страница 1 из 2')
-    canvas.setFont('arialbd', 12)
-    canvas.drawString(9.0*cm, 1*cm + 28, signature)
-
-
-def page_2(canvas):
-    canvas.setFont('arial', 12)
-    canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
-
-
 def create_pdf(filename, data):
     report = data.reports[-1]
     data_ = [[f'{j}-{i}' for i in range(5)] for j in range(19)]
@@ -70,7 +32,7 @@ def create_pdf(filename, data):
     prgr('Center', '(алкогольного, наркотического или иного токсического)')
     prgr('Center', '№', report[0])
     spcr(2)
-    prgr('Normal+', '', data_[0][2])
+    prgr('Normal+', '', format_date(report[4]))
 
     spcr(1)
     prgr('Normal+', '1. Сведения об освидетельствуемом лице:')
@@ -236,3 +198,50 @@ def create_pdf(filename, data):
         onFirstPage=lambda canvas, _: page_1(canvas, data_[18][0]),
         onLaterPages=lambda canvas, _: page_2(canvas),
     )
+
+
+def format_date(date):
+    day, month, year = date.split('.')
+    month_words = (
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+    )
+    return f'" {int(day)} " {month_words[int(month) - 1]} {year} г.'
+
+
+def page_1(canvas, signature):
+    canvas.setFont('arial', 12)
+    canvas.drawString(2.5*cm, 1*cm + 28, 'Подпись врача ______________')
+    canvas.drawString(14.0*cm, 1*cm + 14, 'М.П.')
+    canvas.drawString(16.5*cm, 1*cm, 'Страница 1 из 2')
+    canvas.setFont('arialbd', 12)
+    canvas.drawString(9.0*cm, 1*cm + 28, signature)
+
+
+def page_2(canvas):
+    canvas.setFont('arial', 12)
+    canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
+
+
+def prgr(style, line1, line2=''):
+    if line1:
+        line1 = '<font name="arial" size=12>' + line1 + '</font>'
+    if line2:
+        line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
+    story.append(Paragraph(line1 + line2, styles[style]))
+
+
+def spcr(n):
+    for i in range(n):
+        story.append(Spacer(1, 14))
+
+
+def tbl(line1, line2):
+    temp = Table([[line1, line2]])
+    temp.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (1, 0), 'arial'),
+        ('ALIGN', (0, 0), (1, 0), 'CENTER'),
+        ('SIZE', (0, 0), (1, 0), 12),
+        ('LEADING', (0, 0), (1, 0), 14)
+    ]))
+    story.append(temp)

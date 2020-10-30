@@ -1,6 +1,10 @@
 import sys
-from tkinter import Button, Entry, Frame, LEFT, Toplevel, X
+import os
 
+from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
+from tkinter.messagebox import showinfo
+
+from database import Database
 from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
 
@@ -33,9 +37,19 @@ class WindowAuth(Toplevel):
 
 
 class WindowMain:
-    def __init__(self, root, data):
-        self.root, self.data = root, data
+    def __init__(self):
+        self.root = Tk()
         self.customize()
+
+        self.file_exists_error = False
+        self.lock()
+        if self.file_exists_error:
+            return
+
+        self.file_not_found_error = False
+        self.data = self.load_data()
+        if self.file_not_found_error:
+            return
 
         self.auth_button, self.auth_status = None, False
         self.new_button, self.pdf_button = None, None
@@ -44,7 +58,11 @@ class WindowMain:
         self.frame, self.buttons = None, None
         self.label_frames, self.index = None, 0
         self.create_parts()
-        root.mainloop()
+
+        self.root.mainloop()
+
+    def __del__(self):
+        self.unlock()
 
     def auth(self):
         if self.auth_status:
@@ -113,6 +131,22 @@ class WindowMain:
         self.data.save()
         create_pdf('test.pdf')
 
+    def load_data(self):
+        try:
+            return Database('nardis.db')
+        except FileNotFoundError:
+            self.show_popup(
+                title='Сообщение', message='База данных не найдена.')
+            self.file_not_found_error = True
+
+    def lock(self):
+        try:
+            open('file.lock', 'x').close()
+        except FileExistsError:
+            self.show_popup(
+                title='Сообщение', message='Приложение уже запущено.')
+            self.file_exists_error = True
+
     def show_label_frame(self, index):
         if self.index == index:
             return
@@ -122,3 +156,16 @@ class WindowMain:
             self.label_frames[index - 1].pack(fill=X)
             self.buttons[index - 1].config(font='-size 10 -weight bold')
         self.index = index
+
+    def show_popup(self, title, message):
+        self.root.withdraw()
+        showinfo(title, message)
+
+    def unlock(self):
+        if self.file_exists_error:
+            return
+        os.remove('file.lock')
+
+
+if __name__ == '__main__':
+    WindowMain()

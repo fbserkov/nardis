@@ -12,20 +12,23 @@ from template import create_pdf
 class FramePart(Frame):
     def __init__(self, data):
         Frame.__init__(self)
-        self.index = 0
+        frame = Frame(self)
+        frame.pack(fill=X)
+
         self.buttons = (
-            Button(self, text='I'), Button(self, text='II'),
-            Button(self, text='III'), Button(self, text='IV')
+            Button(frame, text='I'), Button(frame, text='II'),
+            Button(frame, text='III'), Button(frame, text='IV')
         )
         for button in self.buttons:
             button.pack(side=LEFT, expand=True, fill=X)
             button.bind('<Button-1>', lambda e: self.show_label_frame(
                 self.buttons.index(e.widget) + 1))
+
         self.label_frames = (
-            PassportPart(data), CommonPart(),
-            SurveyPart(), ExaminationPart(data),
+            PassportPart(self, data), CommonPart(self),
+            SurveyPart(self), ExaminationPart(self, data),
         )
-        self.data = data
+        self.data, self.index = data, 0
 
     def init(self):
         for label_frame in self.label_frames:
@@ -106,7 +109,6 @@ class WindowMain:
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
             self.frame_part.forget()
-            self.frame_part.show_label_frame(0)  # TODO
         else:
             if not WindowAuth(self.root, self.data).status:
                 return

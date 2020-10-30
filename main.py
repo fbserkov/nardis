@@ -9,6 +9,48 @@ from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
 
 
+class FramePart(Frame):
+    def __init__(self, data):
+        Frame.__init__(self)
+        self.index = 0
+        self.buttons = (
+            Button(self, text='I'), Button(self, text='II'),
+            Button(self, text='III'), Button(self, text='IV')
+        )
+        for button in self.buttons:
+            button.pack(side=LEFT, expand=True, fill=X)
+            button.bind('<Button-1>', lambda e: self.show_label_frame(
+                self.buttons.index(e.widget) + 1))
+        self.label_frames = (
+            PassportPart(data), CommonPart(),
+            SurveyPart(), ExaminationPart(data),
+        )
+        self.data = data
+
+    def init(self):
+        for label_frame in self.label_frames:
+            label_frame.init()
+        self.label_frames[0].update()
+
+    def save(self):
+        report = self.data.get_report()
+        for label_frame in self.label_frames:
+            for item in label_frame.items:
+                report[item] = label_frame.items[item].dump()
+        self.data.save()
+        create_pdf('test.pdf')
+
+    def show_label_frame(self, index):
+        if self.index == index:
+            return
+        self.label_frames[self.index - 1].forget()
+        self.buttons[self.index - 1].config(font='-size 10')
+        if index:
+            self.label_frames[index - 1].pack(fill=X)
+            self.buttons[index - 1].config(font='-size 10 -weight bold')
+        self.index = index
+
+
 class WindowAuth(Toplevel):
     def __init__(self, root, data):
         Toplevel.__init__(self)
@@ -51,18 +93,11 @@ class WindowMain:
         if self.file_not_found_error:
             return
 
+        self.frame_part = FramePart(self.data)
         self.auth_button, self.auth_status = None, False
         self.new_button, self.pdf_button = None, None
         self.create_menu()
-
-        self.frame, self.buttons = None, None
-        self.label_frames, self.index = None, 0
-        self.create_parts()
-
         self.root.mainloop()
-
-    def __del__(self):
-        self.unlock()
 
     def auth(self):
         if self.auth_status:
@@ -70,9 +105,8 @@ class WindowMain:
             self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
-            self.frame.forget()
-            self.show_label_frame(0)
-
+            self.frame_part.forget()
+            self.frame_part.show_label_frame(0)  # TODO
         else:
             if not WindowAuth(self.root, self.data).status:
                 return
@@ -80,9 +114,9 @@ class WindowMain:
             self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
-            self.frame.pack(fill=X)
-            self.show_label_frame(1)
-            self.init()
+            self.frame_part.pack(fill=X)
+            self.frame_part.show_label_frame(1)
+            self.frame_part.init()
 
     def create_menu(self):
         frame = Frame()
@@ -90,26 +124,15 @@ class WindowMain:
         self.auth_button = Button(frame, text='Вход', command=self.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
         self.new_button = Button(
-            frame, text='Новый', command=self.init, state='disabled')
+            frame, text='Новый',
+            command=self.frame_part.init, state='disabled',
+        )
         self.new_button.pack(side=LEFT, expand=True, fill=X)
         self.pdf_button = Button(
-            frame, text='Сохранить', command=self.save, state='disabled')
+            frame, text='Сохранить',
+            command=self.frame_part.save, state='disabled',
+        )
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
-
-    def create_parts(self):
-        self.frame = Frame()
-        self.buttons = (
-            Button(self.frame, text='I'), Button(self.frame, text='II'),
-            Button(self.frame, text='III'), Button(self.frame, text='IV')
-        )
-        for button in self.buttons:
-            button.pack(side=LEFT, expand=True, fill=X)
-            button.bind('<Button-1>', lambda e: self.show_label_frame(
-                self.buttons.index(e.widget) + 1))
-        self.label_frames = (
-            PassportPart(self.data), CommonPart(),
-            SurveyPart(), ExaminationPart(self.data),
-        )
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -117,19 +140,6 @@ class WindowMain:
         self.root.resizable(width=False, height=False)
         if not sys.platform == 'linux':
             self.root.iconbitmap('nardis.ico')
-
-    def init(self):
-        for label_frame in self.label_frames:
-            label_frame.init()
-        self.label_frames[0].update()
-
-    def save(self):
-        report = self.data.get_report()
-        for label_frame in self.label_frames:
-            for item in label_frame.items:
-                report[item] = label_frame.items[item].dump()
-        self.data.save()
-        create_pdf('test.pdf')
 
     def load_data(self):
         try:
@@ -147,16 +157,6 @@ class WindowMain:
                 title='Сообщение', message='Приложение уже запущено.')
             self.file_exists_error = True
 
-    def show_label_frame(self, index):
-        if self.index == index:
-            return
-        self.label_frames[self.index - 1].forget()
-        self.buttons[self.index - 1].config(font='-size 10')
-        if index:
-            self.label_frames[index - 1].pack(fill=X)
-            self.buttons[index - 1].config(font='-size 10 -weight bold')
-        self.index = index
-
     def show_popup(self, title, message):
         self.root.withdraw()
         showinfo(title, message)
@@ -168,4 +168,4 @@ class WindowMain:
 
 
 if __name__ == '__main__':
-    WindowMain()
+    WindowMain().unlock()

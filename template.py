@@ -21,7 +21,7 @@ def create_pdf(filename, data):
     data_ = [[f'{j}-{i}' for i in range(5)] for j in range(19)]
 
     tbl(
-        data.settings['Организация'],  # TODO !!!
+        report[0][0],
         'Медицинская документация\nУчетная форма № 307/у-05\n'
         'Утверждена приказом Министерства\nздравоохранения '
         'Российской Федерации\nот 18 декабря 2015 г. № 933н',
@@ -30,7 +30,7 @@ def create_pdf(filename, data):
     liner('Center', 'АКТ')
     liner('Center', 'медицинского освидетельствования на состояние опьянения')
     liner('Center', '(алкогольного, наркотического или иного токсического)')
-    liner('Center', '№', report[0])
+    liner('Center', '№', report[0][1])
     spacer(2)
     liner('Normal+', '', format_date(report[4][0]))
 

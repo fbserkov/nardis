@@ -63,7 +63,10 @@ class Item0(ItemBase):
         self.widgets.append(entry)
 
     def dump(self):
-        return self.widgets[0].get() + '/' + self.widgets[1].get()
+        return (
+            self.data.settings['Организация'],
+            self.widgets[0].get() + '/' + self.widgets[1].get(),
+        )
 
     def update_index(self):
         self.widgets[0].config(state='normal')

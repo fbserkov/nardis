@@ -12,8 +12,6 @@ def create_item(master, num, data=None):
 
 
 class ItemBase:
-    frame = None
-
     def __init__(self, master, frames_number=None):
         self.init_widgets = []
         if frames_number:
@@ -29,6 +27,10 @@ class ItemBase:
             self.frame = Frame(ItemBase.frame)
 
     @staticmethod
+    def dump():  # TODO delete
+        return 'dump'
+
+    @staticmethod
     def get_frames(master, length):
         frames = []
         for i in range(length):
@@ -37,19 +39,17 @@ class ItemBase:
             frames.append(frame)
         return frames
 
-    @staticmethod
-    def dump():  # TODO delete
-        return 'dump'
-
     def init(self):
         for widget in self.init_widgets:
             widget.init()
 
+    frame = None
+
 
 class Item0(ItemBase):
     def __init__(self, master, data):
-        self.data = data
         ItemBase.__init__(self, master)
+        self.data = data
         self.frame.grid(row=0, column=0)
         Label(self.frame, text='Акт №').pack()
         self.number = EntryDisabled(self.frame, width=4)
@@ -134,7 +134,12 @@ class Item2(ItemBase):
 
 
 class Item3(ItemBase):
-    pass
+    def __init__(self, master, data):
+        ItemBase.__init__(self, master)
+        self.data = data
+
+    def dump(self):
+        return self.data.settings['Подразделение']
 
 
 class Item4(ItemBase):
@@ -154,8 +159,8 @@ class Item4(ItemBase):
 
 class Item5(ItemBase):
     def __init__(self, master, data):
-        self.data = data
         ItemBase.__init__(self, master, frames_number=2)
+        self.data = data
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         self.option_menu = OptionMenuSmart(
             self.frames[1], self.data.get_doctors())

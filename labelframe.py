@@ -29,7 +29,7 @@ class ExaminationPart(PartBase):
 class PassportPart(PartBase):
     def __init__(self, master, data):
         PartBase.__init__(self, master, 'Паспортная часть')
-        self.items = {i: create_item(self, i, data) for i in (0, 5)}
+        self.items = {i: create_item(self, i, data) for i in (0, 3, 5)}
         self.items.update({i: create_item(self, i) for i in (1, 2, 4, 16)})
 
     def update(self):

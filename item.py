@@ -176,6 +176,11 @@ class Item5(ItemBase):
             self.option_menu.string_var.set(user)
             self.option_menu['state'] = 'disabled'
 
+    def dump(self):
+        names, organisation, date = \
+            self.option_menu.string_var.get().split(', ')
+        return names, organisation + ', ' + date
+
 
 class Item6(ItemBase):
     def __init__(self, master):

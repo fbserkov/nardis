@@ -49,9 +49,9 @@ def create_pdf(filename, data):
     liner(
         'Normal+',
         '2. Основание для медицинского освидетельствования',
-        data_[2][0],
+        report[2][0],
     )
-    liner('Normal+', 'Кем направлен', data_[2][1])
+    liner('Normal+', 'Кем направлен', report[2][1])
 
     spacer(1)
     liner(

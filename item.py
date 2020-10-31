@@ -116,18 +116,21 @@ class Item2(ItemBase):
         ItemBase.__init__(self, master, frames_number=5)
         line = '2. Основание для медицинского освидетельствования'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        entry = EntryBase(self.frames[3])
-        entry.pack(fill=X)
-        self.init_widgets.append(entry)
+        self.reason = EntryBase(self.frames[3])
+        self.reason.pack(fill=X)
+        self.init_widgets.append(self.reason)
         line = 'протокол о направлении на медицинское освидетельствование'
-        LabelReplace(self.frames[1], text=line, bind=entry)
-        LabelReplace(self.frames[2], text='личное заявление', bind=entry)
+        LabelReplace(self.frames[1], text=line, bind=self.reason)
+        LabelReplace(self.frames[2], text='личное заявление', bind=self.reason)
         line = 'письменное направление работодателя'
-        LabelReplace(self.frames[2], text=line, bind=entry)
+        LabelReplace(self.frames[2], text=line, bind=self.reason)
         Label(self.frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
-        entry = EntryBase(self.frames[4])
-        entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
+        self.names = EntryBase(self.frames[4])
+        self.names.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(self.names)
+
+    def dump(self):
+        return self.reason.get(), self.names.get()
 
 
 class Item3(ItemBase):

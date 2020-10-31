@@ -78,9 +78,9 @@ class Item1(ItemBase):
         ).pack(side=LEFT)
         Label(self.frames[0], text='Дата рождения').pack(side=RIGHT)
         Label(self.frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
-        entry = EntryBase(self.frames[1])
-        entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
+        self.names = EntryBase(self.frames[1])
+        self.names.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(self.names)
         self.init_widgets.append(EntryDate(self.frames[1]))
 
         Label(self.frames[2], text='Адрес места жительства').pack(side=LEFT)
@@ -100,6 +100,9 @@ class Item1(ItemBase):
         line = 'водительского удостоверения'
         LabelReplace(self.frames[6], text=line, bind=entry, place=LEFT)
         LabelReplace(self.frames[6], text='паспорта', bind=entry, place=LEFT)
+
+    def dump(self):
+        return self.names.get()
 
 
 class Item2(ItemBase):

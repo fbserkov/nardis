@@ -13,7 +13,7 @@ def create_item(master, num, data=None):
 
 class ItemBase:
     def __init__(self, master, frames_number=None):
-        self.init_widgets = []
+        self.widgets = []
         if frames_number:
             frame = Frame(master, bd=4)
             frame.pack(fill=X)
@@ -40,7 +40,7 @@ class ItemBase:
         return frames
 
     def init(self):
-        for widget in self.init_widgets:
+        for widget in self.widgets:
             widget.init()
 
     frame = None
@@ -55,20 +55,20 @@ class Item0(ItemBase):
         Label(self.frame, text='Акт №').pack()
         entry = EntryDisabled(self.frame, width=4)
         entry.pack(side=LEFT)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
 
         Label(self.frame, text='/').pack(side=LEFT)
         entry = EntryYear(self.frame, '%y')
         entry.pack(side=LEFT)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
 
     def dump(self):
-        return self.init_widgets[0].get() + '/' + self.init_widgets[1].get()
+        return self.widgets[0].get() + '/' + self.widgets[1].get()
 
     def update_index(self):
-        self.init_widgets[0].config(state='normal')
-        self.init_widgets[0].insert(0, self.data.get_index())
-        self.init_widgets[0].config(state='disabled')
+        self.widgets[0].config(state='normal')
+        self.widgets[0].insert(0, self.data.get_index())
+        self.widgets[0].config(state='disabled')
 
 
 class Item1(ItemBase):
@@ -82,14 +82,14 @@ class Item1(ItemBase):
         Label(self.frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
         self.names = EntryBase(self.frames[1])
         self.names.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(self.names)
+        self.widgets.append(self.names)
         self.date = EntryDate(self.frames[1])
-        self.init_widgets.append(self.date)
+        self.widgets.append(self.date)
 
         Label(self.frames[2], text='Адрес места жительства').pack(side=LEFT)
         self.address = EntryBase(self.frames[4])
         self.address.pack(fill=X)
-        self.init_widgets.append(self.address)
+        self.widgets.append(self.address)
         LabelAdd(
             self.frames[3], text='г. Комсомольск-на-Амуре', bind=self.address)
         LabelAdd(self.frames[3], text='Комсомольский район', bind=self.address)
@@ -99,7 +99,7 @@ class Item1(ItemBase):
         Label(self.frames[5], text=line).pack(side=LEFT)
         self.document = EntryBase(self.frames[6])
         self.document.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(self.document)
+        self.widgets.append(self.document)
         LabelReplace(self.frames[5], text='протокола', bind=self.document)
         line = 'водительского удостоверения'
         LabelReplace(self.frames[6], text=line, bind=self.document, place=LEFT)
@@ -120,7 +120,7 @@ class Item2(ItemBase):
         Label(self.frames[0], text=line).pack(side=LEFT)
         self.reason = EntryBase(self.frames[3])
         self.reason.pack(fill=X)
-        self.init_widgets.append(self.reason)
+        self.widgets.append(self.reason)
         line = 'протокол о направлении на медицинское освидетельствование'
         LabelReplace(self.frames[1], text=line, bind=self.reason)
         LabelReplace(self.frames[2], text='личное заявление', bind=self.reason)
@@ -129,7 +129,7 @@ class Item2(ItemBase):
         Label(self.frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
         self.names = EntryBase(self.frames[4])
         self.names.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(self.names)
+        self.widgets.append(self.names)
 
     def dump(self):
         return self.reason.get(), self.names.get()
@@ -151,10 +151,10 @@ class Item4(ItemBase):
         Label(self.frame, text='4. Начало освидетельствования').pack()
         Label(self.frame, text='Дата').pack(side=LEFT)
         self.date = EntryDate(self.frame, '%d.%m.%Y')
-        self.init_widgets.append(self.date)
+        self.widgets.append(self.date)
         Label(self.frame, text='Время').pack(side=LEFT)
         self.time = EntryTime(self.frame, '%H:%M')
-        self.init_widgets.append(self.time)
+        self.widgets.append(self.time)
 
     def dump(self):
         return self.date.get(), self.time.get()
@@ -167,7 +167,7 @@ class Item5(ItemBase):
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         self.option_menu = OptionMenuSmart(
             self.frames[1], self.data.get_doctors())
-        self.init_widgets.append(self.option_menu)
+        self.widgets.append(self.option_menu)
 
     def update_user(self):
         user = self.data.current_user
@@ -195,7 +195,7 @@ class Item6(ItemBase):
             'видимых повреждений нет'
         self.entry = EntryBase(self.frames[1], width=69, default=line)
         self.entry.pack(fill=X)
-        self.init_widgets.append(self.entry)
+        self.widgets.append(self.entry)
 
     def dump(self):
         return self.entry.get()
@@ -208,7 +208,7 @@ class Item7(ItemBase):
         Label(self.frames[0], text=line).pack(side=LEFT)
         self.entry = EntryBase(self.frames[1], default='не предъявляет')
         self.entry.pack(fill=X)
-        self.init_widgets.append(self.entry)
+        self.widgets.append(self.entry)
 
     def dump(self):
         return self.entry.get()
@@ -223,13 +223,13 @@ class Item8(ItemBase):
         Label(self.frames[1], text='состояние сознания').pack(side=LEFT)
         entry = EntryBase(self.frames[1])
         entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         for text in 'ясное', 'оглушение', 'сопор', 'кома':
             LabelReplace(self.frames[1], text, bind=entry, place=LEFT)
 
         default = 'без особенностей'
         entry = EntryDisabled(self.frames[4], default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[2], text='поведение').pack(side=LEFT)
         for text in (
@@ -247,13 +247,13 @@ class Item8(ItemBase):
         Label(self.frames[5], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[6])
         entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         for text in 'ориентирован', 'ориентация снижена', 'дезориентирован':
             LabelReplace(self.frames[6], text, bind=entry, place=LEFT)
 
         Label(self.frames[7], text='результат пробы Шульте').pack(side=LEFT)
         entry = EntryTimer(self.frames[7])
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(side=LEFT)
         Label(self.frames[7], text='сек.').pack(side=LEFT)
 
@@ -273,7 +273,7 @@ class Item9(ItemBase):
         entries, defaults = [], ('в норме', 'живая', 'обычные', 'нет')
         for i, default in enumerate(defaults):
             entry = EntryDisabled(self.frames[1], default=default)
-            self.init_widgets.append(entry)
+            self.widgets.append(entry)
             entry.grid(row=i, column=1, sticky=W + E)
             entries.append(entry)
         frame = Frame(self.frames[1])
@@ -297,7 +297,7 @@ class Item10(ItemBase):
 
         default = 'речевая способность сохранена'
         entry = EntryDisabled(self.frames[2], default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[1], text='речь').pack(side=LEFT)
         for text in \
@@ -306,7 +306,7 @@ class Item10(ItemBase):
 
         default = 'уверенная'
         entry = EntryDisabled(self.frames[4], default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(fill=X)
         Label(self.frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
@@ -316,7 +316,7 @@ class Item10(ItemBase):
             side=LEFT)
         default = 'не проводилось'
         entry = EntryDisabled(self.frames[5], default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'устойчив', 'неустойчив', 'падает':
             LabelReplaceSmart(
@@ -325,7 +325,7 @@ class Item10(ItemBase):
         line = 'точность выполнения координационных проб'
         Label(self.frames[6], text=line).pack(side=LEFT)
         entry = EntryDisabled(self.frames[7], default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
             LabelReplaceSmart(
@@ -333,7 +333,7 @@ class Item10(ItemBase):
 
         Label(self.frames[8], text='результат пробы Ташена').pack(side=LEFT)
         entry = EntryTimer(self.frames[8])
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(side=LEFT)
         Label(self.frames[8], text='сек.').pack(side=LEFT)
 
@@ -348,7 +348,7 @@ class Item11(ItemBase):
         Label(self.frames[1], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[2], default='нет')
         entry.pack(fill=X)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
 
 
 class Item12(ItemBase):
@@ -364,7 +364,7 @@ class Item12(ItemBase):
         Label(self.frames[1], text=line).pack(side=LEFT)
         entry = EntryBase(self.frames[2])
         entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         LabelReplace(self.frames[2], text='отрицает', bind=entry, place=LEFT)
         LabelReplace(
             self.frames[2], text='употреблял спиртное', bind=entry, place=LEFT)
@@ -384,19 +384,19 @@ class Item13(ItemBase):
         frame = Frame(self.frames[1])
         frame.grid(row=0, column=2)
         Label(frame, text='Время').pack(side=LEFT)
-        self.init_widgets.append(EntryTime(frame, '%H:%M'))
+        self.widgets.append(EntryTime(frame, '%H:%M'))
         frame = Frame(self.frames[1])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        self.init_widgets.append(EntryResult(frame))
+        self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = data.get_technical_means()
-        self.init_widgets.append(
+        self.widgets.append(
             OptionMenuSmart(self.frames[2], technical_means))
         checkbutton = CheckbuttonSmart(
             self.frames[3], text='фальсификация выдоха')
-        self.init_widgets.append(checkbutton)
+        self.widgets.append(checkbutton)
         checkbutton.pack(side=RIGHT)
 
         Label(self.frames[4], text='13.2. Второе исследование').grid(
@@ -404,14 +404,14 @@ class Item13(ItemBase):
         frame = Frame(self.frames[4])
         frame.grid(row=0, column=2)
         Label(frame, text='Время').pack(side=LEFT)
-        self.init_widgets.append(EntryTime(frame))
+        self.widgets.append(EntryTime(frame))
         frame = Frame(self.frames[4])
         frame.grid(row=0, column=4)
         Label(frame, text='Результат').pack(side=LEFT)
-        self.init_widgets.append(EntryResult(frame))
+        self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[5], text='техническое средство').pack(side=LEFT)
-        self.init_widgets.append(
+        self.widgets.append(
             OptionMenuSmart(self.frames[5], technical_means))
 
 
@@ -420,10 +420,10 @@ class Item14(ItemBase):
         ItemBase.__init__(self, master, frames_number=5)
         line = '14. Время отбора биологического объекта'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        self.init_widgets.append(EntryTime(self.frames[0]))
+        self.widgets.append(EntryTime(self.frames[0]))
         default = 'моча'
         entry = EntryDisabled(self.frames[0], width=5, default=default)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         LabelReplaceSmart(self.frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(self.frames[0], text='среда').pack(side=RIGHT)
@@ -431,25 +431,25 @@ class Item14(ItemBase):
         frame.pack(side=RIGHT)
         checkbutton = CheckbuttonSmart(
             frame, text='отказ от сдачи пробы биологического объекта (мочи)')
-        self.init_widgets.append(checkbutton)
+        self.widgets.append(checkbutton)
         checkbutton.grid(row=0, sticky=W)
         checkbutton = CheckbuttonSmart(
             frame, text='фальсификация пробы биологического объекта (мочи)')
-        self.init_widgets.append(checkbutton)
+        self.widgets.append(checkbutton)
         checkbutton.grid(row=1)
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
-        self.init_widgets.append(
+        self.widgets.append(
             OptionMenuSmart(self.frames[2], data.get_methods()))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
         entry = EntryYear(self.frames[3], '%y')
         entry.pack(side=RIGHT)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         Label(self.frames[3], text='/').pack(side=RIGHT)
         entry = EntryBase(self.frames[3], width=5)
         entry.pack(side=RIGHT)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         Label(self.frames[3], text='номер справки').pack(side=RIGHT)
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
@@ -461,7 +461,7 @@ class Item14(ItemBase):
             frame.grid(row=row, column=column, sticky=W + E)
             Label(frame, text=chemicals[i]).pack(side=LEFT)
             entry = EntryDisabled(frame, width=4)
-            self.init_widgets.append(entry)
+            self.widgets.append(entry)
             LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
             LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
             entry.pack(side=RIGHT)
@@ -473,7 +473,7 @@ class Item15(ItemBase):
         Label(self.frames[0], text='15. Другие данные').pack(side=LEFT)
         entry = EntryBase(self.frames[1], default='нет')
         entry.pack(fill=X)
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
 
 
 class Item16(ItemBase):
@@ -482,9 +482,9 @@ class Item16(ItemBase):
         self.frame.grid(row=0, column=4)
         Label(self.frame, text='16. Окончание освидетельствования').pack()
         Label(self.frame, text='Дата').pack(side=LEFT)
-        self.init_widgets.append(EntryDate(self.frame, '%d.%m.%Y'))
+        self.widgets.append(EntryDate(self.frame, '%d.%m.%Y'))
         Label(self.frame, text='Время').pack(side=LEFT)
-        self.init_widgets.append(EntryTime(self.frame, '%H:%M'))
+        self.widgets.append(EntryTime(self.frame, '%H:%M'))
 
 
 class Item17(ItemBase):
@@ -492,11 +492,11 @@ class Item17(ItemBase):
         ItemBase.__init__(self, master, frames_number=3)
         Label(self.frames[0], text='17. Заключение').pack(side=LEFT)
         entry = EntryDisabled(self.frames[2])
-        self.init_widgets.append(entry)
+        self.widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
         Label(self.frames[2], text='Дата').pack(side=LEFT)
         date = EntryDate(self.frames[2])
-        self.init_widgets.append(date)
+        self.widgets.append(date)
         for i, text in (
                 (0, 'от медицинского освидетельствования отказался'),
                 (1, 'состояние опьянения не установлено'),

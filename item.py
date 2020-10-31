@@ -177,8 +177,10 @@ class Item5(ItemBase):
             self.option_menu['state'] = 'disabled'
 
     def dump(self):
-        names, organisation, date = \
-            self.option_menu.string_var.get().split(', ')
+        line = self.option_menu.string_var.get()
+        if not line:
+            return '', ''
+        names, organisation, date = line.split(', ')
         return names, organisation + ', ' + date
 
 
@@ -189,9 +191,12 @@ class Item6(ItemBase):
             side=LEFT)
         line = 'внешний вид и кожные покровы без особенностей, '\
             'видимых повреждений нет'
-        entry = EntryBase(self.frames[1], width=69, default=line)
-        entry.pack(fill=X)
-        self.init_widgets.append(entry)
+        self.entry = EntryBase(self.frames[1], width=69, default=line)
+        self.entry.pack(fill=X)
+        self.init_widgets.append(self.entry)
+
+    def dump(self):
+        return self.entry.get()
 
 
 class Item7(ItemBase):
@@ -199,9 +204,12 @@ class Item7(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        entry = EntryBase(self.frames[1], default='не предъявляет')
-        entry.pack(fill=X)
-        self.init_widgets.append(entry)
+        self.entry = EntryBase(self.frames[1], default='не предъявляет')
+        self.entry.pack(fill=X)
+        self.init_widgets.append(self.entry)
+
+    def dump(self):
+        return self.entry.get()
 
 
 class Item8(ItemBase):

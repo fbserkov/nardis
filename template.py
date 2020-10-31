@@ -79,13 +79,13 @@ def create_pdf(filename, data):
     )
 
     spacer(1)
-    liner('Normal+', '6. Внешний вид освидетельствуемого', data_[6][0])
+    liner('Normal+', '6. Внешний вид освидетельствуемого', report[6])
 
     spacer(1)
     liner(
         'Normal+',
         '7. Жалобы освидетельствуемого на свое состояние',
-        data_[7][0],
+        report[7],
     )
 
     spacer(1)

@@ -40,5 +40,5 @@ class Database:
         return self.settings['Технические средства']
 
     def save(self):
-        with open(self.filename, 'wb') as file:
+        with open(self.filename, 'wb') as file:  # TODO what if dump error
             pickle.dump((self.settings, self.reports), file)

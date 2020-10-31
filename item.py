@@ -151,10 +151,11 @@ class Item4(ItemBase):
         self.date = EntryDate(self.frame, '%d.%m.%Y')
         self.init_widgets.append(self.date)
         Label(self.frame, text='Время').pack(side=LEFT)
-        self.init_widgets.append(EntryTime(self.frame, '%H:%M'))
+        self.time = EntryTime(self.frame, '%H:%M')
+        self.init_widgets.append(self.time)
 
     def dump(self):
-        return self.date.get()
+        return self.date.get(), self.time.get()
 
 
 class Item5(ItemBase):

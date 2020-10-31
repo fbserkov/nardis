@@ -32,7 +32,7 @@ def create_pdf(filename, data):
     liner('Center', '(алкогольного, наркотического или иного токсического)')
     liner('Center', '№', report[0])
     spacer(2)
-    liner('Normal+', '', format_date(report[4]))
+    liner('Normal+', '', format_date(report[4][0]))
 
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
@@ -65,7 +65,7 @@ def create_pdf(filename, data):
     liner(
         'Normal+',
         '4. Дата и точное время начала медицинского освидетельствования',
-        data_[4][0],
+        report[4][0] + ' ' + report[4][1],
     )
 
     spacer(1)

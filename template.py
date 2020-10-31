@@ -36,13 +36,13 @@ def create_pdf(filename, data):
 
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
-    liner('Normal+', 'Фамилия, имя, отчество', report[1])
-    liner('Normal+', 'Дата рождения', data_[1][1])
-    liner('Normal+', 'Адрес места жительства', data_[1][2])
+    liner('Normal+', 'Фамилия, имя, отчество', report[1][0])
+    liner('Normal+', 'Дата рождения', report[1][1])
+    liner('Normal+', 'Адрес места жительства', report[1][2])
     liner(
         'Normal+',
         'Сведения об освидетельствуемом лице заполнены на основании',
-        data_[1][3],
+        report[1][3],
     )
 
     spacer(1)

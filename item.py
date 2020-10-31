@@ -81,28 +81,34 @@ class Item1(ItemBase):
         self.names = EntryBase(self.frames[1])
         self.names.pack(side=LEFT, expand=True, fill=X)
         self.init_widgets.append(self.names)
-        self.init_widgets.append(EntryDate(self.frames[1]))
+        self.date = EntryDate(self.frames[1])
+        self.init_widgets.append(self.date)
 
         Label(self.frames[2], text='Адрес места жительства').pack(side=LEFT)
-        entry = EntryBase(self.frames[4])
-        entry.pack(fill=X)
-        self.init_widgets.append(entry)
-        LabelAdd(self.frames[3], text='г. Комсомольск-на-Амуре', bind=entry)
-        LabelAdd(self.frames[3], text='Комсомольский район', bind=entry)
-        LabelAdd(self.frames[3], text='Хабаровский край', bind=entry)
+        self.address = EntryBase(self.frames[4])
+        self.address.pack(fill=X)
+        self.init_widgets.append(self.address)
+        LabelAdd(
+            self.frames[3], text='г. Комсомольск-на-Амуре', bind=self.address)
+        LabelAdd(self.frames[3], text='Комсомольский район', bind=self.address)
+        LabelAdd(self.frames[3], text='Хабаровский край', bind=self.address)
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(self.frames[5], text=line).pack(side=LEFT)
-        entry = EntryBase(self.frames[6])
-        entry.pack(side=LEFT, expand=True, fill=X)
-        self.init_widgets.append(entry)
-        LabelReplace(self.frames[5], text='протокола', bind=entry)
+        self.document = EntryBase(self.frames[6])
+        self.document.pack(side=LEFT, expand=True, fill=X)
+        self.init_widgets.append(self.document)
+        LabelReplace(self.frames[5], text='протокола', bind=self.document)
         line = 'водительского удостоверения'
-        LabelReplace(self.frames[6], text=line, bind=entry, place=LEFT)
-        LabelReplace(self.frames[6], text='паспорта', bind=entry, place=LEFT)
+        LabelReplace(self.frames[6], text=line, bind=self.document, place=LEFT)
+        LabelReplace(
+            self.frames[6], text='паспорта', bind=self.document, place=LEFT)
 
     def dump(self):
-        return self.names.get()
+        return (
+            self.names.get(), self.date.get(),
+            self.address.get(), self.document.get(),
+        )
 
 
 class Item2(ItemBase):

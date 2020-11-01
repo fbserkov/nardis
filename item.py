@@ -369,6 +369,9 @@ class Item11(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
+    def dump(self):
+        return self.widgets[0].get()
+
 
 class Item12(ItemBase):
     def __init__(self, master):
@@ -387,6 +390,9 @@ class Item12(ItemBase):
         LabelReplace(self.frames[2], text='отрицает', bind=entry, place=LEFT)
         LabelReplace(
             self.frames[2], text='употреблял спиртное', bind=entry, place=LEFT)
+
+    def dump(self):
+        return self.widgets[0].get()
 
 
 class Item13(ItemBase):

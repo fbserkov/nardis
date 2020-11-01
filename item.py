@@ -256,9 +256,10 @@ class Item8(ItemBase):
         Label(self.frames[7], text='сек.').pack(side=LEFT)
 
     def dump(self):
+        temp = self.widgets[3].get()
         return (
             self.widgets[0].get(), self.widgets[1].get(),
-            self.widgets[2].get(), self.widgets[3].get(),
+            self.widgets[2].get(), temp + ' сек.' if temp else '',
         )
 
 
@@ -292,6 +293,12 @@ class Item9(ItemBase):
                 place=dict(row=i + 1, column=2, sticky=E),
             )
 
+    def dump(self):
+        return (
+            self.widgets[0].get(), self.widgets[1].get(),
+            self.widgets[2].get(), self.widgets[3].get(),
+        )
+
 
 class Item10(ItemBase):
     def __init__(self, master):
@@ -301,8 +308,8 @@ class Item10(ItemBase):
 
         default = 'речевая способность сохранена'
         entry = EntryDisabled(self.frames[2], default=default)
-        self.widgets.append(entry)
         entry.pack(fill=X)
+        self.widgets.append(entry)
         Label(self.frames[1], text='речь').pack(side=LEFT)
         for text in \
                 'речь бессвязная', 'смазанность речи', 'нарушение артикуляции':
@@ -310,8 +317,8 @@ class Item10(ItemBase):
 
         default = 'уверенная'
         entry = EntryDisabled(self.frames[4], default=default)
-        self.widgets.append(entry)
         entry.pack(fill=X)
+        self.widgets.append(entry)
         Label(self.frames[3], text='походка').pack(side=LEFT)
         for text in 'пошатывание при поворотах', 'шатающаяся':
             LabelAddSmart(self.frames[3], text, bind=(entry, default))
@@ -320,8 +327,8 @@ class Item10(ItemBase):
             side=LEFT)
         default = 'не проводилось'
         entry = EntryDisabled(self.frames[5], default=default)
-        self.widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.widgets.append(entry)
         for text in 'устойчив', 'неустойчив', 'падает':
             LabelReplaceSmart(
                 self.frames[5], text, bind=(entry, default), place=LEFT)
@@ -329,17 +336,25 @@ class Item10(ItemBase):
         line = 'точность выполнения координационных проб'
         Label(self.frames[6], text=line).pack(side=LEFT)
         entry = EntryDisabled(self.frames[7], default=default)
-        self.widgets.append(entry)
         entry.pack(side=LEFT, expand=True, fill=X)
+        self.widgets.append(entry)
         for text in 'выполняет точно', 'промахивание', 'не выполняет':
             LabelReplaceSmart(
                 self.frames[7], text, bind=(entry, default), place=LEFT)
 
         Label(self.frames[8], text='результат пробы Ташена').pack(side=LEFT)
         entry = EntryTimer(self.frames[8])
-        self.widgets.append(entry)
         entry.pack(side=LEFT)
+        self.widgets.append(entry)
         Label(self.frames[8], text='сек.').pack(side=LEFT)
+
+    def dump(self):
+        temp = self.widgets[4].get()
+        return (
+            self.widgets[0].get(), self.widgets[1].get(),
+            self.widgets[2].get(), self.widgets[3].get(),
+            temp + ' сек.' if temp else '',
+        )
 
 
 class Item11(ItemBase):

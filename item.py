@@ -83,36 +83,33 @@ class Item1(ItemBase):
         ).pack(side=LEFT)
         Label(self.frames[0], text='Дата рождения').pack(side=RIGHT)
         Label(self.frames[1], text='Фамилия, имя, отчество').pack(side=LEFT)
-        self.names = EntryBase(self.frames[1])
-        self.names.pack(side=LEFT, expand=True, fill=X)
-        self.widgets.append(self.names)
-        self.date = EntryDate(self.frames[1])
-        self.widgets.append(self.date)
+        entry = EntryBase(self.frames[1])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        self.widgets.append(entry)
+        self.widgets.append(EntryDate(self.frames[1]))
 
         Label(self.frames[2], text='Адрес места жительства').pack(side=LEFT)
-        self.address = EntryBase(self.frames[4])
-        self.address.pack(fill=X)
-        self.widgets.append(self.address)
-        LabelAdd(
-            self.frames[3], text='г. Комсомольск-на-Амуре', bind=self.address)
-        LabelAdd(self.frames[3], text='Комсомольский район', bind=self.address)
-        LabelAdd(self.frames[3], text='Хабаровский край', bind=self.address)
+        entry = EntryBase(self.frames[4])
+        entry.pack(fill=X)
+        self.widgets.append(entry)
+        LabelAdd(self.frames[3], text='г. Комсомольск-на-Амуре', bind=entry)
+        LabelAdd(self.frames[3], text='Комсомольский район', bind=entry)
+        LabelAdd(self.frames[3], text='Хабаровский край', bind=entry)
 
         line = 'Сведения об освидетельствуемом лице заполнены на основании'
         Label(self.frames[5], text=line).pack(side=LEFT)
-        self.document = EntryBase(self.frames[6])
-        self.document.pack(side=LEFT, expand=True, fill=X)
-        self.widgets.append(self.document)
-        LabelReplace(self.frames[5], text='протокола', bind=self.document)
+        entry = EntryBase(self.frames[6])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        self.widgets.append(entry)
+        LabelReplace(self.frames[5], text='протокола', bind=entry)
         line = 'водительского удостоверения'
-        LabelReplace(self.frames[6], text=line, bind=self.document, place=LEFT)
-        LabelReplace(
-            self.frames[6], text='паспорта', bind=self.document, place=LEFT)
+        LabelReplace(self.frames[6], text=line, bind=entry, place=LEFT)
+        LabelReplace(self.frames[6], text='паспорта', bind=entry, place=LEFT)
 
     def dump(self):
         return (
-            self.names.get(), self.date.get(),
-            self.address.get(), self.document.get(),
+            self.widgets[0].get(), self.widgets[1].get(),
+            self.widgets[2].get(), self.widgets[3].get(),
         )
 
 
@@ -121,21 +118,22 @@ class Item2(ItemBase):
         ItemBase.__init__(self, master, frames_number=5)
         line = '2. Основание для медицинского освидетельствования'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        self.reason = EntryBase(self.frames[3])
-        self.reason.pack(fill=X)
-        self.widgets.append(self.reason)
+        entry = EntryBase(self.frames[3])
+        entry.pack(fill=X)
+        self.widgets.append(entry)
         line = 'протокол о направлении на медицинское освидетельствование'
-        LabelReplace(self.frames[1], text=line, bind=self.reason)
-        LabelReplace(self.frames[2], text='личное заявление', bind=self.reason)
+        LabelReplace(self.frames[1], text=line, bind=entry)
+        LabelReplace(self.frames[2], text='личное заявление', bind=entry)
         line = 'письменное направление работодателя'
-        LabelReplace(self.frames[2], text=line, bind=self.reason)
+        LabelReplace(self.frames[2], text=line, bind=entry)
+
         Label(self.frames[4], text='Кем направлен (ФИО)').pack(side=LEFT)
-        self.names = EntryBase(self.frames[4])
-        self.names.pack(side=LEFT, expand=True, fill=X)
-        self.widgets.append(self.names)
+        entry = EntryBase(self.frames[4])
+        entry.pack(side=LEFT, expand=True, fill=X)
+        self.widgets.append(entry)
 
     def dump(self):
-        return self.reason.get(), self.names.get()
+        return self.widgets[0].get(), self.widgets[1].get()
 
 
 class Item3(ItemBase):
@@ -153,14 +151,12 @@ class Item4(ItemBase):
         self.frame.grid(row=0, column=2)
         Label(self.frame, text='4. Начало освидетельствования').pack()
         Label(self.frame, text='Дата').pack(side=LEFT)
-        self.date = EntryDate(self.frame, '%d.%m.%Y')
-        self.widgets.append(self.date)
+        self.widgets.append(EntryDate(self.frame, '%d.%m.%Y'))
         Label(self.frame, text='Время').pack(side=LEFT)
-        self.time = EntryTime(self.frame, '%H:%M')
-        self.widgets.append(self.time)
+        self.widgets.append(EntryTime(self.frame, '%H:%M'))
 
     def dump(self):
-        return self.date.get(), self.time.get()
+        return self.widgets[0].get(), self.widgets[1].get()
 
 
 class Item5(ItemBase):
@@ -168,25 +164,24 @@ class Item5(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         self.data = data
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
-        self.option_menu = OptionMenuSmart(
-            self.frames[1], self.data.get_doctors())
-        self.widgets.append(self.option_menu)
+        self.widgets.append(
+            OptionMenuSmart(self.frames[1], self.data.get_doctors()))
 
     def update_user(self):
         user = self.data.current_user
         if user == 'admin':
-            self.option_menu.string_var.set('')
-            self.option_menu['state'] = 'normal'
+            self.widgets[0].string_var.set('')
+            self.widgets[0]['state'] = 'normal'
         else:
-            self.option_menu.string_var.set(user)
-            self.option_menu['state'] = 'disabled'
+            self.widgets[0].string_var.set(user)
+            self.widgets[0]['state'] = 'disabled'
 
     def dump(self):
-        line = self.option_menu.string_var.get()
+        line = self.widgets[0].string_var.get()
         if not line:
             return '', ''
-        names, organisation, date = line.split(', ')
-        return names, organisation + ', ' + date
+        names, *tail = line.split(', ')
+        return names, ', '.join(tail)
 
 
 class Item6(ItemBase):
@@ -196,12 +191,12 @@ class Item6(ItemBase):
             side=LEFT)
         line = 'внешний вид и кожные покровы без особенностей, '\
             'видимых повреждений нет'
-        self.entry = EntryBase(self.frames[1], width=69, default=line)
-        self.entry.pack(fill=X)
-        self.widgets.append(self.entry)
+        entry = EntryBase(self.frames[1], width=69, default=line)
+        entry.pack(fill=X)
+        self.widgets.append(entry)
 
     def dump(self):
-        return self.entry.get()
+        return self.widgets[0].get()
 
 
 class Item7(ItemBase):
@@ -209,12 +204,12 @@ class Item7(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         line = '7. Жалобы освидетельствуемого на своё состояние'
         Label(self.frames[0], text=line).pack(side=LEFT)
-        self.entry = EntryBase(self.frames[1], default='не предъявляет')
-        self.entry.pack(fill=X)
-        self.widgets.append(self.entry)
+        entry = EntryBase(self.frames[1], default='не предъявляет')
+        entry.pack(fill=X)
+        self.widgets.append(entry)
 
     def dump(self):
-        return self.entry.get()
+        return self.widgets[0].get()
 
 
 class Item8(ItemBase):

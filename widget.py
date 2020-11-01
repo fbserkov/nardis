@@ -7,14 +7,14 @@ from tkinter import (
 
 class CheckbuttonSmart(Checkbutton):
     def __init__(self, master, text):
-        self.variable = IntVar(master)
+        self.int_var = IntVar(master)
         Checkbutton.__init__(
             self, master, text=text,
-            variable=self.variable, onvalue=1, offvalue=0,
+            variable=self.int_var, onvalue=1, offvalue=0,
         )
 
     def init(self):
-        self.variable.set(0)
+        self.int_var.set(0)
 
 
 class EntryBase(Entry):

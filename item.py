@@ -417,12 +417,11 @@ class Item13(ItemBase):
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = data.get_technical_means()
-        self.widgets.append(
-            OptionMenuSmart(self.frames[2], technical_means))
-        checkbutton = CheckbuttonSmart(
-            self.frames[3], text='фальсификация выдоха')
-        self.widgets.append(checkbutton)
+        self.widgets.append(OptionMenuSmart(self.frames[2], technical_means))
+        self.line = 'фальсификация выдоха'
+        checkbutton = CheckbuttonSmart(self.frames[3], text=self.line)
         checkbutton.pack(side=RIGHT)
+        self.widgets.append(checkbutton)
 
         Label(self.frames[4], text='13.2. Второе исследование').grid(
             row=0, column=0)
@@ -440,6 +439,8 @@ class Item13(ItemBase):
             OptionMenuSmart(self.frames[5], technical_means))
 
     def dump(self):
+        if self.widgets[3].int_var.get():
+            return self.line, * 5 * ('',)
         temp_1 = self.widgets[1].get()
         temp_5 = self.widgets[5].get()
         return (
@@ -453,28 +454,32 @@ class Item13(ItemBase):
 class Item14(ItemBase):
     def __init__(self, master, data):
         ItemBase.__init__(self, master, frames_number=5)
+        self.data = data
         line = '14. Время отбора биологического объекта'
         Label(self.frames[0], text=line).pack(side=LEFT)
         self.widgets.append(EntryTime(self.frames[0]))
+
         default = 'моча'
         entry = EntryDisabled(self.frames[0], width=5, default=default)
-        self.widgets.append(entry)
         LabelReplaceSmart(self.frames[0], text='кровь', bind=(entry, default))
         entry.pack(side=RIGHT)
         Label(self.frames[0], text='среда').pack(side=RIGHT)
+        self.widgets.append(entry)
+
         frame = Frame(self.frames[1])
         frame.pack(side=RIGHT)
-        checkbutton = CheckbuttonSmart(
-            frame, text='отказ от сдачи пробы биологического объекта (мочи)')
-        self.widgets.append(checkbutton)
+        self.line_1 = 'отказ от сдачи пробы биологического объекта (мочи)'
+        checkbutton = CheckbuttonSmart(frame, text=self.line_1)
         checkbutton.grid(row=0, sticky=W)
-        checkbutton = CheckbuttonSmart(
-            frame, text='фальсификация пробы биологического объекта (мочи)')
         self.widgets.append(checkbutton)
+        self.line_2 = 'фальсификация пробы биологического объекта (мочи)'
+        checkbutton = CheckbuttonSmart(frame, text=self.line_2)
         checkbutton.grid(row=1)
+        self.widgets.append(checkbutton)
+
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(
-            OptionMenuSmart(self.frames[2], data.get_methods()))
+            OptionMenuSmart(self.frames[2], self.data.get_methods()))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
@@ -486,20 +491,47 @@ class Item14(ItemBase):
         entry.pack(side=RIGHT)
         self.widgets.append(entry)
         Label(self.frames[3], text='номер справки').pack(side=RIGHT)
+
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
         self.frames[4].columnconfigure(4, weight=1)
-        chemicals = data.get_chemicals()
-        for i in range(11):
+        self.chemicals = self.data.get_chemicals()
+        for i, chemical in enumerate(self.chemicals):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(self.frames[4])
             frame.grid(row=row, column=column, sticky=W + E)
-            Label(frame, text=chemicals[i]).pack(side=LEFT)
+            Label(frame, text=chemical).pack(side=LEFT)
             entry = EntryDisabled(frame, width=4)
-            self.widgets.append(entry)
             LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
             LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
             entry.pack(side=RIGHT)
+            self.widgets.append(entry)
+
+    def dump(self):
+        line = ''
+        if self.widgets[2].int_var.get():
+            line = self.line_1
+        if self.widgets[3].int_var.get():
+            line = self.line_2
+        if line:
+            return line, * 4 * ('',)
+        temp_0 = self.widgets[0].get()
+        temp_6 = self.widgets[6].get()
+        return (
+            temp_0 + ' (' + self.widgets[1].get() + ')' if temp_0 else '',
+            self.data.settings['Лаборатория'] if temp_0 else '',
+            self.widgets[4].string_var.get(),
+            temp_6 + ('/' + self.widgets[5].get() if temp_6 else ''),
+            self.get_result(),
+        )
+
+    def get_result(self):
+        result = ''
+        for i, chemical in enumerate(self.chemicals):
+            temp = self.widgets[7 + i].get()
+            if temp:
+                result += chemical + ' ' + temp + ', '
+        return result
 
 
 class Item15(ItemBase):

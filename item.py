@@ -236,8 +236,8 @@ class Item8(ItemBase):
         ):
             LabelAddSmart(self.frames[2], text, bind=(entry, default))
         for text in (
-                'заторможен', 'сонлив', 'настроение '
-                                        'неустойчиво', 'суетлив', 'болтлив',
+                'заторможен', 'сонлив', 'настроение неустойчиво',
+                'суетлив', 'болтлив',
         ):
             LabelAddSmart(self.frames[3], text, bind=(entry, default))
 
@@ -254,6 +254,12 @@ class Item8(ItemBase):
         self.widgets.append(entry)
         entry.pack(side=LEFT)
         Label(self.frames[7], text='сек.').pack(side=LEFT)
+
+    def dump(self):
+        return (
+            self.widgets[0].get(), self.widgets[1].get(),
+            self.widgets[2].get(), self.widgets[3].get(),
+        )
 
 
 class Item9(ItemBase):

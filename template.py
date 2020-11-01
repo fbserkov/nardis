@@ -18,7 +18,6 @@ story = []
 
 def create_pdf(filename, data):
     report = data.reports[-1]
-    data_ = [[f'{j}-{i}' for i in range(5)] for j in range(19)]
 
     tbl(
         report[0][0],
@@ -180,22 +179,23 @@ def create_pdf(filename, data):
     liner(
         'Normal+',
         '15. Другие данные медицинского осмотра или представленных документов',
-        data_[15][0],
+        report[15],
     )
 
     spacer(1)
     liner(
         'Normal+',
         '16. Дата и точное время окончания медицинского освидетельствования',
-        data_[16][0],
+        report[16][0] + ' ' + report[16][1],
     )
 
     spacer(1)
-    liner('Normal+', '17. Медицинское заключение', data_[17][0])
-    liner('Normal+', 'дата его вынесения', data_[17][1])
+    liner('Normal+', '17. Медицинское заключение', report[17][0])
+    liner('Normal+', 'дата его вынесения', report[17][1])
 
     spacer(1)
-    liner('Normal+', '18. Подпись врача ______________', data_[18][0])
+    names = '/ ' + report[5][0] + ' /'
+    liner('Normal+', '18. Подпись врача ______________', names)
     liner('Indent', 'М.П.')
 
     SimpleDocTemplate(
@@ -203,7 +203,7 @@ def create_pdf(filename, data):
         topMargin=1.5*cm, bottomMargin=3*cm,
     ).build(
         story,
-        onFirstPage=lambda canvas, _: page_1(canvas, data_[18][0]),
+        onFirstPage=lambda canvas, _: page_1(canvas, names),
         onLaterPages=lambda canvas, _: page_2(canvas),
     )
 
@@ -217,13 +217,13 @@ def format_date(date):
     return f'"{int(day)}" {month_words[int(month) - 1]} {year} г.'
 
 
-def page_1(canvas, signature):
+def page_1(canvas, names):
     canvas.setFont('arial', 12)
     canvas.drawString(2.5*cm, 1*cm + 28, 'Подпись врача ______________')
     canvas.drawString(14.0*cm, 1*cm + 14, 'М.П.')
     canvas.drawString(16.5*cm, 1*cm, 'Страница 1 из 2')
     canvas.setFont('arialbd', 12)
-    canvas.drawString(9.0*cm, 1*cm + 28, signature)
+    canvas.drawString(9.0 * cm, 1 * cm + 28, names)
 
 
 def page_2(canvas):

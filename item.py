@@ -27,10 +27,6 @@ class ItemBase:
             self.frame = Frame(ItemBase.frame)
 
     @staticmethod
-    def dump():  # TODO delete
-        return 'dump'
-
-    @staticmethod
     def get_frames(master, length):
         frames = []
         for i in range(length):
@@ -542,6 +538,9 @@ class Item15(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
+    def dump(self):
+        return self.widgets[0].get()
+
 
 class Item16(ItemBase):
     def __init__(self, master):
@@ -552,6 +551,9 @@ class Item16(ItemBase):
         self.widgets.append(EntryDate(self.frame, '%d.%m.%Y'))
         Label(self.frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(self.frame, '%H:%M'))
+
+    def dump(self):
+        return self.widgets[0].get(), self.widgets[1].get()
 
 
 class Item17(ItemBase):
@@ -570,3 +572,6 @@ class Item17(ItemBase):
                 (1, 'установлено состояние опьянения'),
         ):
             LabelReplaceSmartDate(self.frames[i], text, bind=(entry, '', date))
+
+    def dump(self):
+        return self.widgets[0].get(), self.widgets[1].get()

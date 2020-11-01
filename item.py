@@ -439,6 +439,16 @@ class Item13(ItemBase):
         self.widgets.append(
             OptionMenuSmart(self.frames[5], technical_means))
 
+    def dump(self):
+        temp_1 = self.widgets[1].get()
+        temp_5 = self.widgets[5].get()
+        return (
+            self.widgets[0].get(), temp_1 + ' мг/л' if temp_1 else '',
+            self.widgets[2].string_var.get(), self.widgets[4].get(),
+            temp_5 + ' мг/л' if temp_5 else '',
+            self.widgets[6].string_var.get(),
+        )
+
 
 class Item14(ItemBase):
     def __init__(self, master, data):

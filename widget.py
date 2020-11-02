@@ -13,6 +13,10 @@ class CheckbuttonSmart(Checkbutton):
             variable=self.int_var, onvalue=1, offvalue=0,
         )
 
+    @staticmethod
+    def check():
+        pass
+
     def init(self):
         self.int_var.set(0)
 
@@ -23,6 +27,10 @@ class EntryBase(Entry):
         self.default = default
         if width:
             self['width'] = width
+
+    @staticmethod
+    def check():
+        pass
 
     def init(self):
         self.delete(0, END)
@@ -205,6 +213,10 @@ class OptionMenuSmart(OptionMenu):
         self.config(
             font='-size 10', fg='#800000', disabledforeground='#800000')
         self.pack(fill=X)
+
+    @staticmethod
+    def check():
+        pass
 
     def init(self):
         if self['state'] == 'normal':

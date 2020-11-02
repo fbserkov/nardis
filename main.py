@@ -17,12 +17,11 @@ class FramePart(Frame):
 
         self.buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
-            Button(frame, text='III'), Button(frame, text='IV')
+            Button(frame, text='III'), Button(frame, text='IV'),
         )
-        for button in self.buttons:
-            button.pack(side=LEFT, expand=True, fill=X)
-            button.bind('<Button-1>', lambda e: self.show_label_frame(
-                self.buttons.index(e.widget) + 1))
+        for i, obj in enumerate(self.buttons):
+            obj.pack(side=LEFT, expand=True, fill=X)
+            obj['command'] = lambda j=i: self.show_part(j + 1)
 
         self.label_frames = (
             PassportPart(self, data), CommonPart(self),
@@ -43,7 +42,7 @@ class FramePart(Frame):
         self.data.save()
         create_pdf('test.pdf', self.data)
 
-    def show_label_frame(self, index):
+    def show_part(self, index):
         if self.index == index:
             return
         self.label_frames[self.index - 1].forget()
@@ -117,7 +116,7 @@ class WindowMain:
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
             self.frame_part.pack(fill=X)
-            self.frame_part.show_label_frame(1)
+            self.frame_part.show_part(1)
             self.frame_part.init()
 
     def create_menu(self):

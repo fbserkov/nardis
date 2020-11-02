@@ -40,12 +40,12 @@ class Database:
         return self.settings['Технические средства']
 
     def save(self):
-        with open(self.filename, 'rb') as file:
-            temp = file.read()
-        with open(self.filename, 'wb') as file:
+        with open(self.filename, 'rb') as file_1:
+            temp = file_1.read()
+        with open(self.filename, 'wb') as file_2:
             try:
-                pickle.dump((self.settings, self.reports), file)
+                pickle.dump((self.settings, self.reports), file_2)
             except Exception as exception:
-                with open(self.filename, 'wb') as file:
-                    file.write(temp)
+                with open(self.filename, 'wb') as file_1:
+                    file_1.write(temp)
                     raise exception

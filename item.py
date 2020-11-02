@@ -465,13 +465,14 @@ class Item14(ItemBase):
         frame = Frame(self.frames[1])
         frame.pack(side=RIGHT)
         self.line_1 = 'отказ от сдачи пробы биологического объекта (мочи)'
-        checkbutton = CheckbuttonSmart(frame, text=self.line_1)
-        checkbutton.grid(row=0, sticky=W)
-        self.widgets.append(checkbutton)
+        self.checkbutton_1 = CheckbuttonSmart(frame, text=self.line_1)
+        # TODO button.bind('<Button-1>'
+        self.checkbutton_1.grid(row=0, sticky=W)
+        self.widgets.append(self.checkbutton_1)
         self.line_2 = 'фальсификация пробы биологического объекта (мочи)'
-        checkbutton = CheckbuttonSmart(frame, text=self.line_2)
-        checkbutton.grid(row=1)
-        self.widgets.append(checkbutton)
+        self.checkbutton_2 = CheckbuttonSmart(frame, text=self.line_2)
+        self.checkbutton_2.grid(row=1)
+        self.widgets.append(self.checkbutton_2)
 
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(

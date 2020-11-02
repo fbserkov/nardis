@@ -96,6 +96,15 @@ class EntryResult(EntrySmart):
         self.condition = lambda length: length == 1
         self.pack(side=LEFT)
 
+    def check(self, exc):
+        exc.add('Неверно указан результат')
+        if EntrySmart.check(self, exc):
+            return
+        try:
+            float(self.get())
+        except ValueError:
+            raise exc
+
 
 class EntryTime(EntrySmart):
     def __init__(self, master, default=None):

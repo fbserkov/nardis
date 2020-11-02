@@ -109,6 +109,13 @@ class EntryTimer(EntrySmart):
     def __init__(self, master):
         EntrySmart.__init__(self, master, width=2)
 
+    def check(self, exc):
+        exc.add('Неверно указаны секунды')
+        if EntryBase.check(self, exc):
+            return
+        if not self.get().isdigit():
+            raise exc
+
 
 class EntryYear(EntrySmart):
     def __init__(self, master, default=None):

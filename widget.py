@@ -104,6 +104,15 @@ class EntryTime(EntrySmart):
         self.condition = lambda length: length == 2
         self.pack(side=LEFT)
 
+    def check(self, exc):
+        exc.add('Неверно указано время')
+        if EntrySmart.check(self, exc):
+            return
+        try:
+            strptime(self.get(), '%H:%M')
+        except ValueError:
+            raise exc
+
 
 class EntryTimer(EntrySmart):
     def __init__(self, master):

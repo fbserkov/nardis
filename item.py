@@ -30,7 +30,7 @@ class ItemBase:
     def check(self, index):
         try:
             for widget in self.widgets:
-                widget.check()
+                widget.check(CheckException())
         except CheckException as exc:
             exc.add('\nв пункте ' + str(index) + '.')
             raise exc

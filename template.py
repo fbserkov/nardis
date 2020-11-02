@@ -209,6 +209,8 @@ def create_pdf(filename, data):
 
 
 def format_date(date):
+    if not date:
+        return ''
     day, month, year = date.split('.')
     month_words = (
         'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',

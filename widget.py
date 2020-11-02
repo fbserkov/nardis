@@ -1,9 +1,8 @@
-from time import strftime
+from time import strftime, strptime
 from tkinter import (
     Checkbutton, END, Entry, IntVar, Label,
     LEFT, OptionMenu, RIGHT, StringVar, X,
 )
-from exception import CheckException
 
 
 class CheckbuttonSmart(Checkbutton):
@@ -15,7 +14,7 @@ class CheckbuttonSmart(Checkbutton):
         )
 
     @staticmethod
-    def check():
+    def check(exc):
         pass
 
     def init(self):
@@ -29,9 +28,8 @@ class EntryBase(Entry):
         if width:
             self['width'] = width
 
-    @staticmethod
-    def check():
-        pass
+    def check(self, exc):
+        return not self.get()
 
     def init(self):
         self.delete(0, END)
@@ -57,6 +55,12 @@ class EntrySmart(EntryBase):
         self.condition = lambda length: False
         self.bind('<KeyRelease>', self.key_release)
 
+    def check(self, exc):
+        if EntryBase.check(self, exc):
+            return True
+        if len(self.get()) < self.length:
+            raise exc
+
     def init(self):
         self.delete(0, END)
         if self.default:
@@ -75,6 +79,15 @@ class EntryDate(EntrySmart):
         EntrySmart.__init__(self, master, width=10, default=default)
         self.condition = lambda length: length == 2 or length == 5
         self.pack(side=LEFT)
+
+    def check(self, exc):
+        exc.add('Неверно указана дата')
+        if EntrySmart.check(self, exc):
+            return
+        try:
+            strptime(self.get(), '%d.%m.%Y')
+        except ValueError:
+            raise exc
 
 
 class EntryResult(EntrySmart):
@@ -101,11 +114,12 @@ class EntryYear(EntrySmart):
     def __init__(self, master, default=None):
         EntrySmart.__init__(self, master, width=2, default=default)
 
-    def check(self):
-        s = self.get()
-        if not s or len(s) == 2 and s.isdigit():
+    def check(self, exc):
+        exc.add('Неверно указан год')
+        if EntrySmart.check(self, exc):
             return
-        raise CheckException('Неверно указан год')
+        if not self.get().isdigit():
+            raise exc
 
 
 class LabelBase(Label):
@@ -222,7 +236,7 @@ class OptionMenuSmart(OptionMenu):
         self.pack(fill=X)
 
     @staticmethod
-    def check():
+    def check(exc):
         pass
 
     def init(self):

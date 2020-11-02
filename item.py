@@ -465,14 +465,17 @@ class Item14(ItemBase):
         frame = Frame(self.frames[1])
         frame.pack(side=RIGHT)
         self.line_1 = 'отказ от сдачи пробы биологического объекта (мочи)'
-        self.checkbutton_1 = CheckbuttonSmart(frame, text=self.line_1)
-        # TODO button.bind('<Button-1>'
-        self.checkbutton_1.grid(row=0, sticky=W)
-        self.widgets.append(self.checkbutton_1)
         self.line_2 = 'фальсификация пробы биологического объекта (мочи)'
-        self.checkbutton_2 = CheckbuttonSmart(frame, text=self.line_2)
-        self.checkbutton_2.grid(row=1)
-        self.widgets.append(self.checkbutton_2)
+        button_1 = CheckbuttonSmart(frame, text=self.line_1)
+        button_2 = CheckbuttonSmart(frame, text=self.line_2)
+        button_1.bind(
+            '<Button-1>', lambda _: self.uncheck_extra(button_1, button_2))
+        button_2.bind(
+            '<Button-1>', lambda _: self.uncheck_extra(button_2, button_1))
+        button_1.grid(row=0, sticky=W)
+        button_2.grid(row=1)
+        self.widgets.append(button_1)
+        self.widgets.append(button_2)
 
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(
@@ -529,6 +532,13 @@ class Item14(ItemBase):
             if temp:
                 result += chemical + ' ' + temp + ', '
         return result
+
+    @staticmethod
+    def uncheck_extra(button_1, button_2):
+        if button_1.int_var.get():
+            return
+        if button_2.int_var.get():
+            button_2.int_var.set(0)
 
 
 class Item15(ItemBase):

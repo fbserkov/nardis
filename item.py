@@ -4,12 +4,19 @@ from widget import (
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
     LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
 )
-from exception import CheckException
 
 
 def create_item(master, num, data=None):
     class_ = globals()[f'Item{num}']
     return class_(master, data) if data else class_(master)
+
+
+class CheckException(Exception):
+    def __init__(self, text=''):
+        self.text = text
+
+    def add(self, text):
+        self.text += text
 
 
 class ItemBase:

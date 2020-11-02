@@ -4,7 +4,7 @@ import os
 from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
 from tkinter.messagebox import showinfo
 
-from exception import CheckException
+from item import CheckException
 from database import Database
 from part import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf

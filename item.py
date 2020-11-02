@@ -26,6 +26,10 @@ class ItemBase:
                 ItemBase.frame.columnconfigure(3, weight=1)
             self.frame = Frame(ItemBase.frame)
 
+    def check(self):
+        for widget in self.widgets:
+            widget.check()
+
     @staticmethod
     def get_frames(master, length):
         frames = []

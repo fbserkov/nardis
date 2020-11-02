@@ -29,18 +29,29 @@ class FramePart(Frame):
         )
         self.data, self.index = data, 0
 
+    def check(self):
+        for label_frame in self.label_frames:
+            label_frame.check()
+
+    def dump(self):
+        report = self.data.get_report()
+        for label_frame in self.label_frames:
+            for item in label_frame.items:
+                report[item] = label_frame.items[item].dump()
+
     def init(self):
         for label_frame in self.label_frames:
             label_frame.init()
         self.label_frames[0].update()
 
     def save(self):
-        report = self.data.get_report()
-        for label_frame in self.label_frames:
-            for item in label_frame.items:
-                report[item] = label_frame.items[item].dump()
-        self.data.save()
-        create_pdf('test.pdf', self.data)
+        try:
+            self.check()
+            self.dump()
+            self.data.save()
+            create_pdf('test.pdf', self.data)
+        except Exception as exc:
+            showinfo('title', exc)
 
     def show_part(self, index):
         if self.index == index:

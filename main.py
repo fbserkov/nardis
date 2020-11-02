@@ -6,7 +6,7 @@ from tkinter.messagebox import showinfo
 
 from exception import CheckException
 from database import Database
-from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
+from part import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
 
 

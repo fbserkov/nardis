@@ -4,6 +4,7 @@ import os
 from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
 from tkinter.messagebox import showinfo
 
+from exception import CheckException
 from database import Database
 from labelframe import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
@@ -31,7 +32,8 @@ class FramePart(Frame):
 
     def check(self):
         for label_frame in self.label_frames:
-            label_frame.check()
+            for i, item in label_frame.items.items():
+                item.check(i)
 
     def dump(self):
         report = self.data.get_report()
@@ -50,8 +52,8 @@ class FramePart(Frame):
             self.dump()
             self.data.save()
             create_pdf('test.pdf', self.data)
-        except Exception as exc:
-            showinfo('title', exc)
+        except CheckException as exc:
+            showinfo('Проверка', exc.text)
 
     def show_part(self, index):
         if self.index == index:

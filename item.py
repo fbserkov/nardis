@@ -4,6 +4,7 @@ from widget import (
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
     LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
 )
+from exception import CheckException
 
 
 def create_item(master, num, data=None):
@@ -26,9 +27,13 @@ class ItemBase:
                 ItemBase.frame.columnconfigure(3, weight=1)
             self.frame = Frame(ItemBase.frame)
 
-    def check(self):
-        for widget in self.widgets:
-            widget.check()
+    def check(self, index):
+        try:
+            for widget in self.widgets:
+                widget.check()
+        except CheckException as exc:
+            exc.add('\nв пункте ' + str(index) + '.')
+            raise exc
 
     @staticmethod
     def get_frames(master, length):

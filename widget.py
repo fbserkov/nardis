@@ -3,6 +3,7 @@ from tkinter import (
     Checkbutton, END, Entry, IntVar, Label,
     LEFT, OptionMenu, RIGHT, StringVar, X,
 )
+from exception import CheckException
 
 
 class CheckbuttonSmart(Checkbutton):
@@ -99,6 +100,12 @@ class EntryTimer(EntrySmart):
 class EntryYear(EntrySmart):
     def __init__(self, master, default=None):
         EntrySmart.__init__(self, master, width=2, default=default)
+
+    def check(self):
+        s = self.get()
+        if not s or len(s) == 2 and s.isdigit():
+            return
+        raise CheckException('Неверно указан год')
 
 
 class LabelBase(Label):

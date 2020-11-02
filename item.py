@@ -67,6 +67,11 @@ class Item0(ItemBase):
         entry.pack(side=LEFT)
         self.widgets.append(entry)
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[1].get():
+            raise CheckException('Не указан год\nв пункте 0.')
+
     def dump(self):
         return (
             self.data.settings['Организация'],

@@ -172,6 +172,13 @@ class Item4(ItemBase):
         Label(self.frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(self.frame, '%H:%M'))
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[0].get():
+            raise CheckException('Не указана дата\nв пункте 4.')
+        if not self.widgets[1].get():
+            raise CheckException('Не указано время\nв пункте 4.')
+
     def dump(self):
         return self.widgets[0].get(), self.widgets[1].get()
 
@@ -583,6 +590,13 @@ class Item16(ItemBase):
         self.widgets.append(EntryDate(self.frame, '%d.%m.%Y'))
         Label(self.frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(self.frame, '%H:%M'))
+
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[0].get():
+            raise CheckException('Не указана дата\nв пункте 16.')
+        if not self.widgets[1].get():
+            raise CheckException('Не указано время\nв пункте 16.')
 
     def dump(self):
         return self.widgets[0].get(), self.widgets[1].get()

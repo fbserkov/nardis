@@ -1,5 +1,6 @@
+from time import mktime, strptime
 from tkinter import LabelFrame
-from item import create_item
+from item import CheckException, create_item
 
 
 class PartBase(LabelFrame):
@@ -35,6 +36,15 @@ class PassportPart(PartBase):
         PartBase.__init__(self, master, 'Паспортная часть')
         self.items = {i: create_item(self, i, data) for i in (0, 3, 5)}
         self.items.update({i: create_item(self, i) for i in (1, 2, 4, 16)})
+
+    def check(self):
+        PartBase.check(self)
+        dump_4 = ' '.join(self.items[4].dump())
+        dump_16 = ' '.join(self.items[16].dump())
+        seconds_4 = mktime(strptime(dump_4, '%d.%m.%Y %H:%M'))
+        seconds_16 = mktime(strptime(dump_16, '%d.%m.%Y %H:%M'))
+        if seconds_4 > seconds_16:
+            raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def update(self):
         self.items[0].update_index()

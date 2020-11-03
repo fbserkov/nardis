@@ -1,3 +1,4 @@
+from time import mktime, strptime
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
@@ -462,6 +463,19 @@ class Item13(ItemBase):
         self.widgets.append(
             OptionMenuSmart(self.frames[5], technical_means))
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        time_1, time_2 = self.widgets[0].get(), self.widgets[4].get()
+        if not (time_1 and time_2):
+            return
+        seconds_1 = mktime(strptime(time_1, '%H:%M'))
+        seconds_2 = mktime(strptime(time_2, '%H:%M'))
+        delta = seconds_2 - seconds_1
+        cond_1 = delta < 15*60 or delta > 20*60
+        cond_2 = delta + 24*3600 < 15*60 or delta + 24*3600 > 20*60
+        if cond_1 and cond_2:
+            raise CheckException('Интервал в пункте 13\nне равен 15-20 мин.')
+
     def dump(self):
         if self.widgets[3].int_var.get():
             return self.line, * 5 * ('',)
@@ -469,8 +483,8 @@ class Item13(ItemBase):
         temp_5 = self.widgets[5].get()
         return (
             self.widgets[0].get(), temp_1 + ' мг/л' if temp_1 else '',
-            self.widgets[2].string_var.get(), self.widgets[4].get(),
-            temp_5 + ' мг/л' if temp_5 else '',
+            self.widgets[2].string_var.get(),
+            self.widgets[4].get(), temp_5 + ' мг/л' if temp_5 else '',
             self.widgets[6].string_var.get(),
         )
 

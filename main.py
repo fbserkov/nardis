@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+from time import mktime, strptime
 
 from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
 from tkinter.messagebox import showinfo
@@ -33,10 +34,25 @@ class FramePart(Frame):
     def check(self):
         for part_frame in self.part_frames:
             part_frame.check()
-        self.check_timestamps()
+        self.check_chronology()
 
-    def check_timestamps(self):
-        pass
+    def check_chronology(self):
+        seconds = [
+            mktime(strptime(time, '%H:%M')) if time else None for time in (
+                self.part_frames[0].items[4].widgets[1].get(),
+                self.part_frames[3].items[13].widgets[0].get(),
+                self.part_frames[3].items[13].widgets[4].get(),
+                self.part_frames[0].items[16].widgets[1].get(),
+            )
+        ]
+        if seconds[0] and seconds[1]:
+            if seconds[1] < seconds[0] < seconds[1] + 23*3600:
+                raise CheckException(
+                    'Несоответствие времени\nв пунктах 4 и 13.')
+        if seconds[2] and seconds[3]:
+            if seconds[3] < seconds[2] < seconds[3] + 23*3600:
+                raise CheckException(
+                    'Несоответствие времени\nв пунктах 16 и 13.')
 
     def dump(self):
         report = self.data.get_report()

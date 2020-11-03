@@ -8,6 +8,10 @@ class PartBase(LabelFrame):
         LabelFrame.__init__(
             self, master, font='-size 10 -weight bold', text=label)
 
+    def check(self):
+        for i, item in self.items.items():
+            item.check(i)
+
     def init(self):
         for item in self.items.values():
             item.init()

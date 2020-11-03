@@ -24,27 +24,30 @@ class FramePart(Frame):
             obj.pack(side=LEFT, expand=True, fill=X)
             obj['command'] = lambda j=i: self.show_part(j + 1)
 
-        self.label_frames = (
+        self.part_frames = (
             PassportPart(self, data), CommonPart(self),
             SurveyPart(self), ExaminationPart(self, data),
         )
         self.data, self.index = data, 0
 
     def check(self):
-        for label_frame in self.label_frames:
-            for i, item in label_frame.items.items():
-                item.check(i)
+        for part_frame in self.part_frames:
+            part_frame.check()
+        self.check_timestamps()
+
+    def check_timestamps(self):
+        pass
 
     def dump(self):
         report = self.data.get_report()
-        for label_frame in self.label_frames:
-            for item in label_frame.items:
-                report[item] = label_frame.items[item].dump()
+        for part_frame in self.part_frames:
+            for item in part_frame.items:
+                report[item] = part_frame.items[item].dump()
 
     def init(self):
-        for label_frame in self.label_frames:
-            label_frame.init()
-        self.label_frames[0].update()
+        for part_frame in self.part_frames:
+            part_frame.init()
+        self.part_frames[0].update()
 
     def save(self):
         try:
@@ -58,10 +61,10 @@ class FramePart(Frame):
     def show_part(self, index):
         if self.index == index:
             return
-        self.label_frames[self.index - 1].forget()
+        self.part_frames[self.index - 1].forget()
         self.buttons[self.index - 1].config(font='-size 10')
         if index:
-            self.label_frames[index - 1].pack(fill=X)
+            self.part_frames[index - 1].pack(fill=X)
             self.buttons[index - 1].config(font='-size 10 -weight bold')
         self.index = index
 

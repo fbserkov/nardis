@@ -36,10 +36,9 @@ def create_pdf(filename, data):
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
     liner('Normal+', 'Фамилия, имя, отчество', data.select(1, 'full_name'))
+    date = data.select(1, 'date')
     liner(
-        'Normal+', 'Дата рождения',
-        data.select(1, 'date').strftime('%d.%m.%Y'),
-    )
+        'Normal+', 'Дата рождения', date.strftime('%d.%m.%Y') if date else '')
     liner('Normal+', 'Адрес места жительства', data.select(1, 'address'))
     liner(
         'Normal+',
@@ -60,7 +59,7 @@ def create_pdf(filename, data):
         'Normal+',
         '3. Наименование структурного подразделения медицинской организации, '
         'в котором проводится медицинское освидетельствование',
-        report[3],
+        data.select(3, 'unit_name'),
     )
 
     spacer(1)

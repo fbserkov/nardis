@@ -140,11 +140,10 @@ class Item1(ItemBase):
             raise CheckException('Не указано ФИО\nв пункте 1.')
 
     def insert(self):
+        line = self.widgets[1].get()
+        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
         self.db.insert(1, 'full_name', self.widgets[0].get())
-        self.db.insert(
-            1, 'date',
-            datetime.strptime(self.widgets[1].get(), '%d.%m.%Y').date()
-        )
+        self.db.insert(1, 'date', date)
         self.db.insert(1, 'address', self.widgets[2].get())
         self.db.insert(1, 'document', self.widgets[3].get())
 
@@ -177,8 +176,8 @@ class Item3(ItemBase):
     def __init__(self, master):
         ItemBase.__init__(self, master)
 
-    def dump(self):
-        return self.db.get_unit_name()
+    def insert(self):
+        self.db.insert(3, 'unit_name', self.db.get_unit_name())
 
 
 class Item4(ItemBase):

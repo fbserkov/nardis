@@ -575,6 +575,10 @@ class Item14(ItemBase):
 
     def check(self, index):
         ItemBase.check(self, index)
+        if self.get_result() and not self.widgets[0].get():
+            raise CheckException('Не указано время\nв пункте 14.')
+        if self.get_result() and not self.widgets[4].string_var.get():
+            raise CheckException('Не указан метод\nв пункте 14.')
         if self.get_result() and not self.widgets[6].get():
             raise CheckException('Не указан номер справки\nв пункте 14.')
         if self.widgets[6].get() and not self.widgets[5].get():
@@ -663,6 +667,13 @@ class Item17(ItemBase):
                 (1, 'установлено состояние опьянения'),
         ):
             LabelReplaceSmartDate(self.frames[i], text, bind=(entry, '', date))
+
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[0].get():
+            raise CheckException('Нет заключения\nв пункте 17.')
+        if not self.widgets[1].get():
+            raise CheckException('Не указана дата\nв пункте 17.')
 
     def dump(self):
         return self.widgets[0].get(), self.widgets[1].get()

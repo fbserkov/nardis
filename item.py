@@ -475,6 +475,10 @@ class Item13(ItemBase):
 
     def check(self, index):
         ItemBase.check(self, index)
+        self.check_interval()
+        self.check_result_basis()
+
+    def check_interval(self):
         time_1, time_2 = self.widgets[0].get(), self.widgets[4].get()
         if not (time_1 and time_2):
             return
@@ -485,6 +489,16 @@ class Item13(ItemBase):
         cond_2 = delta + 24*3600 < 15*60 or delta + 24*3600 > 20*60
         if cond_1 and cond_2:
             raise CheckException('Интервал в пункте 13\nне равен 15-20 мин.')
+
+    def check_result_basis(self):
+        if self.widgets[1].get() and not self.widgets[0].get():
+            raise CheckException('Не указано время\nв пункте 13 (1).')
+        if self.widgets[5].get() and not self.widgets[4].get():
+            raise CheckException('Не указано время\nв пункте 13 (2).')
+        if self.widgets[1].get() and not self.widgets[2].string_var.get():
+            raise CheckException('Не указано ТС\nв пункте 13 (1).')
+        if self.widgets[5].get() and not self.widgets[6].string_var.get():
+            raise CheckException('Не указано ТС\nв пункте 13 (2).')
 
     def dump(self):
         if self.widgets[3].int_var.get():

@@ -57,7 +57,7 @@ class ItemBase:
         for widget in self.widgets:
             widget.init()
 
-    data, frame = None, None
+    db, frame = None, None
 
 
 class Item0(ItemBase):
@@ -82,13 +82,13 @@ class Item0(ItemBase):
 
     def dump(self):
         return (
-            self.data.settings['Организация'],
+            self.db.settings['Организация'],
             self.widgets[0].get() + '/' + self.widgets[1].get(),
         )
 
     def update_index(self):
         self.widgets[0].config(state='normal')
-        self.widgets[0].insert(0, self.data.get_index())
+        self.widgets[0].insert(0, self.db.get_index())
         self.widgets[0].config(state='disabled')
 
 
@@ -164,7 +164,7 @@ class Item3(ItemBase):
         ItemBase.__init__(self, master)
 
     def dump(self):
-        return self.data.settings['Подразделение']
+        return self.db.settings['Подразделение']
 
 
 class Item4(ItemBase):
@@ -193,7 +193,7 @@ class Item5(ItemBase):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         self.widgets.append(
-            OptionMenuSmart(self.frames[1], self.data.get_doctors()))
+            OptionMenuSmart(self.frames[1], self.db.get_doctors()))
 
     def check(self, index):
         ItemBase.check(self, index)
@@ -208,7 +208,7 @@ class Item5(ItemBase):
         return names, ', '.join(tail)
 
     def update_user(self):
-        user = self.data.current_user
+        user = self.db.current_user
         if user == 'admin':
             self.widgets[0].string_var.set('')
             self.widgets[0]['state'] = 'normal'
@@ -449,7 +449,7 @@ class Item13(ItemBase):
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
-        technical_means = self.data.get_technical_means()
+        technical_means = self.db.get_technical_means()
         self.widgets.append(OptionMenuSmart(self.frames[2], technical_means))
         self.line = 'фальсификация выдоха'
         checkbutton = CheckbuttonSmart(self.frames[3], text=self.line)
@@ -542,7 +542,7 @@ class Item14(ItemBase):
 
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(
-            OptionMenuSmart(self.frames[2], self.data.get_methods()))
+            OptionMenuSmart(self.frames[2], self.db.get_methods()))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
@@ -558,7 +558,7 @@ class Item14(ItemBase):
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
         self.frames[4].columnconfigure(4, weight=1)
-        self.chemicals = self.data.get_chemicals()
+        self.chemicals = self.db.get_chemicals()
         for i, chemical in enumerate(self.chemicals):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(self.frames[4])
@@ -593,7 +593,7 @@ class Item14(ItemBase):
         temp_6 = self.widgets[6].get()
         return (
             temp_0 + ' (' + self.widgets[1].get() + ')' if temp_0 else '',
-            self.data.settings['Лаборатория'] if temp_0 else '',
+            self.db.settings['Лаборатория'] if temp_0 else '',
             self.widgets[4].string_var.get(),
             temp_6 + '/' + self.widgets[5].get() if temp_6 else '',
             self.get_result(),

@@ -25,7 +25,7 @@ class FramePart(Frame):
             obj.pack(side=LEFT, expand=True, fill=X)
             obj['command'] = lambda j=i: self.show_part(j + 1)
 
-        ItemBase.data = data
+        ItemBase.db = data
         self.part_frames = (
             PassportPart(self), CommonPart(self),
             SurveyPart(self), ExaminationPart(self),

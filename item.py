@@ -136,11 +136,11 @@ class Item1(ItemBase):
         if not self.widgets[0].get():
             raise CheckException('Не указано ФИО\nв пункте 1.')
 
-    def dump(self):
-        return (
-            self.widgets[0].get(), self.widgets[1].get(),
-            self.widgets[2].get(), self.widgets[3].get(),
-        )
+    def insert(self):
+        self.db.insert(1, 'full_name', self.widgets[0].get())
+        self.db.insert(1, 'date', self.widgets[1].get())
+        self.db.insert(1, 'address', self.widgets[2].get())
+        self.db.insert(1, 'document', self.widgets[3].get())
 
 
 class Item2(ItemBase):

@@ -1,4 +1,7 @@
+from datetime import datetime
 import pickle
+
+from item import CheckException
 
 
 class Database:
@@ -7,6 +10,17 @@ class Database:
         self.current_user = None
         with open(self.filename, 'rb') as f:
             self._settings, self.reports = pickle.load(f)
+
+    def check(self):
+        datetime_4, datetime_16 = None, None
+        date, time = self.select(4, 'date'), self.select(4, 'time')
+        if date and time:
+            datetime_4 = datetime.combine(date, time)
+        date, time = self.select(16, 'date'), self.select(16, 'time')
+        if date and time:
+            datetime_16 = datetime.combine(date, time)
+        if datetime_4 > datetime_16:
+            raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def check_password(self, password):
         if password in self._settings['Врачи'].keys():

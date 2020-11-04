@@ -76,6 +76,7 @@ class FramePart(Frame):
             self.check()
             self.dump()
             self.insert()
+            self.data.check()
             self.data.save()
             create_pdf('test.pdf', self.data)
         except CheckException as exc:

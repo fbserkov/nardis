@@ -25,17 +25,15 @@ class CommonPart(PartBase):
 
 
 class ExaminationPart(PartBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         PartBase.__init__(self, master, 'Данные освидетельствования')
-        self.items = {i: create_item(self, i, data) for i in (13, 14)}
-        self.items.update({i: create_item(self, i) for i in (15, 17)})
+        self.items = {i: create_item(self, i) for i in (13, 14, 15, 17)}
 
 
 class PassportPart(PartBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         PartBase.__init__(self, master, 'Паспортная часть')
-        self.items = {i: create_item(self, i, data) for i in (0, 3, 5)}
-        self.items.update({i: create_item(self, i) for i in (1, 2, 4, 16)})
+        self.items = {i: create_item(self, i) for i in (0, 1, 2, 3, 4, 5, 16)}
 
     def check(self):
         PartBase.check(self)

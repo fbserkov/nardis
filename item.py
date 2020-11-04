@@ -7,9 +7,10 @@ from widget import (
 )
 
 
-def create_item(master, num, data=None):
-    class_ = globals()[f'Item{num}']
-    return class_(master, data) if data else class_(master)
+def create_item(master, i):
+    cls_name = 'Item' + str(i)
+    cls = globals()[cls_name]
+    return cls(master)
 
 
 class CheckException(Exception):
@@ -56,13 +57,12 @@ class ItemBase:
         for widget in self.widgets:
             widget.init()
 
-    frame = None
+    data, frame = None, None
 
 
 class Item0(ItemBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         ItemBase.__init__(self, master)
-        self.data = data
         self.frame.grid(row=0, column=0)
 
         Label(self.frame, text='Акт №').pack()
@@ -160,9 +160,8 @@ class Item2(ItemBase):
 
 
 class Item3(ItemBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         ItemBase.__init__(self, master)
-        self.data = data
 
     def dump(self):
         return self.data.settings['Подразделение']
@@ -190,9 +189,8 @@ class Item4(ItemBase):
 
 
 class Item5(ItemBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         ItemBase.__init__(self, master, frames_number=2)
-        self.data = data
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
         self.widgets.append(
             OptionMenuSmart(self.frames[1], self.data.get_doctors()))
@@ -431,7 +429,7 @@ class Item12(ItemBase):
 
 
 class Item13(ItemBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         ItemBase.__init__(self, master, frames_number=6)
         for i in 1, 4:
             self.frames[i].columnconfigure(1, weight=1)
@@ -451,7 +449,7 @@ class Item13(ItemBase):
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
-        technical_means = data.get_technical_means()
+        technical_means = self.data.get_technical_means()
         self.widgets.append(OptionMenuSmart(self.frames[2], technical_means))
         self.line = 'фальсификация выдоха'
         checkbutton = CheckbuttonSmart(self.frames[3], text=self.line)
@@ -514,9 +512,8 @@ class Item13(ItemBase):
 
 
 class Item14(ItemBase):
-    def __init__(self, master, data):
+    def __init__(self, master):
         ItemBase.__init__(self, master, frames_number=5)
-        self.data = data
         line = '14. Время отбора биологического объекта'
         Label(self.frames[0], text=line).pack(side=LEFT)
         self.widgets.append(EntryTime(self.frames[0]))

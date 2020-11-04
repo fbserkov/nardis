@@ -5,8 +5,8 @@ from time import mktime, strptime
 from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
 from tkinter.messagebox import showinfo
 
-from item import CheckException
 from database import Database
+from item import ItemBase, CheckException
 from part import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
 
@@ -25,9 +25,10 @@ class FramePart(Frame):
             obj.pack(side=LEFT, expand=True, fill=X)
             obj['command'] = lambda j=i: self.show_part(j + 1)
 
+        ItemBase.data = data
         self.part_frames = (
-            PassportPart(self, data), CommonPart(self),
-            SurveyPart(self), ExaminationPart(self, data),
+            PassportPart(self), CommonPart(self),
+            SurveyPart(self), ExaminationPart(self),
         )
         self.data, self.index = data, 0
 

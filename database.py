@@ -29,11 +29,7 @@ class Database:
     def get_methods(self):
         return self.settings['Методы']
 
-    def get_report(self):  # TODO test mode now
-        # index = self.settings['Номер следующего акта']
-        # self.settings['Номер следующего акта'] = index + 1
-        if not self.reports:
-            self.reports.append({})
+    def get_report(self):
         return self.reports[-1]
 
     def get_technical_means(self):

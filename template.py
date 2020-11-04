@@ -31,7 +31,7 @@ def create_pdf(filename, data):
     liner('Center', '(алкогольного, наркотического или иного токсического)')
     liner('Center', '№', data.select(0, 'act_number'))
     spacer(2)
-    liner('Normal+', '', format_date(report[4][0]))
+    liner('Normal+', '', '')  # TODO !? rus local for format_date(report[4][0])
 
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
@@ -63,10 +63,12 @@ def create_pdf(filename, data):
     )
 
     spacer(1)
+    date, time = data.select(4, 'date'), data.select(4, 'time')
     liner(
         'Normal+',
         '4. Дата и точное время начала медицинского освидетельствования',
-        report[4][0] + ' ' + report[4][1],
+        (date.strftime('%d.%m.%Y') if date else '') +
+        ' ' + (time.strftime('%H:%M') if time else ''),
     )
 
     spacer(1)
@@ -185,10 +187,12 @@ def create_pdf(filename, data):
     )
 
     spacer(1)
+    date, time = data.select(16, 'date'), data.select(16, 'time')
     liner(
         'Normal+',
         '16. Дата и точное время окончания медицинского освидетельствования',
-        report[16][0] + ' ' + report[16][1],
+        (date.strftime('%d.%m.%Y') if date else '') +
+        ' ' + (time.strftime('%H:%M') if time else ''),
     )
 
     spacer(1)

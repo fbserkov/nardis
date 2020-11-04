@@ -197,8 +197,13 @@ class Item4(ItemBase):
         if not self.widgets[1].get():
             raise CheckException('Не указано время\nв пункте 4.')
 
-    def dump(self):
-        return self.widgets[0].get(), self.widgets[1].get()
+    def insert(self):
+        line = self.widgets[0].get()
+        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
+        line = self.widgets[1].get()
+        time = datetime.strptime(line, '%H:%M').time() if line else None
+        self.db.insert(4, 'date', date)
+        self.db.insert(4, 'time', time)
 
 
 class Item5(ItemBase):
@@ -657,8 +662,13 @@ class Item16(ItemBase):
         if not self.widgets[1].get():
             raise CheckException('Не указано время\nв пункте 16.')
 
-    def dump(self):
-        return self.widgets[0].get(), self.widgets[1].get()
+    def insert(self):
+        line = self.widgets[0].get()
+        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
+        line = self.widgets[1].get()
+        time = datetime.strptime(line, '%H:%M').time() if line else None
+        self.db.insert(16, 'date', date)
+        self.db.insert(16, 'time', time)
 
 
 class Item17(ItemBase):

@@ -34,8 +34,7 @@ class PassportPart(PartBase):
         PartBase.__init__(self, master, 'Паспортная часть')
         self.items = {i: create_item(self, i) for i in (0, 1, 2, 3, 4, 5, 16)}
 
-    def check(self):  # TODO move to Database
-        pass
+    # def check(self):  # TODO move to Database
         # PartBase.check(self)
         # dump_4 = ' '.join(self.items[4].dump())
         # dump_16 = ' '.join(self.items[16].dump())

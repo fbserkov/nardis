@@ -66,6 +66,18 @@ class ItemBase:
     def insert(self):  # TODO delete
         pass
 
+    @staticmethod
+    def str2date(line):
+        if line == '':
+            return None
+        return datetime.strptime(line, '%d.%m.%Y').date()
+
+    @staticmethod
+    def str2time(line):
+        if line == '':
+            return None
+        return datetime.strptime(line, '%H:%M').time()
+
     db, frame = None, None
 
 
@@ -140,10 +152,8 @@ class Item1(ItemBase):
             raise CheckException('Не указано ФИО\nв пункте 1.')
 
     def insert(self):
-        line = self.widgets[1].get()
-        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
         self.db.insert(1, 'full_name', self.widgets[0].get())
-        self.db.insert(1, 'date', date)
+        self.db.insert(1, 'date', self.str2date(self.widgets[1].get()))
         self.db.insert(1, 'address', self.widgets[2].get())
         self.db.insert(1, 'document', self.widgets[3].get())
 
@@ -198,12 +208,8 @@ class Item4(ItemBase):
             raise CheckException('Не указано время\nв пункте 4.')
 
     def insert(self):
-        line = self.widgets[0].get()
-        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
-        line = self.widgets[1].get()
-        time = datetime.strptime(line, '%H:%M').time() if line else None
-        self.db.insert(4, 'date', date)
-        self.db.insert(4, 'time', time)
+        self.db.insert(4, 'date', self.str2date(self.widgets[0].get()))
+        self.db.insert(4, 'time', self.str2time(self.widgets[1].get()))
 
 
 class Item5(ItemBase):
@@ -663,12 +669,8 @@ class Item16(ItemBase):
             raise CheckException('Не указано время\nв пункте 16.')
 
     def insert(self):
-        line = self.widgets[0].get()
-        date = datetime.strptime(line, '%d.%m.%Y').date() if line else None
-        line = self.widgets[1].get()
-        time = datetime.strptime(line, '%H:%M').time() if line else None
-        self.db.insert(16, 'date', date)
-        self.db.insert(16, 'time', time)
+        self.db.insert(16, 'date', self.str2date(self.widgets[0].get()))
+        self.db.insert(16, 'time', self.str2time(self.widgets[1].get()))
 
 
 class Item17(ItemBase):

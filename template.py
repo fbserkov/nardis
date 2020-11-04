@@ -36,9 +36,8 @@ def create_pdf(filename, data):
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
     liner('Normal+', 'Фамилия, имя, отчество', data.select(1, 'full_name'))
-    date = data.select(1, 'date')
     liner(
-        'Normal+', 'Дата рождения', date.strftime('%d.%m.%Y') if date else '')
+        'Normal+', 'Дата рождения', date2str(data.select(1, 'date')))
     liner('Normal+', 'Адрес места жительства', data.select(1, 'address'))
     liner(
         'Normal+',
@@ -63,12 +62,11 @@ def create_pdf(filename, data):
     )
 
     spacer(1)
-    date, time = data.select(4, 'date'), data.select(4, 'time')
     liner(
         'Normal+',
         '4. Дата и точное время начала медицинского освидетельствования',
-        (date.strftime('%d.%m.%Y') if date else '') +
-        ' ' + (time.strftime('%H:%M') if time else ''),
+        date2str(data.select(4, 'date')) + ' ' +
+        time2str(data.select(4, 'time')),
     )
 
     spacer(1)
@@ -187,12 +185,11 @@ def create_pdf(filename, data):
     )
 
     spacer(1)
-    date, time = data.select(16, 'date'), data.select(16, 'time')
     liner(
         'Normal+',
         '16. Дата и точное время окончания медицинского освидетельствования',
-        (date.strftime('%d.%m.%Y') if date else '') +
-        ' ' + (time.strftime('%H:%M') if time else ''),
+        date2str(data.select(16, 'date')) + ' ' +
+        time2str(data.select(16, 'time')),
     )
 
     spacer(1)
@@ -214,6 +211,12 @@ def create_pdf(filename, data):
     )
 
 
+def date2str(date):
+    if date is None:
+        return ''
+    return date.strftime('%d.%m.%Y')
+
+
 def format_date(date):
     if not date:
         return ''
@@ -223,6 +226,14 @@ def format_date(date):
         'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
     )
     return f'"{int(day)}" {month_words[int(month) - 1]} {year} г.'
+
+
+def liner(style, line1, line2=''):
+    if line1:
+        line1 = '<font name="arial" size=12>' + line1 + '</font>'
+    if line2:
+        line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
+    story.append(Paragraph(line1 + line2, styles[style]))
 
 
 def page_1(canvas, names):
@@ -239,14 +250,6 @@ def page_2(canvas):
     canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
 
 
-def liner(style, line1, line2=''):
-    if line1:
-        line1 = '<font name="arial" size=12>' + line1 + '</font>'
-    if line2:
-        line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
-    story.append(Paragraph(line1 + line2, styles[style]))
-
-
 def spacer(n):
     for i in range(n):
         story.append(Spacer(1, 14))
@@ -261,3 +264,9 @@ def tbl(line1, line2):
         ('LEADING', (0, 0), (1, 0), 14)
     ]))
     story.append(temp)
+
+
+def time2str(time):
+    if time is None:
+        return ''
+    return time.strftime('%H:%M')

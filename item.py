@@ -124,6 +124,11 @@ class Item1(ItemBase):
         LabelReplace(self.frames[6], text=line, bind=entry, place=LEFT)
         LabelReplace(self.frames[6], text='паспорта', bind=entry, place=LEFT)
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[0].get():
+            raise CheckException('Не указано ФИО\nв пункте 1.')
+
     def dump(self):
         return (
             self.widgets[0].get(), self.widgets[1].get(),
@@ -192,6 +197,18 @@ class Item5(ItemBase):
         self.widgets.append(
             OptionMenuSmart(self.frames[1], self.data.get_doctors()))
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        if not self.widgets[0].string_var.get():
+            raise CheckException('Не указан врач\nв пункте 5.')
+
+    def dump(self):
+        line = self.widgets[0].string_var.get()
+        if not line:
+            return '', ''
+        names, *tail = line.split(', ')
+        return names, ', '.join(tail)
+
     def update_user(self):
         user = self.data.current_user
         if user == 'admin':
@@ -200,13 +217,6 @@ class Item5(ItemBase):
         else:
             self.widgets[0].string_var.set(user)
             self.widgets[0]['state'] = 'disabled'
-
-    def dump(self):
-        line = self.widgets[0].string_var.get()
-        if not line:
-            return '', ''
-        names, *tail = line.split(', ')
-        return names, ', '.join(tail)
 
 
 class Item6(ItemBase):

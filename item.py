@@ -1,5 +1,8 @@
+from datetime import datetime
 from time import mktime, strptime
+
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
+
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
@@ -138,7 +141,10 @@ class Item1(ItemBase):
 
     def insert(self):
         self.db.insert(1, 'full_name', self.widgets[0].get())
-        self.db.insert(1, 'date', self.widgets[1].get())
+        self.db.insert(
+            1, 'date',
+            datetime.strptime(self.widgets[1].get(), '%d.%m.%Y').date()
+        )
         self.db.insert(1, 'address', self.widgets[2].get())
         self.db.insert(1, 'document', self.widgets[3].get())
 
@@ -162,8 +168,9 @@ class Item2(ItemBase):
         entry.pack(side=LEFT, expand=True, fill=X)
         self.widgets.append(entry)
 
-    def dump(self):
-        return self.widgets[0].get(), self.widgets[1].get()
+    def insert(self):
+        self.db.insert(2, 'document', self.widgets[0].get())
+        self.db.insert(2, 'full_name', self.widgets[1].get())
 
 
 class Item3(ItemBase):

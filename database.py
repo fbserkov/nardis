@@ -1,4 +1,3 @@
-from datetime import datetime
 import pickle
 
 
@@ -46,8 +45,6 @@ class Database:
         return self._settings['Подразделение']
 
     def insert(self, i, key, value):
-        if key == 'date':
-            value = datetime.strptime(value, '%d.%m.%Y').date()
         report = self.get_report()
         report[i, key] = value
 
@@ -64,7 +61,4 @@ class Database:
 
     def select(self, i, key):
         report = self.get_report()
-        value = report[i, key]
-        if key == 'date':
-            value = value.strftime('%d.%m.%Y')
-        return value
+        return report[i, key]

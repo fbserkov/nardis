@@ -549,6 +549,13 @@ class Item14(ItemBase):
             entry.pack(side=RIGHT)
             self.widgets.append(entry)
 
+    def check(self, index):
+        ItemBase.check(self, index)
+        if self.get_result() and not self.widgets[6].get():
+            raise CheckException('Не указан номер справки\nв пункте 14.')
+        if self.widgets[6].get() and not self.widgets[5].get():
+            raise CheckException('Не указан год\nв пункте 14.')
+
     def dump(self):
         line = ''
         if self.widgets[2].int_var.get():
@@ -563,7 +570,7 @@ class Item14(ItemBase):
             temp_0 + ' (' + self.widgets[1].get() + ')' if temp_0 else '',
             self.data.settings['Лаборатория'] if temp_0 else '',
             self.widgets[4].string_var.get(),
-            temp_6 + ('/' + self.widgets[5].get() if temp_6 else ''),
+            temp_6 + '/' + self.widgets[5].get() if temp_6 else '',
             self.get_result(),
         )
 

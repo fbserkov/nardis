@@ -17,10 +17,10 @@ story = []
 
 
 def create_pdf(filename, data):
-    report = data.reports[-1]
+    report = data.reports[-1]  # TODO delete
 
     tbl(
-        report[0][0],
+        data.select(0, 'organization'),
         'Медицинская документация\nУчетная форма № 307/у-05\n'
         'Утверждена приказом Министерства\nздравоохранения '
         'Российской Федерации\nот 18 декабря 2015 г. № 933н',
@@ -29,7 +29,7 @@ def create_pdf(filename, data):
     liner('Center', 'АКТ')
     liner('Center', 'медицинского освидетельствования на состояние опьянения')
     liner('Center', '(алкогольного, наркотического или иного токсического)')
-    liner('Center', '№', report[0][1])
+    liner('Center', '№', data.select(0, 'act_number'))
     spacer(2)
     liner('Normal+', '', format_date(report[4][0]))
 

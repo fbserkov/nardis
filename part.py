@@ -45,7 +45,7 @@ class PassportPart(PartBase):
             raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def update(self):
-        self.items[0].update_index()
+        self.items[0].update_act_number()
         self.items[5].update_user()
 
 

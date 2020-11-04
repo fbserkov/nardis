@@ -58,18 +58,24 @@ class FramePart(Frame):
     def dump(self):
         report = self.data.get_report()
         for part_frame in self.part_frames:
-            for item in part_frame.items:
-                report[item] = part_frame.items[item].dump()
+            for i in part_frame.items:
+                report[i] = part_frame.items[i].dump()
 
     def init(self):
         for part_frame in self.part_frames:
             part_frame.init()
         self.part_frames[0].update()
 
+    def insert(self):
+        for part_frame in self.part_frames:
+            for item in part_frame.items.values():
+                item.insert()
+
     def save(self):
         try:
             self.check()
             self.dump()
+            self.insert()
             self.data.save()
             create_pdf('test.pdf', self.data)
         except CheckException as exc:

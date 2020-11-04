@@ -44,6 +44,9 @@ class ItemBase:
             exc.add('\nв пункте ' + str(index) + '.')
             raise exc
 
+    def dump(self):  # TODO delete
+        return 'dump'*3
+
     @staticmethod
     def get_frames(master, length):
         frames = []
@@ -56,6 +59,9 @@ class ItemBase:
     def init(self):
         for widget in self.widgets:
             widget.init()
+
+    def insert(self):  # TODO delete
+        pass
 
     db, frame = None, None
 
@@ -80,15 +86,16 @@ class Item0(ItemBase):
         if not self.widgets[1].get():
             raise CheckException('Не указан год\nв пункте 0.')
 
-    def dump(self):
-        return (
-            self.db.get_organization(),
+    def insert(self):
+        self.db.insert(0, 'organization', self.db.get_organization())
+        self.db.insert(
+            0, 'act_number',
             self.widgets[0].get() + '/' + self.widgets[1].get(),
         )
 
-    def update_index(self):
+    def update_act_number(self):
         self.widgets[0].config(state='normal')
-        self.widgets[0].insert(0, self.db.get_index())
+        self.widgets[0].insert(0, self.db.get_act_number())
         self.widgets[0].config(state='disabled')
 
 

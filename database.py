@@ -23,7 +23,7 @@ class Database:
         doctors.remove('admin')
         return doctors
 
-    def get_index(self):
+    def get_act_number(self):
         return self._settings['Номер следующего акта']
 
     def get_laboratory_name(self):
@@ -44,6 +44,10 @@ class Database:
     def get_unit_name(self):
         return self._settings['Подразделение']
 
+    def insert(self, i, key, value):
+        report = self.get_report()
+        report[i, key] = value
+
     def save(self):
         with open(self.filename, 'rb') as file_1:
             temp = file_1.read()
@@ -54,3 +58,7 @@ class Database:
                 with open(self.filename, 'wb') as file_1:
                     file_1.write(temp)
                     raise exception
+
+    def select(self, i, key):
+        report = self.get_report()
+        return report[i, key]

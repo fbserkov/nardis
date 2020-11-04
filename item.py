@@ -82,7 +82,7 @@ class Item0(ItemBase):
 
     def dump(self):
         return (
-            self.db.settings['Организация'],
+            self.db.get_organization(),
             self.widgets[0].get() + '/' + self.widgets[1].get(),
         )
 
@@ -164,7 +164,7 @@ class Item3(ItemBase):
         ItemBase.__init__(self, master)
 
     def dump(self):
-        return self.db.settings['Подразделение']
+        return self.db.get_unit_name()
 
 
 class Item4(ItemBase):
@@ -593,7 +593,7 @@ class Item14(ItemBase):
         temp_6 = self.widgets[6].get()
         return (
             temp_0 + ' (' + self.widgets[1].get() + ')' if temp_0 else '',
-            self.db.settings['Лаборатория'] if temp_0 else '',
+            self.db.get_laboratory_name() if temp_0 else '',
             self.widgets[4].string_var.get(),
             temp_6 + '/' + self.widgets[5].get() if temp_6 else '',
             self.get_result(),

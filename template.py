@@ -1,9 +1,13 @@
+import locale
+
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.pdfbase import ttfonts, pdfmetrics
 from reportlab.platypus import (
     Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
+
+locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle('Normal+', leading=14))
@@ -31,7 +35,7 @@ def create_pdf(filename, data):
     liner('Center', '(алкогольного, наркотического или иного токсического)')
     liner('Center', '№', data.select(0, 'act_number'))
     spacer(2)
-    liner('Normal+', '', '')  # TODO !? rus local for format_date(report[4][0])
+    liner('Normal+', '', date2str(data.select(4, 'date'), long=True))
 
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
@@ -211,21 +215,12 @@ def create_pdf(filename, data):
     )
 
 
-def date2str(date):
+def date2str(date, long=False):
     if date is None:
         return ''
-    return date.strftime('%d.%m.%Y')
-
-
-def format_date(date):
-    if not date:
-        return ''
-    day, month, year = date.split('.')
-    month_words = (
-        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
-    )
-    return f'"{int(day)}" {month_words[int(month) - 1]} {year} г.'
+    if not long:
+        return date.strftime('%d.%m.%Y')
+    return date.strftime(f'"{date.day}" %B %Y г.')
 
 
 def liner(style, line1, line2=''):

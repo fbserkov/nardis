@@ -29,9 +29,9 @@ def create_pdf(filename, db):
     item_5(db)
     item_6(db)
     item_7(db)
+    item_8(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_8(db_)
     item_9(db_)
     item_10(db_)
     item_11(db_)
@@ -160,10 +160,13 @@ def item_8(db):
         'Normal+',
         '8. Изменения психической деятельности освидетельствуемого',
     )
-    liner('Normal+', 'состояние сознания', db[8][0])
-    liner('Normal+', 'поведение', db[8][1])
-    liner('Normal+', 'ориентировка в месте, времени, ситуации', db[8][2])
-    liner('Normal+', 'Результат пробы Шульте', db[8][3])
+    liner('Normal+', 'состояние сознания', db.select(8, 'consciousness'))
+    liner('Normal+', 'поведение', db.select(8, 'behavior'))
+    liner(
+        'Normal+',
+        'ориентировка в месте, времени, ситуации', db.select(8, 'orientation'),
+    )
+    liner('Normal+', 'Результат пробы Шульте', db.select(8, 'schulte'))
 
 
 def item_9(db):

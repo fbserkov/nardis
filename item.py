@@ -312,12 +312,12 @@ class Item8(ItemBase):
         entry.pack(side=LEFT)
         Label(self.frames[7], text='сек.').pack(side=LEFT)
 
-    def dump(self):
-        temp = self.widgets[3].get()
-        return (
-            self.widgets[0].get(), self.widgets[1].get(),
-            self.widgets[2].get(), temp + ' сек.' if temp else '',
-        )
+    def insert(self):
+        schulte = self.widgets[3].get()
+        self.db.insert(8, 'consciousness', self.widgets[0].get())
+        self.db.insert(8, 'behavior', self.widgets[1].get())
+        self.db.insert(8, 'orientation', self.widgets[2].get())
+        self.db.insert(8, 'schulte', schulte + ' сек.' if schulte else '')
 
 
 class Item9(ItemBase):

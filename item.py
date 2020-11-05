@@ -350,11 +350,11 @@ class Item9(ItemBase):
                 place=dict(row=i + 1, column=2, sticky=E),
             )
 
-    def dump(self):
-        return (
-            self.widgets[0].get(), self.widgets[1].get(),
-            self.widgets[2].get(), self.widgets[3].get(),
-        )
+    def insert(self):
+        self.db.insert(9, 'pupils', self.widgets[0].get())
+        self.db.insert(9, 'reaction', self.widgets[1].get())
+        self.db.insert(9, 'scleras', self.widgets[2].get())
+        self.db.insert(9, 'nystagmus', self.widgets[3].get())
 
 
 class Item10(ItemBase):

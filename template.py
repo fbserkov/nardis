@@ -30,9 +30,9 @@ def create_pdf(filename, db):
     item_6(db)
     item_7(db)
     item_8(db)
+    item_9(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_9(db_)
     item_10(db_)
     item_11(db_)
     item_12(db_)
@@ -174,10 +174,10 @@ def item_8(db):
 def item_9(db):
     spacer(1)
     liner('Normal+', '9. Вегетативно-сосудистые реакции освидетельствуемого')
-    liner('Normal+', 'зрачки', db[9][0])
-    liner('Normal+', 'реакция на свет', db[9][1])
-    liner('Normal+', 'склеры', db[9][2])
-    liner('Normal+', 'нистагм', db[9][3])
+    liner('Normal+', 'зрачки', db.select(9, 'pupils'))
+    liner('Normal+', 'реакция на свет', db.select(9, 'reaction'))
+    liner('Normal+', 'склеры', db.select(9, 'scleras'))
+    liner('Normal+', 'нистагм', db.select(9, 'nystagmus'))
 
 
 def item_10(db):

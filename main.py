@@ -37,7 +37,7 @@ class FramePart(Frame):
             part_frame.check()
         self.check_chronology()
 
-    def check_chronology(self):
+    def check_chronology(self):  # TODO move to db.check
         seconds = [
             mktime(strptime(time, '%H:%M')) if time else None for time in (
                 self.part_frames[0].items[4].widgets[1].get(),

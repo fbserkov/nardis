@@ -502,7 +502,7 @@ class Item13(ItemBase):
         self.check_interval()
         self.check_result_basis()
 
-    def check_interval(self):
+    def check_interval(self):  # TODO move to db.check
         time_1, time_2 = self.widgets[0].get(), self.widgets[4].get()
         if not (time_1 and time_2):
             return

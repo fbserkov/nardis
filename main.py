@@ -35,7 +35,7 @@ class FramePart(Frame):
     def check(self):
         for part_frame in self.part_frames:
             part_frame.check()
-        self.check_chronology()
+        # self.check_chronology() # TODO activate this check
 
     def check_chronology(self):  # TODO move to db.check
         seconds = [

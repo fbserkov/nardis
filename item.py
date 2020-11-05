@@ -458,6 +458,7 @@ class Item13(ItemBase):
         for i in 1, 4:
             self.frames[i].columnconfigure(1, weight=1)
             self.frames[i].columnconfigure(3, weight=1)
+            self.frames[i].columnconfigure(5, weight=1)
         line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
         Label(self.frames[0], text=line).pack(side=LEFT)
 
@@ -465,10 +466,14 @@ class Item13(ItemBase):
             row=0, column=0)
         frame = Frame(self.frames[1])
         frame.grid(row=0, column=2)
+        Label(frame, text='Дата').pack(side=LEFT)
+        self.widgets.append(EntryDate(frame, '%d.%m.%Y'))
+        frame = Frame(self.frames[1])
+        frame.grid(row=0, column=4)
         Label(frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(frame, '%H:%M'))
         frame = Frame(self.frames[1])
-        frame.grid(row=0, column=4)
+        frame.grid(row=0, column=6)
         Label(frame, text='Результат').pack(side=LEFT)
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
@@ -484,10 +489,14 @@ class Item13(ItemBase):
             row=0, column=0)
         frame = Frame(self.frames[4])
         frame.grid(row=0, column=2)
+        Label(frame, text='Дата').pack(side=LEFT)
+        self.widgets.append(EntryDate(frame, '%d.%m.%Y'))
+        frame = Frame(self.frames[4])
+        frame.grid(row=0, column=4)
         Label(frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(frame))
         frame = Frame(self.frames[4])
-        frame.grid(row=0, column=4)
+        frame.grid(row=0, column=6)
         Label(frame, text='Результат').pack(side=LEFT)
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
@@ -497,10 +506,10 @@ class Item13(ItemBase):
 
     def check(self, index):
         ItemBase.check(self, index)
-        self.check_interval()
+        # self.check_interval()
         self.check_result_basis()
 
-    def check_interval(self):  # TODO move to db.check
+    def check_interval(self):  # TODO move to db.check, (!) date was added
         time_1, time_2 = self.widgets[0].get(), self.widgets[4].get()
         if not (time_1 and time_2):
             return
@@ -513,26 +522,30 @@ class Item13(ItemBase):
             raise CheckException('Интервал в пункте 13\nне равен 15-20 мин.')
 
     def check_result_basis(self):
-        if self.widgets[1].get() and not self.widgets[0].get():
+        if self.widgets[2].get() and not self.widgets[0].get():
+            raise CheckException('Не указана дата\nв пункте 13 (1).')
+        if self.widgets[2].get() and not self.widgets[1].get():
             raise CheckException('Не указано время\nв пункте 13 (1).')
-        if self.widgets[5].get() and not self.widgets[4].get():
-            raise CheckException('Не указано время\nв пункте 13 (2).')
-        if self.widgets[1].get() and not self.widgets[2].string_var.get():
+        if self.widgets[2].get() and not self.widgets[3].string_var.get():
             raise CheckException('Не указано ТС\nв пункте 13 (1).')
-        if self.widgets[5].get() and not self.widgets[6].string_var.get():
+        if self.widgets[7].get() and not self.widgets[5].get():
+            raise CheckException('Не указана дата\nв пункте 13 (2).')
+        if self.widgets[7].get() and not self.widgets[6].get():
+            raise CheckException('Не указано время\nв пункте 13 (2).')
+        if self.widgets[7].get() and not self.widgets[8].string_var.get():
             raise CheckException('Не указано ТС\nв пункте 13 (2).')
 
-    def dump(self):
-        if self.widgets[3].int_var.get():
-            return self.line, * 5 * ('',)
-        temp_1 = self.widgets[1].get()
-        temp_5 = self.widgets[5].get()
-        return (
-            self.widgets[0].get(), temp_1 + ' мг/л' if temp_1 else '',
-            self.widgets[2].string_var.get(),
-            self.widgets[4].get(), temp_5 + ' мг/л' if temp_5 else '',
-            self.widgets[6].string_var.get(),
-        )
+    def insert(self):
+        result_2 = self.widgets[2].get()
+        result_7 = self.widgets[7].get()
+        self.db.insert(13, 'time_1', self.widgets[1].get())
+        self.db.insert(13, 'result_1', result_2 + ' мг/л' if result_2 else '')
+        self.db.insert(13, 'device_1', self.widgets[3].string_var.get())
+        self.db.insert(13, 'time_2', self.widgets[6].get())
+        self.db.insert(13, 'result_2', result_7 + ' мг/л' if result_7 else '')
+        self.db.insert(13, 'device_2', self.widgets[8].string_var.get())
+        if self.widgets[4].int_var.get():
+            self.db.insert(13, 'result_1', self.line)
 
 
 class Item14(ItemBase):

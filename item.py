@@ -699,5 +699,6 @@ class Item17(ItemBase):
         if not self.widgets[1].get():
             raise CheckException('Не указана дата\nв пункте 17.')
 
-    def dump(self):
-        return self.widgets[0].get(), self.widgets[1].get()
+    def insert(self):
+        self.db.insert(17, 'opinion', self.widgets[0].get())
+        self.db.insert(17, 'date', self.str2date(self.widgets[1].get()))

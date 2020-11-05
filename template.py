@@ -39,16 +39,18 @@ def create_pdf(filename, db):
     item_13(db_)
     item_14(db_)
     item_15(db_)
+
     item_16(db)
-    item_17(db_)
-    item_18(db_)
+    item_17(db)
+    item_18(db)
 
     SimpleDocTemplate(
         filename, leftMargin=1.5*cm, rightMargin=1*cm,
         topMargin=1.5*cm, bottomMargin=3*cm,
     ).build(
         story,
-        onFirstPage=lambda canvas, _: page_1(canvas, f'/ {db_[5][0]} /'),
+        onFirstPage=lambda canvas, _: page_1(
+            canvas, f'/ {db.select(5, "doctor")} /'),
         onLaterPages=lambda canvas, _: page_2(canvas),
     )
 
@@ -279,13 +281,16 @@ def item_16(db):
 
 def item_17(db):
     spacer(1)
-    liner('Normal+', '17. Медицинское заключение', db[17][0])
-    liner('Normal+', 'дата его вынесения', db[17][1])
+    liner('Normal+', '17. Медицинское заключение', db.select(17, 'opinion'))
+    liner('Normal+', 'дата его вынесения', date2str(db.select(17, 'date')))
 
 
 def item_18(db):
     spacer(1)
-    liner('Normal+', '18. Подпись врача ______________', f'/ {db[5][0]} /')
+    liner(
+        'Normal+',
+        '18. Подпись врача ______________', f'/ {db.select(5, "doctor")} /',
+    )
     liner('Indent', 'М.П.')
 
 

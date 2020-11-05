@@ -31,9 +31,9 @@ def create_pdf(filename, db):
     item_7(db)
     item_8(db)
     item_9(db)
+    item_10(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_10(db_)
     item_11(db_)
     item_12(db_)
     item_13(db_)
@@ -183,11 +183,15 @@ def item_9(db):
 def item_10(db):
     spacer(1)
     liner('Normal+', '10. Двигательная сфера освидетельствуемого')
-    liner('Normal+', 'речь', db[10][0])
-    liner('Normal+', 'походка', db[10][1])
-    liner('Normal+', 'устойчивость в позе Ромберга', db[10][2])
-    liner('Normal+', 'точность выполнения координационных проб', db[10][3])
-    liner('Normal+', 'результат пробы Ташена', db[10][4])
+    liner('Normal+', 'речь', db.select(10, 'speech'))
+    liner('Normal+', 'походка', db.select(10, 'gait'))
+    liner('Normal+', 'устойчивость в позе Ромберга', db.select(10, 'romberg'))
+    liner(
+        'Normal+',
+        'точность выполнения координационных проб',
+        db.select(10, 'coordination'),
+    )
+    liner('Normal+', 'результат пробы Ташена', db.select(10, 'tashen'))
 
 
 def item_11(db):

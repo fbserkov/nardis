@@ -405,13 +405,13 @@ class Item10(ItemBase):
         self.widgets.append(entry)
         Label(self.frames[8], text='сек.').pack(side=LEFT)
 
-    def dump(self):
-        temp = self.widgets[4].get()
-        return (
-            self.widgets[0].get(), self.widgets[1].get(),
-            self.widgets[2].get(), self.widgets[3].get(),
-            temp + ' сек.' if temp else '',
-        )
+    def insert(self):
+        tashen = self.widgets[4].get()
+        self.db.insert(10, 'speech', self.widgets[0].get())
+        self.db.insert(10, 'gait', self.widgets[1].get())
+        self.db.insert(10, 'romberg', self.widgets[2].get())
+        self.db.insert(10, 'coordination', self.widgets[3].get())
+        self.db.insert(10, 'tashen', tashen + ' сек.' if tashen else '')
 
 
 class Item11(ItemBase):

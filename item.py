@@ -426,8 +426,8 @@ class Item11(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
-    def dump(self):
-        return self.widgets[0].get()
+    def insert(self):
+        self.db.insert(11, 'comorbidity', self.widgets[0].get())
 
 
 class Item12(ItemBase):
@@ -448,8 +448,8 @@ class Item12(ItemBase):
         LabelReplace(
             self.frames[2], text='употреблял спиртное', bind=entry, place=LEFT)
 
-    def dump(self):
-        return self.widgets[0].get()
+    def insert(self):
+        self.db.insert(12, 'drug_use', self.widgets[0].get())
 
 
 class Item13(ItemBase):

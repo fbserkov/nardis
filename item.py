@@ -208,8 +208,10 @@ class Item4(ItemBase):
             raise CheckException('Не указано время\nв пункте 4.')
 
     def insert(self):
-        self.db.insert(4, 'date', self.str2date(self.widgets[0].get()))
-        self.db.insert(4, 'time', self.str2time(self.widgets[1].get()))
+        self.db.insert(4, 'datetime', datetime.combine(
+            self.str2date(self.widgets[0].get()),
+            self.str2time(self.widgets[1].get()),
+        ))
 
 
 class Item5(ItemBase):
@@ -669,8 +671,10 @@ class Item16(ItemBase):
             raise CheckException('Не указано время\nв пункте 16.')
 
     def insert(self):
-        self.db.insert(16, 'date', self.str2date(self.widgets[0].get()))
-        self.db.insert(16, 'time', self.str2time(self.widgets[1].get()))
+        self.db.insert(16, 'datetime', datetime.combine(
+            self.str2date(self.widgets[0].get()),
+            self.str2time(self.widgets[1].get()),
+        ))
 
 
 class Item17(ItemBase):

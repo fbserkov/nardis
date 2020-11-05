@@ -20,11 +20,11 @@ pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
 story = []
 
 
-def create_pdf(filename, data):
-    report = data.reports[-1]  # TODO delete
+def create_pdf(filename, db):
+    report = db.reports[-1]  # TODO delete
 
     tbl(
-        data.select(0, 'organization'),
+        db.select(0, 'organization'),
         'Медицинская документация\nУчетная форма № 307/у-05\n'
         'Утверждена приказом Министерства\nздравоохранения '
         'Российской Федерации\nот 18 декабря 2015 г. № 933н',
@@ -33,44 +33,43 @@ def create_pdf(filename, data):
     liner('Center', 'АКТ')
     liner('Center', 'медицинского освидетельствования на состояние опьянения')
     liner('Center', '(алкогольного, наркотического или иного токсического)')
-    liner('Center', '№', data.select(0, 'act_number'))
+    liner('Center', '№', db.select(0, 'act_number'))
     spacer(2)
-    liner('Normal+', '', date2str(data.select(4, 'date'), long=True))
+    liner('Normal+', '', get_long_date(db.select(4, 'datetime')))
 
     spacer(1)
     liner('Normal+', '1. Сведения об освидетельствуемом лице:')
-    liner('Normal+', 'Фамилия, имя, отчество', data.select(1, 'full_name'))
+    liner('Normal+', 'Фамилия, имя, отчество', db.select(1, 'full_name'))
     liner(
-        'Normal+', 'Дата рождения', date2str(data.select(1, 'date')))
-    liner('Normal+', 'Адрес места жительства', data.select(1, 'address'))
+        'Normal+', 'Дата рождения', date2str(db.select(1, 'date')))
+    liner('Normal+', 'Адрес места жительства', db.select(1, 'address'))
     liner(
         'Normal+',
         'Сведения об освидетельствуемом лице заполнены на основании',
-        data.select(1, 'document'),
+        db.select(1, 'document'),
     )
 
     spacer(1)
     liner(
         'Normal+',
         '2. Основание для медицинского освидетельствования',
-        data.select(2, 'document'),
+        db.select(2, 'document'),
     )
-    liner('Normal+', 'Кем направлен', data.select(2, 'full_name'))
+    liner('Normal+', 'Кем направлен', db.select(2, 'full_name'))
 
     spacer(1)
     liner(
         'Normal+',
         '3. Наименование структурного подразделения медицинской организации, '
         'в котором проводится медицинское освидетельствование',
-        data.select(3, 'unit_name'),
+        db.select(3, 'unit_name'),
     )
 
     spacer(1)
     liner(
         'Normal+',
         '4. Дата и точное время начала медицинского освидетельствования',
-        date2str(data.select(4, 'date')) + ' ' +
-        time2str(data.select(4, 'time')),
+        datetime2str(db.select(4, 'datetime')),
     )
 
     spacer(1)
@@ -192,8 +191,7 @@ def create_pdf(filename, data):
     liner(
         'Normal+',
         '16. Дата и точное время окончания медицинского освидетельствования',
-        date2str(data.select(16, 'date')) + ' ' +
-        time2str(data.select(16, 'time')),
+        datetime2str(db.select(16, 'datetime')),
     )
 
     spacer(1)
@@ -215,12 +213,22 @@ def create_pdf(filename, data):
     )
 
 
-def date2str(date, long=False):
+def date2str(date):
     if date is None:
         return ''
-    if not long:
-        return date.strftime('%d.%m.%Y')
-    return date.strftime(f'"{date.day}" %B %Y г.')
+    return date.strftime('%d.%m.%Y')
+
+
+def datetime2str(datetime):
+    if datetime is None:
+        return ''
+    return datetime.strftime('%d.%m.%Y %H:%M')
+
+
+def get_long_date(datetime):
+    if datetime is None:
+        return ''
+    return datetime.strftime(f'"{datetime.day}" %B %Y г.')
 
 
 def liner(style, line1, line2=''):
@@ -259,9 +267,3 @@ def tbl(line1, line2):
         ('LEADING', (0, 0), (1, 0), 14)
     ]))
     story.append(temp)
-
-
-def time2str(time):
-    if time is None:
-        return ''
-    return time.strftime('%H:%M')

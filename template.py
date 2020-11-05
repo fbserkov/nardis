@@ -27,10 +27,10 @@ def create_pdf(filename, db):
     item_3(db)
     item_4(db)
     item_5(db)
+    item_6(db)
+    item_7(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_6(db_)
-    item_7(db_)
     item_8(db_)
     item_9(db_)
     item_10(db_)
@@ -139,7 +139,10 @@ def item_5(db):
 
 def item_6(db):
     spacer(1)
-    liner('Normal+', '6. Внешний вид освидетельствуемого', db[6])
+    liner(
+        'Normal+',
+        '6. Внешний вид освидетельствуемого', db.select(6, 'appearance'),
+    )
 
 
 def item_7(db):
@@ -147,7 +150,7 @@ def item_7(db):
     liner(
         'Normal+',
         '7. Жалобы освидетельствуемого на свое состояние',
-        db[7],
+        db.select(7, 'complaints'),
     )
 
 

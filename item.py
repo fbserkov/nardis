@@ -252,8 +252,8 @@ class Item6(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
-    def dump(self):
-        return self.widgets[0].get()
+    def insert(self):
+        self.db.insert(6, 'appearance', self.widgets[0].get())
 
 
 class Item7(ItemBase):
@@ -265,8 +265,8 @@ class Item7(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
-    def dump(self):
-        return self.widgets[0].get()
+    def insert(self):
+        self.db.insert(7, 'complaints', self.widgets[0].get())
 
 
 class Item8(ItemBase):

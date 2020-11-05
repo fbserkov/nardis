@@ -25,9 +25,10 @@ def create_pdf(filename, db):
     item_1(db)
     item_2(db)
     item_3(db)
+    item_4(db)
+    item_5(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_5(db_)
     item_6(db_)
     item_7(db_)
     item_8(db_)
@@ -47,7 +48,7 @@ def create_pdf(filename, db):
         topMargin=1.5*cm, bottomMargin=3*cm,
     ).build(
         story,
-        onFirstPage=lambda canvas, _: page_1(canvas, f'/ {db[5][0]} /'),
+        onFirstPage=lambda canvas, _: page_1(canvas, f'/ {db_[5][0]} /'),
         onLaterPages=lambda canvas, _: page_2(canvas),
     )
 
@@ -126,13 +127,13 @@ def item_4(db):
 
 def item_5(db):
     spacer(1)
-    liner('Normal+', '5. Кем освидетельствован', db[5][0])
+    liner('Normal+', '5. Кем освидетельствован', db.select(5, 'doctor'))
     liner(
         'Normal+',
         'Cведения о прохождении подготовки по вопросам проведения '
         'медицинского освидетельствования (наименование медицинской '
         'организации, дата выдачи документа)',
-        db[5][1],
+        db.select(5, 'training'),
     )
 
 

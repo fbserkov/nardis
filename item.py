@@ -226,12 +226,10 @@ class Item5(ItemBase):
         if not self.widgets[0].string_var.get():
             raise CheckException('Не указан врач\nв пункте 5.')
 
-    def dump(self):
-        line = self.widgets[0].string_var.get()
-        if not line:
-            return '', ''
-        names, *tail = line.split(', ')
-        return names, ', '.join(tail)
+    def insert(self):
+        doctor, *training = self.widgets[0].string_var.get().split(', ')
+        self.db.insert(5, 'doctor', doctor)
+        self.db.insert(5, 'training', ', '.join(training))
 
     def update_user(self):
         user = self.db.current_user

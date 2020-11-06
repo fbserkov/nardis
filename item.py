@@ -444,57 +444,67 @@ class Item12(ItemBase):
         self.db.insert(12, 'drug_use', self.widgets[0].get())
 
 
-class Item13(ItemBase):
-    def __init__(self, master):
-        ItemBase.__init__(self, master, frames_number=6)
-        for i in 1, 4:
-            self.frames[i].columnconfigure(1, weight=1)
-            self.frames[i].columnconfigure(3, weight=1)
-            self.frames[i].columnconfigure(5, weight=1)
-        line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
-        Label(self.frames[0], text=line).pack(side=LEFT)
+class SubItem13:
+    def __init__(self, n, frames, devices):
+        frames = frames[1:3] if n == 1 else frames[4:]
+        title = 'Первое' if n == 1 else 'Второе'
+        default = '%H:%M' if n == 1 else None
+        self.n, self.widgets = n, []
 
-        Label(self.frames[1], text='13.1. Первое исследование').grid(
+        for i in 1, 3, 5:
+            frames[0].columnconfigure(i, weight=1)
+        Label(frames[0], text=f'13.1. {title} исследование').grid(
             row=0, column=0)
-        frame = Frame(self.frames[1])
+
+        frame = Frame(frames[0])
         frame.grid(row=0, column=2)
         Label(frame, text='Дата').pack(side=LEFT)
         self.widgets.append(EntryDate(frame, '%d.%m.%Y'))
-        frame = Frame(self.frames[1])
+
+        frame = Frame(frames[0])
         frame.grid(row=0, column=4)
         Label(frame, text='Время').pack(side=LEFT)
-        self.widgets.append(EntryTime(frame, '%H:%M'))
-        frame = Frame(self.frames[1])
+        self.widgets.append(EntryTime(frame, default))
+
+        frame = Frame(frames[0])
         frame.grid(row=0, column=6)
         Label(frame, text='Результат').pack(side=LEFT)
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
-        Label(self.frames[2], text='техническое средство').pack(side=LEFT)
+
+        Label(frames[1], text='техническое средство').pack(side=LEFT)
+        self.widgets.append(OptionMenuSmart(frames[1], devices))
+
+    def check_result_basis(self):
+        if self.widgets[2].get() and not self.widgets[0].get():
+            raise CheckException(f'Не указана дата\nв пункте 13 ({self.n}).')
+        if self.widgets[2].get() and not self.widgets[1].get():
+            raise CheckException(f'Не указано время\nв пункте 13 ({self.n}).')
+        if self.widgets[2].get() and not self.widgets[3].string_var.get():
+            raise CheckException(f'Не указано ТС\nв пункте 13 ({self.n}).')
+
+    def insert(self, db):
+        result = self.widgets[2].get()
+        db.insert(13, f'time_{self.n}', self.widgets[1].get())
+        db.insert(13, f'result_{self.n}', result + ' мг/л' if result else '')
+        db.insert(13, f'device_{self.n}', self.widgets[3].string_var.get())
+
+
+class Item13(ItemBase):
+    def __init__(self, master):
+        ItemBase.__init__(self, master, frames_number=6)
+        line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
+        Label(self.frames[0], text=line).pack(side=LEFT)
+
         devices = self.db.get_devices()
-        self.widgets.append(OptionMenuSmart(self.frames[2], devices))
+        self.sub_item_1 = SubItem13(1, self.frames, devices)
+        self.sub_item_2 = SubItem13(2, self.frames, devices)
+        self.widgets.extend(self.sub_item_1.widgets + self.sub_item_2.widgets)
 
         self.forgery = 'фальсификация выдоха'
         checkbutton = CheckbuttonSmart(self.frames[3], text=self.forgery)
         checkbutton.pack(side=RIGHT)
         self.widgets.append(checkbutton)
-
-        Label(self.frames[4], text='13.2. Второе исследование').grid(
-            row=0, column=0)
-        frame = Frame(self.frames[4])
-        frame.grid(row=0, column=2)
-        Label(frame, text='Дата').pack(side=LEFT)
-        self.widgets.append(EntryDate(frame, '%d.%m.%Y'))
-        frame = Frame(self.frames[4])
-        frame.grid(row=0, column=4)
-        Label(frame, text='Время').pack(side=LEFT)
-        self.widgets.append(EntryTime(frame))
-        frame = Frame(self.frames[4])
-        frame.grid(row=0, column=6)
-        Label(frame, text='Результат').pack(side=LEFT)
-        self.widgets.append(EntryResult(frame))
-        Label(frame, text='мг/л').pack(side=LEFT)
-        Label(self.frames[5], text='техническое средство').pack(side=LEFT)
-        self.widgets.append(OptionMenuSmart(self.frames[5], devices))
 
     def check(self, index):
         ItemBase.check(self, index)
@@ -514,29 +524,13 @@ class Item13(ItemBase):
             raise CheckException('Интервал в пункте 13\nне равен 15-20 мин.')
 
     def check_result_basis(self):
-        if self.widgets[2].get() and not self.widgets[0].get():
-            raise CheckException('Не указана дата\nв пункте 13 (1).')
-        if self.widgets[2].get() and not self.widgets[1].get():
-            raise CheckException('Не указано время\nв пункте 13 (1).')
-        if self.widgets[2].get() and not self.widgets[3].string_var.get():
-            raise CheckException('Не указано ТС\nв пункте 13 (1).')
-        if self.widgets[7].get() and not self.widgets[5].get():
-            raise CheckException('Не указана дата\nв пункте 13 (2).')
-        if self.widgets[7].get() and not self.widgets[6].get():
-            raise CheckException('Не указано время\nв пункте 13 (2).')
-        if self.widgets[7].get() and not self.widgets[8].string_var.get():
-            raise CheckException('Не указано ТС\nв пункте 13 (2).')
+        self.sub_item_1.check_result_basis()
+        self.sub_item_2.check_result_basis()
 
     def insert(self):
-        result_2 = self.widgets[2].get()
-        result_7 = self.widgets[7].get()
-        self.db.insert(13, 'time_1', self.widgets[1].get())
-        self.db.insert(13, 'result_1', result_2 + ' мг/л' if result_2 else '')
-        self.db.insert(13, 'device_1', self.widgets[3].string_var.get())
-        self.db.insert(13, 'time_2', self.widgets[6].get())
-        self.db.insert(13, 'result_2', result_7 + ' мг/л' if result_7 else '')
-        self.db.insert(13, 'device_2', self.widgets[8].string_var.get())
-        if self.widgets[4].int_var.get():
+        self.sub_item_1.insert(self.db)
+        self.sub_item_2.insert(self.db)
+        if self.widgets[8].int_var.get():
             self.db.insert(13, 'result_1', self.forgery)
 
 

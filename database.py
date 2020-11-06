@@ -32,6 +32,9 @@ class Database:
     def get_act_number(self):
         return self._settings['Номер следующего акта']
 
+    def get_devices(self):
+        return self._settings['Технические средства']
+
     def get_laboratory_name(self):
         return self._settings['Лаборатория']
 
@@ -43,9 +46,6 @@ class Database:
 
     def get_report(self):
         return self.reports[-1]
-
-    def get_technical_means(self):
-        return self._settings['Технические средства']
 
     def get_subdivision(self):
         return self._settings['Подразделение']

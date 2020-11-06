@@ -470,8 +470,9 @@ class Item13(ItemBase):
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
-        technical_means = self.db.get_technical_means()
-        self.widgets.append(OptionMenuSmart(self.frames[2], technical_means))
+        devices = self.db.get_devices()
+        self.widgets.append(OptionMenuSmart(self.frames[2], devices))
+
         self.forgery = 'фальсификация выдоха'
         checkbutton = CheckbuttonSmart(self.frames[3], text=self.forgery)
         checkbutton.pack(side=RIGHT)
@@ -493,8 +494,7 @@ class Item13(ItemBase):
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
         Label(self.frames[5], text='техническое средство').pack(side=LEFT)
-        self.widgets.append(
-            OptionMenuSmart(self.frames[5], technical_means))
+        self.widgets.append(OptionMenuSmart(self.frames[5], devices))
 
     def check(self, index):
         ItemBase.check(self, index)

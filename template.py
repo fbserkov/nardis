@@ -35,9 +35,9 @@ def create_pdf(filename, db):
     item_11(db)
     item_12(db)
     item_13(db)
+    item_14(db)
 
     db_ = db.reports[-1]  # TODO delete
-    item_14(db_)
     item_15(db_)
 
     item_16(db)
@@ -78,7 +78,7 @@ def item_0(db):
     liner('Center', 'АКТ')
     liner('Center', 'медицинского освидетельствования на состояние опьянения')
     liner('Center', '(алкогольного, наркотического или иного токсического)')
-    liner('Center', '№', db.select(0, 'act_number'))
+    liner('Center', '№', db.select(0, 'number'))
     spacer(2)
     datetime = db.select(4, 'datetime')
     liner('Normal+', '', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
@@ -114,7 +114,7 @@ def item_3(db):
         'Normal+',
         '3. Наименование структурного подразделения медицинской организации, '
         'в котором проводится медицинское освидетельствование',
-        db.select(3, 'unit_name'),
+        db.select(3, 'subdivision'),
     )
 
 
@@ -247,23 +247,25 @@ def item_13(db):
 
 def item_14(db):
     spacer(1)
+    time = time2str(db.select(14, 'time'))
     liner(
         'Normal+',
         '14. Время отбора биологического объекта '
-        'у освидетельствуемого (среда)', db[14][0],
+        'у освидетельствуемого (среда)',
+        time + f' ({db.select(14, "material")})' if time else '',
     )
     liner(
         'Normal+',
         'Результаты химико-токсикологических '
         'исследований биологических объектов',
     )
-    liner('Normal+', 'название лаборатории', db[14][1])
-    liner('Normal+', 'методы исследований', db[14][2])
-    liner('Normal+', 'результаты исследований', db[14][4])
+    liner('Normal+', 'название лаборатории', db.select(14, 'laboratory'))
+    liner('Normal+', 'методы исследований', db.select(14, 'method'))
+    liner('Normal+', 'результаты исследований', db.select(14, 'result'))
     liner(
         'Normal+',
         'номер справки о результатах химико-токсикологических исследований',
-        db[14][3],
+        db.select(14, 'number'),
     )
 
 
@@ -336,3 +338,9 @@ def tbl(line1, line2):
         ('LEADING', (0, 0), (1, 0), 14)
     ]))
     story.append(temp)
+
+
+def time2str(time):
+    if time is None:
+        return ''
+    return time.strftime('%H:%M')

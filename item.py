@@ -104,11 +104,9 @@ class Item0(ItemBase):
     def insert(self):
         self.db.insert(0, 'organization', self.db.get_organization())
         self.db.insert(
-            0, 'act_number',
-            self.widgets[0].get() + '/' + self.widgets[1].get(),
-        )
+            0, 'number', self.widgets[0].get() + '/' + self.widgets[1].get())
 
-    def update_act_number(self):
+    def update_number(self):
         self.widgets[0].config(state='normal')
         self.widgets[0].insert(0, self.db.get_act_number())
         self.widgets[0].config(state='disabled')
@@ -187,7 +185,7 @@ class Item3(ItemBase):
         ItemBase.__init__(self, master)
 
     def insert(self):
-        self.db.insert(3, 'unit_name', self.db.get_unit_name())
+        self.db.insert(3, 'subdivision', self.db.get_subdivision())
 
 
 class Item4(ItemBase):
@@ -480,8 +478,8 @@ class Item13(ItemBase):
         Label(self.frames[2], text='техническое средство').pack(side=LEFT)
         technical_means = self.db.get_technical_means()
         self.widgets.append(OptionMenuSmart(self.frames[2], technical_means))
-        self.line = 'фальсификация выдоха'
-        checkbutton = CheckbuttonSmart(self.frames[3], text=self.line)
+        self.forgery = 'фальсификация выдоха'
+        checkbutton = CheckbuttonSmart(self.frames[3], text=self.forgery)
         checkbutton.pack(side=RIGHT)
         self.widgets.append(checkbutton)
 
@@ -545,7 +543,7 @@ class Item13(ItemBase):
         self.db.insert(13, 'result_2', result_7 + ' мг/л' if result_7 else '')
         self.db.insert(13, 'device_2', self.widgets[8].string_var.get())
         if self.widgets[4].int_var.get():
-            self.db.insert(13, 'result_1', self.line)
+            self.db.insert(13, 'result_1', self.forgery)
 
 
 class Item14(ItemBase):
@@ -564,10 +562,10 @@ class Item14(ItemBase):
 
         frame = Frame(self.frames[1])
         frame.pack(side=RIGHT)
-        self.line_1 = 'отказ от сдачи пробы биологического объекта (мочи)'
-        self.line_2 = 'фальсификация пробы биологического объекта (мочи)'
-        button_1 = CheckbuttonSmart(frame, text=self.line_1)
-        button_2 = CheckbuttonSmart(frame, text=self.line_2)
+        self.refusal = 'отказ от сдачи пробы биологического объекта (мочи)'
+        self.forgery = 'фальсификация пробы биологического объекта (мочи)'
+        button_1 = CheckbuttonSmart(frame, text=self.refusal)
+        button_2 = CheckbuttonSmart(frame, text=self.forgery)
         button_1.bind(
             '<Button-1>', lambda _: self.uncheck_extra(button_1, button_2))
         button_2.bind(
@@ -618,24 +616,6 @@ class Item14(ItemBase):
         if self.widgets[6].get() and not self.widgets[5].get():
             raise CheckException('Не указан год\nв пункте 14.')
 
-    def dump(self):
-        line = ''
-        if self.widgets[2].int_var.get():
-            line = self.line_1
-        if self.widgets[3].int_var.get():
-            line = self.line_2
-        if line:
-            return line, * 4 * ('',)
-        temp_0 = self.widgets[0].get()
-        temp_6 = self.widgets[6].get()
-        return (
-            temp_0 + ' (' + self.widgets[1].get() + ')' if temp_0 else '',
-            self.db.get_laboratory_name() if temp_0 else '',
-            self.widgets[4].string_var.get(),
-            temp_6 + '/' + self.widgets[5].get() if temp_6 else '',
-            self.get_result(),
-        )
-
     def get_result(self):
         result = ''
         for i, chemical in enumerate(self.chemicals):
@@ -643,6 +623,25 @@ class Item14(ItemBase):
             if temp:
                 result += chemical + ' ' + temp + ', '
         return result
+
+    def insert(self):
+        time, number = self.widgets[0].get(), self.widgets[6].get()
+        self.db.insert(14, 'time', self.str2time(time))
+        self.db.insert(14, 'material', self.widgets[1].get() if time else '')
+        self.db.insert(
+            14, 'laboratory', self.db.get_laboratory_name() if time else '')
+        self.db.insert(14, 'method', self.widgets[4].string_var.get())
+        self.db.insert(
+            14, 'number',
+            number + '/' + self.widgets[5].get() if number else '',
+        )
+        self.db.insert(14, 'result', self.get_result())
+
+        line = self.refusal if self.widgets[2].int_var.get() else ''
+        if self.widgets[3].int_var.get():
+            line = self.forgery
+        if line:
+            self.db.insert(14, 'result', line)
 
     @staticmethod
     def uncheck_extra(button_1, button_2):

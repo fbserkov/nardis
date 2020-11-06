@@ -47,7 +47,7 @@ class Database:
     def get_technical_means(self):
         return self._settings['Технические средства']
 
-    def get_unit_name(self):
+    def get_subdivision(self):
         return self._settings['Подразделение']
 
     def insert(self, i, key, value):

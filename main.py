@@ -55,12 +55,6 @@ class FramePart(Frame):
                 raise CheckException(
                     'Несоответствие времени\nв пунктах 16 и 13.')
 
-    def dump(self):
-        report = self.data.get_report()
-        for part_frame in self.part_frames:
-            for i in part_frame.items:
-                report[i] = part_frame.items[i].dump()
-
     def init(self):
         for part_frame in self.part_frames:
             part_frame.init()
@@ -74,7 +68,6 @@ class FramePart(Frame):
     def save(self):
         try:
             self.check()
-            self.dump()
             self.insert()
             self.data.check()
             self.data.save()

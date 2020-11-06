@@ -3,6 +3,7 @@ from time import mktime, strptime
 
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 
+from convert import str2date, str2datetime, str2time
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
@@ -14,14 +15,6 @@ def create_item(master, i):
     cls_name = 'Item' + str(i)
     cls = globals()[cls_name]
     return cls(master)
-
-
-def str2datetime(datetime_):
-    date, time = datetime_.split(' ')
-    date, time = ItemBase.str2date(date), ItemBase.str2time(time)
-    if not (date and time):
-        return None
-    return datetime.combine(date, time)
 
 
 class CheckException(Exception):
@@ -67,18 +60,6 @@ class ItemBase:
     def init(self):
         for widget in self.widgets:
             widget.init()
-
-    @staticmethod
-    def str2date(date):
-        if date == '':
-            return None
-        return datetime.strptime(date, '%d.%m.%Y').date()
-
-    @staticmethod
-    def str2time(time):
-        if time == '':
-            return None
-        return datetime.strptime(time, '%H:%M').time()
 
     db, frame = None, None
 
@@ -153,7 +134,7 @@ class Item1(ItemBase):
 
     def insert(self):
         self.db.insert(1, 'full_name', self.widgets[0].get())
-        self.db.insert(1, 'date', self.str2date(self.widgets[1].get()))
+        self.db.insert(1, 'date', str2date(self.widgets[1].get()))
         self.db.insert(1, 'address', self.widgets[2].get())
         self.db.insert(1, 'document', self.widgets[3].get())
 
@@ -209,9 +190,7 @@ class Item4(ItemBase):
 
     def insert(self):
         self.db.insert(4, 'datetime', datetime.combine(
-            self.str2date(self.widgets[0].get()),
-            self.str2time(self.widgets[1].get()),
-        ))
+            str2date(self.widgets[0].get()), str2time(self.widgets[1].get())))
 
 
 class Item5(ItemBase):
@@ -625,7 +604,7 @@ class Item14(ItemBase):
 
     def insert(self):
         time, number = self.widgets[0].get(), self.widgets[6].get()
-        self.db.insert(14, 'time', self.str2time(time))
+        self.db.insert(14, 'time', str2time(time))
         self.db.insert(14, 'material', self.widgets[1].get() if time else '')
         self.db.insert(
             14, 'laboratory', self.db.get_laboratory_name() if time else '')
@@ -681,9 +660,7 @@ class Item16(ItemBase):
 
     def insert(self):
         self.db.insert(16, 'datetime', datetime.combine(
-            self.str2date(self.widgets[0].get()),
-            self.str2time(self.widgets[1].get()),
-        ))
+            str2date(self.widgets[0].get()), str2time(self.widgets[1].get())))
 
 
 class Item17(ItemBase):
@@ -712,4 +689,4 @@ class Item17(ItemBase):
 
     def insert(self):
         self.db.insert(17, 'opinion', self.widgets[0].get())
-        self.db.insert(17, 'date', self.str2date(self.widgets[1].get()))
+        self.db.insert(17, 'date', str2date(self.widgets[1].get()))

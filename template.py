@@ -7,6 +7,8 @@ from reportlab.pdfbase import ttfonts, pdfmetrics
 from reportlab.platypus import (
     Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
 
+from convert import date2str, datetime2str, datetime2str_time, time2str
+
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 styles = getSampleStyleSheet()
@@ -50,24 +52,6 @@ def create_pdf(filename, db):
             canvas, f'/ {db.select(5, "doctor")} /'),
         onLaterPages=lambda canvas, _: page_2(canvas),
     )
-
-
-def date2str(date):
-    if date is None:
-        return ''
-    return date.strftime('%d.%m.%Y')
-
-
-def datetime2str(datetime):
-    if datetime is None:
-        return ''
-    return datetime.strftime('%d.%m.%Y %H:%M')
-
-
-def datetime2str_time(datetime):
-    if datetime is None:
-        return ''
-    return datetime.strftime('%H:%M')
 
 
 def item_0(db):
@@ -343,9 +327,3 @@ def tbl(line1, line2):
         ('LEADING', (0, 0), (1, 0), 14)
     ]))
     story.append(temp)
-
-
-def time2str(time):
-    if time is None:
-        return ''
-    return time.strftime('%H:%M')

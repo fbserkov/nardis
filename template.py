@@ -64,6 +64,12 @@ def datetime2str(datetime):
     return datetime.strftime('%d.%m.%Y %H:%M')
 
 
+def datetime2str_time(datetime):
+    if datetime is None:
+        return ''
+    return datetime.strftime('%H:%M')
+
+
 def item_0(db):
     tbl(
         db.select(0, 'organization'),
@@ -218,7 +224,9 @@ def item_13(db):
         '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого',
     )
     liner(
-        'Normal+', '13.1 Время первого исследования', db.select(13, 'time_1'))
+        'Normal+', '13.1 Время первого исследования',
+        datetime2str_time(db.select(13, 'datetime_1')),
+    )
     liner(
         'Normal+',
         'наименование технического средства измерения, '
@@ -230,7 +238,7 @@ def item_13(db):
     liner(
         'Normal+',
         '13.2 Второе исследование через 15-20 минут: время исследования',
-        db.select(13, 'time_2'),
+        datetime2str_time(db.select(13, 'datetime_2')),
     )
     liner(
         'Normal+',

@@ -16,6 +16,14 @@ def create_item(master, i):
     return cls(master)
 
 
+def str2datetime(datetime_):
+    date, time = datetime_.split(' ')
+    date, time = ItemBase.str2date(date), ItemBase.str2time(time)
+    if not (date and time):
+        return None
+    return datetime.combine(date, time)
+
+
 class CheckException(Exception):
     def __init__(self, text=''):
         self.text = text
@@ -61,16 +69,16 @@ class ItemBase:
             widget.init()
 
     @staticmethod
-    def str2date(line):
-        if line == '':
+    def str2date(date):
+        if date == '':
             return None
-        return datetime.strptime(line, '%d.%m.%Y').date()
+        return datetime.strptime(date, '%d.%m.%Y').date()
 
     @staticmethod
-    def str2time(line):
-        if line == '':
+    def str2time(time):
+        if time == '':
             return None
-        return datetime.strptime(line, '%H:%M').time()
+        return datetime.strptime(time, '%H:%M').time()
 
     db, frame = None, None
 
@@ -485,7 +493,10 @@ class SubItem13:
 
     def insert(self, db):
         result = self.widgets[2].get()
-        db.insert(13, f'time_{self.n}', self.widgets[1].get())
+        db.insert(
+            13, f'datetime_{self.n}',
+            str2datetime(self.widgets[0].get() + ' ' + self.widgets[1].get()),
+        )
         db.insert(13, f'result_{self.n}', result + ' мг/л' if result else '')
         db.insert(13, f'device_{self.n}', self.widgets[3].string_var.get())
 

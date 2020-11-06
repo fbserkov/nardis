@@ -36,10 +36,7 @@ def create_pdf(filename, db):
     item_12(db)
     item_13(db)
     item_14(db)
-
-    db_ = db.reports[-1]  # TODO delete
-    item_15(db_)
-
+    item_15(db)
     item_16(db)
     item_17(db)
     item_18(db)
@@ -274,7 +271,7 @@ def item_15(db):
     liner(
         'Normal+',
         '15. Другие данные медицинского осмотра или представленных документов',
-        db[15],
+        db.select(15, 'other'),
     )
 
 

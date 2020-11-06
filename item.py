@@ -47,9 +47,6 @@ class ItemBase:
             exc.add('\nв пункте ' + str(index) + '.')
             raise exc
 
-    def dump(self):  # TODO delete
-        return 'dump'*3
-
     @staticmethod
     def get_frames(master, length):
         frames = []
@@ -62,9 +59,6 @@ class ItemBase:
     def init(self):
         for widget in self.widgets:
             widget.init()
-
-    def insert(self):  # TODO delete
-        pass
 
     @staticmethod
     def str2date(line):
@@ -659,8 +653,8 @@ class Item15(ItemBase):
         entry.pack(fill=X)
         self.widgets.append(entry)
 
-    def dump(self):
-        return self.widgets[0].get()
+    def insert(self):
+        self.db.insert(15, 'other', self.widgets[0].get())
 
 
 class Item16(ItemBase):

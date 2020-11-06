@@ -1,5 +1,4 @@
 from datetime import datetime
-from time import mktime, strptime
 
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 
@@ -462,7 +461,7 @@ class SubItem13:
         Label(frames[1], text='техническое средство').pack(side=LEFT)
         self.widgets.append(OptionMenuSmart(frames[1], devices))
 
-    def check_result_basis(self):
+    def check(self):
         if self.widgets[2].get() and not self.widgets[0].get():
             raise CheckException(f'Не указана дата\nв пункте 13 ({self.n}).')
         if self.widgets[2].get() and not self.widgets[1].get():
@@ -498,24 +497,8 @@ class Item13(ItemBase):
 
     def check(self, index):
         ItemBase.check(self, index)
-        # self.check_interval()
-        self.check_result_basis()
-
-    def check_interval(self):  # TODO move to db.check, (!) date was added
-        time_1, time_2 = self.widgets[0].get(), self.widgets[4].get()
-        if not (time_1 and time_2):
-            return
-        seconds_1 = mktime(strptime(time_1, '%H:%M'))
-        seconds_2 = mktime(strptime(time_2, '%H:%M'))
-        delta = seconds_2 - seconds_1
-        cond_1 = delta < 15*60 or delta > 20*60
-        cond_2 = delta + 24*3600 < 15*60 or delta + 24*3600 > 20*60
-        if cond_1 and cond_2:
-            raise CheckException('Интервал в пункте 13\nне равен 15-20 мин.')
-
-    def check_result_basis(self):
-        self.sub_item_1.check_result_basis()
-        self.sub_item_2.check_result_basis()
+        self.sub_item_1.check()
+        self.sub_item_2.check()
 
     def insert(self):
         self.sub_item_1.insert(self.db)

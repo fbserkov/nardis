@@ -11,14 +11,24 @@ class Database:
             self._settings, self.reports = pickle.load(f)
 
     def check(self):
-        datetime_1 = self.select(13, 'datetime_1')
-        datetime_2 = self.select(13, 'datetime_2')
-        if datetime_1 and datetime_2:
-            if not 15 <= (datetime_2 - datetime_1).seconds / 60 <= 20:
+        datetime_4 = self.select(4, 'datetime')
+        datetime_13_1 = self.select(13, 'datetime_1')
+        datetime_13_2 = self.select(13, 'datetime_2')
+        datetime_16 = self.select(16, 'datetime')
+
+        if datetime_13_1 and datetime_13_1 < datetime_4:
+            raise CheckException('Несоответствие времени\nв пунктах 13.1 и 4.')
+        if datetime_13_1 and datetime_13_2:
+            if not 15 <= (datetime_13_2 - datetime_13_1).seconds / 60 <= 20:
                 raise CheckException(
                     'Интервал в пункте 13\nне равен 15-20 минутам.')
-
-        if self.select(16, 'datetime') < self.select(4, 'datetime'):
+        if datetime_13_1 and datetime_13_1 > datetime_16:
+            raise CheckException(
+                'Несоответствие времени\nв пунктах 13.1 и 16.')
+        if datetime_13_2 and datetime_13_2 > datetime_16:
+            raise CheckException(
+                'Несоответствие времени\nв пунктах 13.2 и 16.')
+        if datetime_16 < datetime_4:
             raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def check_password(self, password):

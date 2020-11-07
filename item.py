@@ -439,7 +439,7 @@ class SubItem13:
 
         for i in 1, 3, 5:
             frames[0].columnconfigure(i, weight=1)
-        Label(frames[0], text=f'13.1. {title} исследование').grid(
+        Label(frames[0], text=f'13.{n}. {title} исследование').grid(
             row=0, column=0)
 
         frame = Frame(frames[0])

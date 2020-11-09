@@ -110,7 +110,7 @@ class WindowMain:
 
         self.frame_part = FramePart(self.data)
         self.auth_button, self.auth_status = None, False
-        self.new_button, self.pdf_button = None, None
+        self.new_button, self.pdf_button, self.list_button = None, None, None
         self.create_menu()
         self.root.mainloop()
 
@@ -120,6 +120,7 @@ class WindowMain:
             self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
+            self.list_button['state'] = 'disabled'
             self.frame_part.forget()
         else:
             if not WindowAuth(self.root, self.data).status:
@@ -128,6 +129,7 @@ class WindowMain:
             self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
+            self.list_button['state'] = 'normal'
             self.frame_part.pack(fill=X)
             self.frame_part.show_part(1)
             self.frame_part.init()
@@ -147,6 +149,11 @@ class WindowMain:
             command=self.frame_part.save, state='disabled',
         )
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+        self.list_button = Button(
+            frame, text='Список',
+            command=lambda: ..., state='disabled',
+        )
+        self.list_button.pack(side=LEFT, expand=True, fill=X)
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')

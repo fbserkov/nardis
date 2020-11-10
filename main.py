@@ -25,9 +25,9 @@ class App:
         if self.file_not_found_error:
             return
 
-        frame_part = FramePart(db)
+        frame_parts = FrameParts(db)
         list_acts = ListboxActs()
-        Menu(frame_part, list_acts)
+        FrameMenu(frame_parts, list_acts)
         self.root.mainloop()
 
     def customize(self):
@@ -63,7 +63,63 @@ class App:
         os.remove('file.lock')
 
 
-class FramePart(Frame):
+class FrameMenu(Frame):
+    def __init__(self, frame_parts, list_acts):
+        Frame.__init__(self)
+        self.pack(fill=X)
+        self.frame_parts, self.list_acts = frame_parts, list_acts
+        self.auth_status, self.list_status = False, False
+
+        self.auth_button = Button(self, text='Вход', command=self.auth)
+        self.auth_button.pack(side=LEFT, expand=True, fill=X)
+        self.new_button = Button(
+            self, text='Новый', command=frame_parts.init, state='disabled')
+        self.new_button.pack(side=LEFT, expand=True, fill=X)
+        self.pdf_button = Button(
+            self, text='Сохранить', command=frame_parts.save, state='disabled')
+        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+        self.list_button = Button(
+            self, text='Список', command=self.show_list, state='disabled')
+        self.list_button.pack(side=LEFT, expand=True, fill=X)
+
+    def auth(self):
+        if self.auth_status:
+            self.auth_status = False
+            self.auth_button['text'] = 'Вход'
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+            self.list_button['state'] = 'disabled'
+            self.frame_parts.forget()
+            self.list_acts.forget()
+            self.list_status = False
+        else:
+            if not TopLevelAuth(self.frame_parts.db).status:
+                return
+            self.auth_status = True
+            self.auth_button['text'] = 'Выход'
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
+            self.list_button['state'] = 'normal'
+            self.frame_parts.pack(fill=X)
+            self.frame_parts.show_part(1)
+            self.frame_parts.init()
+
+    def show_list(self):
+        if self.list_status:
+            self.list_status = False
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
+            self.list_acts.forget()
+            self.frame_parts.pack(fill=X)
+        else:
+            self.list_status = True
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+            self.frame_parts.forget()
+            self.list_acts.pack(fill=X)
+
+
+class FrameParts(Frame):
     def __init__(self, db):
         Frame.__init__(self)
         frame = Frame(self)
@@ -123,62 +179,6 @@ class ListboxActs(Listbox):
     def __init__(self):
         Listbox.__init__(self, height=34)
         # self.status = False
-
-
-class Menu(Frame):
-    def __init__(self, frame_part, list_acts):
-        Frame.__init__(self)
-        self.pack(fill=X)
-        self.frame_part, self.list_acts = frame_part, list_acts
-        self.auth_status, self.list_status = False, False
-
-        self.auth_button = Button(self, text='Вход', command=self.auth)
-        self.auth_button.pack(side=LEFT, expand=True, fill=X)
-        self.new_button = Button(
-            self, text='Новый', command=frame_part.init, state='disabled')
-        self.new_button.pack(side=LEFT, expand=True, fill=X)
-        self.pdf_button = Button(
-            self, text='Сохранить', command=frame_part.save, state='disabled')
-        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
-        self.list_button = Button(
-            self, text='Список', command=self.show_list, state='disabled')
-        self.list_button.pack(side=LEFT, expand=True, fill=X)
-
-    def auth(self):
-        if self.auth_status:
-            self.auth_status = False
-            self.auth_button['text'] = 'Вход'
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.list_button['state'] = 'disabled'
-            self.frame_part.forget()
-            self.list_acts.forget()
-            self.list_status = False
-        else:
-            if not TopLevelAuth(self.frame_part.db).status:
-                return
-            self.auth_status = True
-            self.auth_button['text'] = 'Выход'
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.list_button['state'] = 'normal'
-            self.frame_part.pack(fill=X)
-            self.frame_part.show_part(1)
-            self.frame_part.init()
-
-    def show_list(self):
-        if self.list_status:
-            self.list_status = False
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.list_acts.forget()
-            self.frame_part.pack(fill=X)
-        else:
-            self.list_status = True
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.frame_part.forget()
-            self.list_acts.pack(fill=X)
 
 
 class TopLevelAuth(Toplevel):

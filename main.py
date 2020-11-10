@@ -11,7 +11,7 @@ from template import create_pdf
 
 
 class FramePart(Frame):
-    def __init__(self, data):
+    def __init__(self, db):
         Frame.__init__(self)
         frame = Frame(self)
         frame.pack(fill=X)
@@ -24,12 +24,12 @@ class FramePart(Frame):
             obj.pack(side=LEFT, expand=True, fill=X)
             obj['command'] = lambda j=i: self.show_part(j + 1)
 
-        ItemBase.db = data
+        ItemBase.db = db
         self.part_frames = (
             PassportPart(self), CommonPart(self),
             SurveyPart(self), ExaminationPart(self),
         )
-        self.data, self.index = data, 0
+        self.db, self.index = db, 0
 
     def check(self):
         for part_frame in self.part_frames:
@@ -49,9 +49,9 @@ class FramePart(Frame):
         try:
             self.check()
             self.insert()
-            self.data.check()
-            self.data.save()
-            create_pdf('test.pdf', self.data)
+            self.db.check()
+            self.db.save()
+            create_pdf('test.pdf', self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)
 
@@ -66,11 +66,50 @@ class FramePart(Frame):
         self.index = index
 
 
+class Menu(Frame):
+    def __init__(self, frame_part):
+        Frame.__init__(self)
+        self.pack(fill=X)
+        self.frame_part, self.auth_status = frame_part, False
+
+        self.auth_button = Button(self, text='Вход', command=self.auth)
+        self.auth_button.pack(side=LEFT, expand=True, fill=X)
+        self.new_button = Button(
+            self, text='Новый', command=frame_part.init, state='disabled')
+        self.new_button.pack(side=LEFT, expand=True, fill=X)
+        self.pdf_button = Button(
+            self, text='Сохранить', command=frame_part.save, state='disabled')
+        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+        self.list_button = Button(
+            self, text='Список', command=lambda: ..., state='disabled')
+        self.list_button.pack(side=LEFT, expand=True, fill=X)
+
+    def auth(self):
+        if self.auth_status:
+            self.auth_status = False
+            self.auth_button['text'] = 'Вход'
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+            self.list_button['state'] = 'disabled'
+            self.frame_part.forget()
+        else:
+            if not WindowAuth(self.frame_part.db).status:
+                return
+            self.auth_status = True
+            self.auth_button['text'] = 'Выход'
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
+            self.list_button['state'] = 'normal'
+            self.frame_part.pack(fill=X)
+            self.frame_part.show_part(1)
+            self.frame_part.init()
+
+
 class WindowAuth(Toplevel):
-    def __init__(self, root, data):
+    def __init__(self, db):
         Toplevel.__init__(self)
         self.title('Введите пароль')
-        self.data, self.status = data, False
+        self.db, self.status = db, False
 
         self.entry = Entry(self, font='-size 14', show='●')
         self.entry.bind('<Key-Return>', lambda _: self.auth())
@@ -80,13 +119,13 @@ class WindowAuth(Toplevel):
             self, font='-size 10', text='OK', command=self.auth)
         self.button.pack(fill=X)
 
-        self.transient(root)
+        self.transient(self.master)
         self.wait_visibility()
         self.grab_set()
         self.wait_window()
 
     def auth(self):
-        if self.data.check_password(self.entry.get()):
+        if self.db.check_password(self.entry.get()):
             self.status = True
             self.destroy()
         else:
@@ -104,56 +143,12 @@ class WindowMain:
             return
 
         self.file_not_found_error = False
-        self.data = self.load_data()
+        self.db = self.load_db()
         if self.file_not_found_error:
             return
 
-        self.frame_part = FramePart(self.data)
-        self.auth_button, self.auth_status = None, False
-        self.new_button, self.pdf_button, self.list_button = None, None, None
-        self.create_menu()
+        self.menu = Menu(FramePart(self.db))
         self.root.mainloop()
-
-    def auth(self):
-        if self.auth_status:
-            self.auth_status = False
-            self.auth_button['text'] = 'Вход'
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.list_button['state'] = 'disabled'
-            self.frame_part.forget()
-        else:
-            if not WindowAuth(self.root, self.data).status:
-                return
-            self.auth_status = True
-            self.auth_button['text'] = 'Выход'
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.list_button['state'] = 'normal'
-            self.frame_part.pack(fill=X)
-            self.frame_part.show_part(1)
-            self.frame_part.init()
-
-    def create_menu(self):
-        frame = Frame()
-        frame.pack(fill=X)
-        self.auth_button = Button(frame, text='Вход', command=self.auth)
-        self.auth_button.pack(side=LEFT, expand=True, fill=X)
-        self.new_button = Button(
-            frame, text='Новый',
-            command=self.frame_part.init, state='disabled',
-        )
-        self.new_button.pack(side=LEFT, expand=True, fill=X)
-        self.pdf_button = Button(
-            frame, text='Сохранить',
-            command=self.frame_part.save, state='disabled',
-        )
-        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
-        self.list_button = Button(
-            frame, text='Список',
-            command=lambda: ..., state='disabled',
-        )
-        self.list_button.pack(side=LEFT, expand=True, fill=X)
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -162,7 +157,7 @@ class WindowMain:
         if not sys.platform == 'linux':
             self.root.iconbitmap('nardis.ico')
 
-    def load_data(self):
+    def load_db(self):
         try:
             return Database('nardis.db')
         except FileNotFoundError:

@@ -10,6 +10,59 @@ from part import PassportPart, CommonPart, SurveyPart, ExaminationPart
 from template import create_pdf
 
 
+class App:
+    def __init__(self):
+        self.root = Tk()
+        self.customize()
+
+        self.file_exists_error = False
+        self.lock()
+        if self.file_exists_error:
+            return
+
+        self.file_not_found_error = False
+        db = self.load_db()
+        if self.file_not_found_error:
+            return
+
+        frame_part = FramePart(db)
+        list_acts = ListActs()
+        Menu(frame_part, list_acts)
+        self.root.mainloop()
+
+    def customize(self):
+        self.root.title('Наркологическая экспертиза')
+        self.root.geometry('610x650')
+        self.root.resizable(width=False, height=False)
+        if not sys.platform == 'linux':
+            self.root.iconbitmap('nardis.ico')
+
+    def load_db(self):
+        try:
+            return Database('nardis.db')
+        except FileNotFoundError:
+            self.show_popup(
+                title='Сообщение', message='База данных не найдена.')
+            self.file_not_found_error = True
+
+    def lock(self):
+        try:
+            open('file.lock', 'x').close()
+        except FileExistsError:
+            self.show_popup(
+                title='Сообщение', message='Приложение уже запущено.')
+            self.file_exists_error = True
+
+    def show_popup(self, title, message):
+        self.root.withdraw()
+        showinfo(title, message)
+
+    def unlock(self):
+        if self.file_exists_error:
+            return
+        os.remove('file.lock')
+
+
 class FramePart(Frame):
     def __init__(self, db):
         Frame.__init__(self)
@@ -155,58 +208,5 @@ class WindowAuth(Toplevel):
             self.button['text'] = 'Неверный пароль'
 
 
-class WindowMain:
-    def __init__(self):
-        self.root = Tk()
-        self.customize()
-
-        self.file_exists_error = False
-        self.lock()
-        if self.file_exists_error:
-            return
-
-        self.file_not_found_error = False
-        db = self.load_db()
-        if self.file_not_found_error:
-            return
-
-        frame_part = FramePart(db)
-        list_acts = ListActs()
-        Menu(frame_part, list_acts)
-        self.root.mainloop()
-
-    def customize(self):
-        self.root.title('Наркологическая экспертиза')
-        self.root.geometry('610x650')
-        self.root.resizable(width=False, height=False)
-        if not sys.platform == 'linux':
-            self.root.iconbitmap('nardis.ico')
-
-    def load_db(self):
-        try:
-            return Database('nardis.db')
-        except FileNotFoundError:
-            self.show_popup(
-                title='Сообщение', message='База данных не найдена.')
-            self.file_not_found_error = True
-
-    def lock(self):
-        try:
-            open('file.lock', 'x').close()
-        except FileExistsError:
-            self.show_popup(
-                title='Сообщение', message='Приложение уже запущено.')
-            self.file_exists_error = True
-
-    def show_popup(self, title, message):
-        self.root.withdraw()
-        showinfo(title, message)
-
-    def unlock(self):
-        if self.file_exists_error:
-            return
-        os.remove('file.lock')
-
-
 if __name__ == '__main__':
-    WindowMain().unlock()
+    App().unlock()

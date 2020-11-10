@@ -1,7 +1,7 @@
 import os
 import sys
 
-from tkinter import Button, Entry, Frame, LEFT, Tk, Toplevel, X
+from tkinter import Button, Entry, Frame, LEFT, Listbox, Tk, Toplevel, X
 from tkinter.messagebox import showinfo
 
 from database import Database
@@ -66,11 +66,18 @@ class FramePart(Frame):
         self.index = index
 
 
+class ListActs(Listbox):
+    def __init__(self):
+        Listbox.__init__(self, height=34)
+        # self.status = False
+
+
 class Menu(Frame):
-    def __init__(self, frame_part):
+    def __init__(self, frame_part, list_acts):
         Frame.__init__(self)
         self.pack(fill=X)
-        self.frame_part, self.auth_status = frame_part, False
+        self.frame_part, self.list_acts = frame_part, list_acts
+        self.auth_status, self.list_status = False, False
 
         self.auth_button = Button(self, text='Вход', command=self.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
@@ -81,7 +88,7 @@ class Menu(Frame):
             self, text='Сохранить', command=frame_part.save, state='disabled')
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
         self.list_button = Button(
-            self, text='Список', command=lambda: ..., state='disabled')
+            self, text='Список', command=self.show_list, state='disabled')
         self.list_button.pack(side=LEFT, expand=True, fill=X)
 
     def auth(self):
@@ -92,6 +99,8 @@ class Menu(Frame):
             self.pdf_button['state'] = 'disabled'
             self.list_button['state'] = 'disabled'
             self.frame_part.forget()
+            self.list_acts.forget()
+            self.list_status = False
         else:
             if not WindowAuth(self.frame_part.db).status:
                 return
@@ -103,6 +112,20 @@ class Menu(Frame):
             self.frame_part.pack(fill=X)
             self.frame_part.show_part(1)
             self.frame_part.init()
+
+    def show_list(self):
+        if self.list_status:
+            self.list_status = False
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
+            self.list_acts.forget()
+            self.frame_part.pack(fill=X)
+        else:
+            self.list_status = True
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+            self.frame_part.forget()
+            self.list_acts.pack(fill=X)
 
 
 class WindowAuth(Toplevel):
@@ -148,7 +171,8 @@ class WindowMain:
             return
 
         frame_part = FramePart(db)
-        Menu(frame_part)
+        list_acts = ListActs()
+        Menu(frame_part, list_acts)
         self.root.mainloop()
 
     def customize(self):

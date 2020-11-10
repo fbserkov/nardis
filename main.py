@@ -26,7 +26,7 @@ class App:
             return
 
         frame_part = FramePart(db)
-        list_acts = ListActs()
+        list_acts = ListboxActs()
         Menu(frame_part, list_acts)
         self.root.mainloop()
 
@@ -119,7 +119,7 @@ class FramePart(Frame):
         self.index = index
 
 
-class ListActs(Listbox):
+class ListboxActs(Listbox):
     def __init__(self):
         Listbox.__init__(self, height=34)
         # self.status = False
@@ -155,7 +155,7 @@ class Menu(Frame):
             self.list_acts.forget()
             self.list_status = False
         else:
-            if not WindowAuth(self.frame_part.db).status:
+            if not TopLevelAuth(self.frame_part.db).status:
                 return
             self.auth_status = True
             self.auth_button['text'] = 'Выход'
@@ -181,7 +181,7 @@ class Menu(Frame):
             self.list_acts.pack(fill=X)
 
 
-class WindowAuth(Toplevel):
+class TopLevelAuth(Toplevel):
     def __init__(self, db):
         Toplevel.__init__(self)
         self.title('Введите пароль')

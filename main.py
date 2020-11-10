@@ -143,11 +143,12 @@ class WindowMain:
             return
 
         self.file_not_found_error = False
-        self.db = self.load_db()
+        db = self.load_db()
         if self.file_not_found_error:
             return
 
-        self.menu = Menu(FramePart(self.db))
+        frame_part = FramePart(db)
+        Menu(frame_part)
         self.root.mainloop()
 
     def customize(self):

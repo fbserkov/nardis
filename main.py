@@ -14,6 +14,7 @@ class App:
     def __init__(self):
         self.root = Tk()
         self.customize()
+        self.auth_status = False
 
         self.file_exists_error = False
         self.lock()
@@ -31,31 +32,34 @@ class App:
         self.root.mainloop()
 
     def cb_auth(self):
-        if self.parts.is_visible:
+        if self.auth_status:
             self.parts.hide()
             self.acts.hide()
             self.menu.auth_button['text'] = 'Вход'
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
             self.menu.list_button['state'] = 'disabled'
+            self.auth_status = False
         else:
             if not TopLevelAuth(self.parts.db).status:
                 return
+            self.parts.init()
             self.parts.show()
             self.menu.auth_button['text'] = 'Выход'
             self.menu.new_button['state'] = 'normal'
             self.menu.pdf_button['state'] = 'normal'
             self.menu.list_button['state'] = 'normal'
+            self.auth_status = True
 
     def cb_list(self):
         if self.acts.is_visible:
             self.acts.hide()
+            self.parts.show()
             self.menu.new_button['state'] = 'normal'
             self.menu.pdf_button['state'] = 'normal'
-            self.parts.pack(fill=X)  # TODO
         else:
+            self.parts.hide()
             self.acts.show()
-            self.parts.forget()  # TODO
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
 
@@ -167,7 +171,6 @@ class FrameParts(Frame):
     def show(self):
         self.pack(fill=X)
         self.show_part(1)
-        self.init()
         self.is_visible = True
 
     def show_part(self, index):

@@ -1,7 +1,8 @@
 import os
 import sys
 
-from tkinter import Button, Entry, Frame, LEFT, Listbox, Tk, Toplevel, X
+from tkinter import (
+    Button, Entry, Frame, LEFT, Listbox, StringVar, Tk, Toplevel, X)
 from tkinter.messagebox import showinfo
 
 from database import Database
@@ -27,7 +28,7 @@ class App:
             return
 
         self.parts = FrameParts(db)
-        self.acts = ListboxActs()
+        self.acts = ListboxActs(db)
         self.menu = FrameMenu(self)
         self.root.mainloop()
 
@@ -199,17 +200,24 @@ class FrameParts(Frame):
 
 
 class ListboxActs(Listbox):
-    def __init__(self):
-        Listbox.__init__(self, height=34)
-        self.is_visible = False
+    def __init__(self, db):
+        self.frame = Frame(padx=2, pady=1)
+        Listbox.__init__(self, master=self.frame, height=34)
+        self.pack(fill=X)
+        self.db, self.is_visible = db, False
 
     def hide(self):
-        self.forget()
+        self.frame.forget()
         self.is_visible = False
 
     def show(self):
-        self.pack(fill=X)
+        self.frame.pack(fill=X)
         self.is_visible = True
+
+        db = self.db
+        choices = db.reports[0][0], db.reports[0][1], db.reports[0][2]
+        choices_var = StringVar(value=choices)
+        self['listvariable'] = choices_var  # TODO
 
 
 class TopLevelAuth(Toplevel):

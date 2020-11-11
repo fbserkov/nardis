@@ -26,8 +26,8 @@ class App:
         if self.file_not_found_error:
             return
 
-        self.frame_parts = FrameParts(db)
-        self.listbox_acts = ListboxActs()
+        self.parts = FrameParts(db)
+        self.acts = ListboxActs()
         self.menu = FrameMenu(self)
         self.root.mainloop()
 
@@ -38,20 +38,20 @@ class App:
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
             self.menu.list_button['state'] = 'disabled'
-            self.frame_parts.forget()
-            self.listbox_acts.forget()
+            self.parts.forget()
+            self.acts.forget()
             self.menu.list_status = False
         else:
-            if not TopLevelAuth(self.frame_parts.db).status:
+            if not TopLevelAuth(self.parts.db).status:
                 return
             self.auth_status = True
             self.menu.auth_button['text'] = 'Выход'
             self.menu.new_button['state'] = 'normal'
             self.menu.pdf_button['state'] = 'normal'
             self.menu.list_button['state'] = 'normal'
-            self.frame_parts.pack(fill=X)
-            self.frame_parts.show_part(1)
-            self.frame_parts.init()
+            self.parts.pack(fill=X)
+            self.parts.show_part(1)
+            self.parts.init()
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -96,10 +96,10 @@ class FrameMenu(Frame):
         self.auth_button = Button(self, text='Вход', command=app.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
         self.new_button = Button(
-            self, text='Новый', command=app.frame_parts.init, state='disabled')
+            self, text='Новый', command=app.parts.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
         self.pdf_button = Button(
-            self, text='Сохранить', command=app.frame_parts.save,
+            self, text='Сохранить', command=app.parts.save,
             state='disabled',
         )
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
@@ -112,14 +112,14 @@ class FrameMenu(Frame):
             self.list_status = False
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
-            self.app.listbox_acts.forget()
-            self.app.frame_parts.pack(fill=X)
+            self.app.acts.forget()
+            self.app.parts.pack(fill=X)
         else:
             self.list_status = True
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
-            self.app.frame_parts.forget()
-            self.app.listbox_acts.pack(fill=X)
+            self.app.parts.forget()
+            self.app.acts.pack(fill=X)
 
 
 class FrameParts(Frame):

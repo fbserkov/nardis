@@ -14,7 +14,7 @@ class App:
     def __init__(self):
         self.root = Tk()
         self.customize()
-        self.auth_status = False
+        self.auth_status, self.list_status = False, False
 
         self.file_exists_error = False
         self.lock()
@@ -52,6 +52,20 @@ class App:
             self.parts.pack(fill=X)
             self.parts.show_part(1)
             self.parts.init()
+
+    def show_list(self):
+        if self.list_status:
+            self.list_status = False
+            self.menu.new_button['state'] = 'normal'
+            self.menu.pdf_button['state'] = 'normal'
+            self.acts.forget()
+            self.parts.pack(fill=X)
+        else:
+            self.list_status = True
+            self.menu.new_button['state'] = 'disabled'
+            self.menu.pdf_button['state'] = 'disabled'
+            self.parts.forget()
+            self.acts.pack(fill=X)
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -91,7 +105,6 @@ class FrameMenu(Frame):
         Frame.__init__(self)
         self.pack(fill=X)
         self.app = app
-        self.list_status = False
 
         self.auth_button = Button(self, text='Вход', command=app.auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
@@ -104,22 +117,8 @@ class FrameMenu(Frame):
         )
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
         self.list_button = Button(
-            self, text='Список', command=self.show_list, state='disabled')
+            self, text='Список', command=self.app.show_list, state='disabled')
         self.list_button.pack(side=LEFT, expand=True, fill=X)
-
-    def show_list(self):
-        if self.list_status:
-            self.list_status = False
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.app.acts.forget()
-            self.app.parts.pack(fill=X)
-        else:
-            self.list_status = True
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.app.parts.forget()
-            self.app.acts.pack(fill=X)
 
 
 class FrameParts(Frame):

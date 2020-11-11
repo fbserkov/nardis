@@ -31,7 +31,7 @@ class App:
         self.menu = FrameMenu(self)
         self.root.mainloop()
 
-    def auth(self):
+    def cb_auth(self):
         if self.auth_status:
             self.auth_status = False
             self.menu.auth_button['text'] = 'Вход'
@@ -53,7 +53,7 @@ class App:
             self.parts.show_part(1)
             self.parts.init()
 
-    def show_list(self):
+    def cb_list(self):
         if self.list_status:
             self.list_status = False
             self.menu.new_button['state'] = 'normal'
@@ -106,18 +106,19 @@ class FrameMenu(Frame):
         self.pack(fill=X)
         self.app = app
 
-        self.auth_button = Button(self, text='Вход', command=app.auth)
+        self.auth_button = Button(self, text='Вход', command=app.cb_auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
+
         self.new_button = Button(
             self, text='Новый', command=app.parts.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
+
         self.pdf_button = Button(
-            self, text='Сохранить', command=app.parts.save,
-            state='disabled',
-        )
+            self, text='Сохранить', command=app.parts.save, state='disabled')
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
+
         self.list_button = Button(
-            self, text='Список', command=self.app.show_list, state='disabled')
+            self, text='Список', command=self.app.cb_list, state='disabled')
         self.list_button.pack(side=LEFT, expand=True, fill=X)
 
 

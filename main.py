@@ -14,7 +14,7 @@ class App:
     def __init__(self):
         self.root = Tk()
         self.customize()
-        self.auth_status, self.list_status = False, False
+        self.list_status = False
 
         self.file_exists_error = False
         self.lock()
@@ -32,26 +32,22 @@ class App:
         self.root.mainloop()
 
     def cb_auth(self):
-        if self.auth_status:
-            self.auth_status = False
+        if self.parts.is_visible:
+            self.parts.hide()
             self.menu.auth_button['text'] = 'Вход'
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
             self.menu.list_button['state'] = 'disabled'
-            self.parts.forget()
             self.acts.forget()
             self.menu.list_status = False
         else:
             if not TopLevelAuth(self.parts.db).status:
                 return
-            self.auth_status = True
+            self.parts.show()
             self.menu.auth_button['text'] = 'Выход'
             self.menu.new_button['state'] = 'normal'
             self.menu.pdf_button['state'] = 'normal'
             self.menu.list_button['state'] = 'normal'
-            self.parts.pack(fill=X)
-            self.parts.show_part(1)
-            self.parts.init()
 
     def cb_list(self):
         if self.list_status:
@@ -127,6 +123,7 @@ class FrameParts(Frame):
         Frame.__init__(self)
         frame = Frame(self)
         frame.pack(fill=X)
+        self.is_visible = False
 
         self.buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
@@ -157,6 +154,10 @@ class FrameParts(Frame):
             for item in part_frame.items.values():
                 item.insert()
 
+    def hide(self):
+        self.forget()
+        self.is_visible = False
+
     def save(self):
         try:
             self.check()
@@ -166,6 +167,12 @@ class FrameParts(Frame):
             create_pdf('test.pdf', self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)
+
+    def show(self):
+        self.pack(fill=X)
+        self.show_part(1)
+        self.init()
+        self.is_visible = True
 
     def show_part(self, index):
         if self.index == index:

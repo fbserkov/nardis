@@ -113,19 +113,23 @@ class FrameMenu(Frame):
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
             self.list_button['state'] = 'normal'
+            self.list_button['text'] = 'Список'
         else:
             self.auth_button['text'] = 'Вход'
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
             self.list_button['state'] = 'disabled'
+            self.list_button['text'] = 'Список'
 
     def cb_list(self):
         if self.app.cb_list():
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
+            self.list_button['text'] = 'Форма'
         else:
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
+            self.list_button['text'] = 'Список'
 
 
 class FrameParts(Frame):

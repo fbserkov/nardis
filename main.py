@@ -179,8 +179,8 @@ class FrameParts(Frame):
             self.check()
             self.insert()
             self.db.check()
-            self.db.save()
             self.db.increase_act_number()
+            self.db.save()
             create_pdf('test.pdf', self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)

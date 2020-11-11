@@ -65,8 +65,8 @@ class Database:
         return self._settings['Подразделение']
 
     def increase_act_number(self):
-        num = self._settings['Номер следующего акта']
-        self._settings['Номер следующего акта'] = num + 1
+        num = self.select(0, 'number').split('/')[0]
+        self._settings['Номер следующего акта'] = int(num) + 1
 
     def insert(self, i, key, value):
         self.current_act[i, key] = value

@@ -6,9 +6,9 @@ from item import CheckException
 class Database:
     def __init__(self, filename):
         self.filename = filename
-        self.current_user = None
+        self.current_user, self.current_act = None, self.get_act()
         with open(self.filename, 'rb') as f:
-            self._settings, self.reports = pickle.load(f)
+            self._settings, self._acts = pickle.load(f)
 
     def check(self):
         datetime_4 = self.select(4, 'datetime')
@@ -61,27 +61,25 @@ class Database:
     def get_organization(self):
         return self._settings['Организация']
 
-    def get_report(self):
-        return self.reports[-1]
+    def get_act(self):
+        return self._acts[-1]
 
     def get_subdivision(self):
         return self._settings['Подразделение']
 
     def insert(self, i, key, value):
-        report = self.get_report()
-        report[i, key] = value
+        self.current_act[i, key] = value
 
     def save(self):
         with open(self.filename, 'rb') as file_1:
             temp = file_1.read()
         with open(self.filename, 'wb') as file_2:
             try:
-                pickle.dump((self._settings, self.reports), file_2)
-            except Exception as exception:
+                pickle.dump((self._settings, self._acts), file_2)
+            except Exception as exc:
                 with open(self.filename, 'wb') as file_1:
                     file_1.write(temp)
-                    raise exception
+                    raise exc
 
     def select(self, i, key):
-        report = self.get_report()
-        return report[i, key]
+        return self.current_act[i, key]

@@ -215,7 +215,7 @@ class ListboxActs(Listbox):
         self.is_visible = True
 
         db = self.db
-        choices = db.reports[0][0], db.reports[0][1], db.reports[0][2]
+        choices = db._acts[0][0], db._acts[0][1], db._acts[0][2]
         choices_var = StringVar(value=choices)
         self['listvariable'] = choices_var  # TODO
 

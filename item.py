@@ -85,8 +85,8 @@ class Item0(ItemBase):
 
     def insert(self):
         self.db.insert(0, 'organization', self.db.get_organization())
-        self.db.insert(
-            0, 'number', self.widgets[0].get() + '/' + self.widgets[1].get())
+        self.db.insert(0, 'number', int(self.widgets[0].get()))
+        self.db.insert(0, 'year', int(self.widgets[1].get()))
 
     def update_number(self):
         self.widgets[0].config(state='normal')

@@ -212,8 +212,8 @@ class ListboxActs(Listbox):
     @staticmethod
     def _act2str(act):
         return (
-            act[0, 'number'] + ' ' + act[1, 'full_name']
-            + ' (' + act[17, 'opinion'] + ')'
+            str(act[0, 'number']) + '/' + str(act[0, 'year']) + ' ' +
+            act[1, 'full_name'] + ' (' + act[17, 'opinion'] + ')'
         )
 
     def _update(self):

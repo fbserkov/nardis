@@ -65,7 +65,7 @@ def item_0(db):
     liner('Center', 'АКТ')
     liner('Center', 'медицинского освидетельствования на состояние опьянения')
     liner('Center', '(алкогольного, наркотического или иного токсического)')
-    liner('Center', '№', db.select(0, 'number'))
+    liner('Center', '№', f'{db.select(0, "number")}/{db.select(0, "year")}')
     spacer(2)
     datetime = db.select(4, 'datetime')
     liner('Normal+', '', datetime.strftime(f'"{datetime.day}" %B %Y г.'))

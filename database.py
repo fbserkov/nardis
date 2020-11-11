@@ -5,10 +5,10 @@ from item import CheckException
 
 class Database:
     def __init__(self, filename):
-        self.filename = filename
-        self.current_user, self.current_act = None, self.get_act()
+        self.filename, self.current_user = filename, None
         with open(self.filename, 'rb') as f:
             self._settings, self._acts = pickle.load(f)
+        self.current_act = self.get_act()
 
     def check(self):
         datetime_4 = self.select(4, 'datetime')

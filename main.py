@@ -163,6 +163,7 @@ class FrameParts(Frame):
         for part_frame in self.part_frames:
             part_frame.init()
         self.part_frames[0].update()
+        self.db.new_act()
 
     def insert(self):
         for part_frame in self.part_frames:
@@ -179,6 +180,7 @@ class FrameParts(Frame):
             self.insert()
             self.db.check()
             self.db.save()
+            self.db.increase_act_number()
             create_pdf('test.pdf', self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)

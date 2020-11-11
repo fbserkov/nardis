@@ -5,10 +5,10 @@ from item import CheckException
 
 class Database:
     def __init__(self, filename):
-        self.filename, self.current_user = filename, None
+        self.filename = filename
+        self.current_user, self.current_act = None, None
         with open(self.filename, 'rb') as f:
             self._settings, self._acts = pickle.load(f)
-        self.current_act = self.get_act()
 
     def check(self):
         datetime_4 = self.select(4, 'datetime')
@@ -61,14 +61,26 @@ class Database:
     def get_organization(self):
         return self._settings['Организация']
 
-    def get_act(self):
-        return self._acts[-1]
-
     def get_subdivision(self):
         return self._settings['Подразделение']
 
+    def increase_act_number(self):
+        num = self._settings['Номер следующего акта']
+        self._settings['Номер следующего акта'] = num + 1
+
     def insert(self, i, key, value):
         self.current_act[i, key] = value
+
+    def new_act(self):
+        if not self._acts:
+            self._acts.append({})
+        self.current_act = self._acts[-1]
+        if not self.current_act:
+            return
+        if self.select(0, 'number').split('/')[0] == self.get_act_number():
+            return
+        self.current_act = {}
+        self._acts.append(self.current_act)
 
     def save(self):
         with open(self.filename, 'rb') as file_1:

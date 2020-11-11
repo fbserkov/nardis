@@ -14,7 +14,6 @@ class App:
     def __init__(self):
         self.root = Tk()
         self.customize()
-        self.list_status = False
 
         self.file_exists_error = False
         self.lock()
@@ -34,12 +33,11 @@ class App:
     def cb_auth(self):
         if self.parts.is_visible:
             self.parts.hide()
+            self.acts.hide()
             self.menu.auth_button['text'] = 'Вход'
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
             self.menu.list_button['state'] = 'disabled'
-            self.acts.forget()
-            self.menu.list_status = False
         else:
             if not TopLevelAuth(self.parts.db).status:
                 return
@@ -50,18 +48,16 @@ class App:
             self.menu.list_button['state'] = 'normal'
 
     def cb_list(self):
-        if self.list_status:
-            self.list_status = False
+        if self.acts.is_visible:
+            self.acts.hide()
             self.menu.new_button['state'] = 'normal'
             self.menu.pdf_button['state'] = 'normal'
-            self.acts.forget()
-            self.parts.pack(fill=X)
+            self.parts.pack(fill=X)  # TODO
         else:
-            self.list_status = True
+            self.acts.show()
+            self.parts.forget()  # TODO
             self.menu.new_button['state'] = 'disabled'
             self.menu.pdf_button['state'] = 'disabled'
-            self.parts.forget()
-            self.acts.pack(fill=X)
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -188,7 +184,15 @@ class FrameParts(Frame):
 class ListboxActs(Listbox):
     def __init__(self):
         Listbox.__init__(self, height=34)
-        # self.status = False
+        self.is_visible = False
+
+    def hide(self):
+        self.forget()
+        self.is_visible = False
+
+    def show(self):
+        self.pack(fill=X)
+        self.is_visible = True
 
 
 class TopLevelAuth(Toplevel):

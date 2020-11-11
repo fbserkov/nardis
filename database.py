@@ -8,7 +8,7 @@ class Database:
         self.filename = filename
         self.current_user, self.current_act = None, None
         with open(self.filename, 'rb') as f:
-            self._settings, self._acts = pickle.load(f)
+            self._settings, self.acts = pickle.load(f)
 
     def check(self):
         datetime_4 = self.select(4, 'datetime')
@@ -72,22 +72,22 @@ class Database:
         self.current_act[i, key] = value
 
     def new_act(self):
-        if not self._acts:
-            self._acts.append({})
-        self.current_act = self._acts[-1]
+        if not self.acts:
+            self.acts.append({})
+        self.current_act = self.acts[-1]
         if not self.current_act:
             return
         if self.select(0, 'number').split('/')[0] == self.get_act_number():
             return
         self.current_act = {}
-        self._acts.append(self.current_act)
+        self.acts.append(self.current_act)
 
     def save(self):
         with open(self.filename, 'rb') as file_1:
             temp = file_1.read()
         with open(self.filename, 'wb') as file_2:
             try:
-                pickle.dump((self._settings, self._acts), file_2)
+                pickle.dump((self._settings, self.acts), file_2)
             except Exception as exc:
                 with open(self.filename, 'wb') as file_1:
                     file_1.write(temp)

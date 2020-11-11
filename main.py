@@ -203,23 +203,31 @@ class FrameParts(Frame):
 
 class ListboxActs(Listbox):
     def __init__(self, db):
-        self.frame = Frame(padx=2, pady=1)
-        Listbox.__init__(self, master=self.frame, height=34)
+        self.frame, self.choices = Frame(padx=2, pady=1), StringVar()
+        Listbox.__init__(
+            self, master=self.frame, listvariable=self.choices, height=34)
         self.pack(fill=X)
         self.db, self.is_visible = db, False
+
+    @staticmethod
+    def _act2str(act):
+        return (
+            act[0, 'number'] + ' ' + act[1, 'full_name']
+            + ' (' + act[17, 'opinion'] + ')'
+        )
+
+    def _update(self):
+        self.choices.set(
+            [self._act2str(act) for act in reversed(self.db.acts) if act])
 
     def hide(self):
         self.frame.forget()
         self.is_visible = False
 
     def show(self):
+        self._update()
         self.frame.pack(fill=X)
         self.is_visible = True
-
-        db = self.db
-        choices = db._acts[0][0], db._acts[0][1], db._acts[0][2]
-        choices_var = StringVar(value=choices)
-        self['listvariable'] = choices_var  # TODO
 
 
 class TopLevelAuth(Toplevel):

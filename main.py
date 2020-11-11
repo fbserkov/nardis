@@ -35,33 +35,23 @@ class App:
         if self.auth_status:
             self.parts.hide()
             self.acts.hide()
-            self.menu.auth_button['text'] = 'Вход'
-            self.menu.new_button['state'] = 'disabled'
-            self.menu.pdf_button['state'] = 'disabled'
-            self.menu.list_button['state'] = 'disabled'
             self.auth_status = False
         else:
             if not TopLevelAuth(self.parts.db).status:
-                return
+                return False
             self.parts.init()
             self.parts.show()
-            self.menu.auth_button['text'] = 'Выход'
-            self.menu.new_button['state'] = 'normal'
-            self.menu.pdf_button['state'] = 'normal'
-            self.menu.list_button['state'] = 'normal'
             self.auth_status = True
+        return self.auth_status
 
     def cb_list(self):
         if self.acts.is_visible:
             self.acts.hide()
             self.parts.show()
-            self.menu.new_button['state'] = 'normal'
-            self.menu.pdf_button['state'] = 'normal'
         else:
             self.parts.hide()
             self.acts.show()
-            self.menu.new_button['state'] = 'disabled'
-            self.menu.pdf_button['state'] = 'disabled'
+        return self.acts.is_visible
 
     def customize(self):
         self.root.title('Наркологическая экспертиза')
@@ -102,7 +92,7 @@ class FrameMenu(Frame):
         self.pack(fill=X)
         self.app = app
 
-        self.auth_button = Button(self, text='Вход', command=app.cb_auth)
+        self.auth_button = Button(self, text='Вход', command=self.cb_auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
 
         self.new_button = Button(
@@ -114,8 +104,28 @@ class FrameMenu(Frame):
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
 
         self.list_button = Button(
-            self, text='Список', command=self.app.cb_list, state='disabled')
+            self, text='Список', command=self.cb_list, state='disabled')
         self.list_button.pack(side=LEFT, expand=True, fill=X)
+
+    def cb_auth(self):
+        if self.app.cb_auth():
+            self.auth_button['text'] = 'Выход'
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
+            self.list_button['state'] = 'normal'
+        else:
+            self.auth_button['text'] = 'Вход'
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+            self.list_button['state'] = 'disabled'
+
+    def cb_list(self):
+        if self.app.cb_list():
+            self.new_button['state'] = 'disabled'
+            self.pdf_button['state'] = 'disabled'
+        else:
+            self.new_button['state'] = 'normal'
+            self.pdf_button['state'] = 'normal'
 
 
 class FrameParts(Frame):
@@ -169,8 +179,8 @@ class FrameParts(Frame):
             showinfo('Проверка', exc.text)
 
     def show(self):
-        self.pack(fill=X)
         self.show_part(1)
+        self.pack(fill=X)
         self.is_visible = True
 
     def show_part(self, index):

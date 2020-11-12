@@ -6,7 +6,7 @@ from item import CheckException
 class Database:
     def __init__(self, filename):
         self.filename = filename
-        self.current_user, self.current_act = None, None
+        self.current_user, self.current_act = None, {}
         with open(self.filename, 'rb') as f:
             self._settings, self.acts = pickle.load(f)
 
@@ -70,7 +70,7 @@ class Database:
     def insert(self, i, key, value):
         self.current_act[i, key] = value
 
-    def new_act(self):
+    def new_act(self):  # TODO ?
         if not self.acts:
             self.acts.append({})
         self.current_act = self.acts[-1]

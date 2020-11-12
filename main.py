@@ -27,7 +27,8 @@ class App:
         if self.file_not_found_error:
             return
 
-        self.parts = FrameParts(self.db)
+        ItemBase.db = self.db
+        self.parts = FrameParts()
         self.acts = ListboxActs(self.db)
         self.menu = FrameMenu(self)
         self.root.mainloop()
@@ -38,7 +39,7 @@ class App:
             self.acts.hide()
             self.auth_status = False
         else:
-            if not TopLevelAuth(self.parts.db).status:
+            if not TopLevelAuth(self.db).status:
                 return False
             self.parts.init()
             self.parts.show()
@@ -81,6 +82,17 @@ class App:
                 title='Сообщение', message='Приложение уже запущено.')
             self.file_exists_error = True
 
+    def save(self):
+        try:
+            self.parts.check()
+            self.parts.insert()
+            self.db.check()
+            self.db.increase_act_number()
+            self.db.save()
+            create_pdf('test.pdf', self.db)
+        except CheckException as exc:
+            showinfo('Проверка', exc.text)
+
     def show_popup(self, title, message):
         self.root.withdraw()
         showinfo(title, message)
@@ -105,7 +117,7 @@ class FrameMenu(Frame):
         self.new_button.pack(side=LEFT, expand=True, fill=X)
 
         self.pdf_button = Button(
-            self, text='Сохранить', command=app.parts.save, state='disabled')
+            self, text='Сохранить', command=app.save, state='disabled')
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
 
         self.list_button = Button(
@@ -138,26 +150,24 @@ class FrameMenu(Frame):
 
 
 class FrameParts(Frame):
-    def __init__(self, db):
+    def __init__(self):
         Frame.__init__(self)
-        frame = Frame(self)
-        frame.pack(fill=X)
-        self.is_visible = False
+        self.index, self.is_visible = 0, False
 
+        frame = Frame(self)
         self.buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
             Button(frame, text='III'), Button(frame, text='IV'),
         )
         for i, obj in enumerate(self.buttons):
-            obj.pack(side=LEFT, expand=True, fill=X)
             obj['command'] = lambda j=i: self.show_part(j + 1)
+            obj.pack(side=LEFT, expand=True, fill=X)
+        frame.pack(fill=X)
 
-        ItemBase.db = db
         self.part_frames = (
             PassportPart(self), CommonPart(self),
             SurveyPart(self), ExaminationPart(self),
         )
-        self.db, self.index = db, 0
 
     def check(self):
         for part_frame in self.part_frames:
@@ -176,17 +186,6 @@ class FrameParts(Frame):
     def hide(self):
         self.forget()
         self.is_visible = False
-
-    def save(self):
-        try:
-            self.check()
-            self.insert()
-            self.db.check()
-            self.db.increase_act_number()
-            self.db.save()
-            create_pdf('test.pdf', self.db)
-        except CheckException as exc:
-            showinfo('Проверка', exc.text)
 
     def show(self):
         self.show_part(1)

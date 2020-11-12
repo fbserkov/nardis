@@ -1,23 +1,24 @@
 import pickle
-
 from item import CheckException
 
 
 class Database:
     def __init__(self, filename):
-        self.filename = filename
+        self._filename = filename
         self.current_user = None
         self._current_act = None
-        self._load()
+
+        with open(self._filename, 'rb') as f:
+            self._settings, self.acts = pickle.load(f)
 
     def _dump(self):
-        with open(self.filename, 'rb') as file_1:
+        with open(self._filename, 'rb') as file_1:
             temp = file_1.read()
-        with open(self.filename, 'wb') as file_2:
+        with open(self._filename, 'wb') as file_2:
             try:
                 pickle.dump((self._settings, self.acts), file_2)
             except Exception as exc:
-                with open(self.filename, 'wb') as file_1:
+                with open(self._filename, 'wb') as file_1:
                     file_1.write(temp)
                     raise exc
 
@@ -27,10 +28,6 @@ class Database:
             number, year = act[0, 'number'], act[0, 'year']
             if number == number_ and year == year_:
                 return index
-
-    def _load(self):
-        with open(self.filename, 'rb') as f:
-            self._settings, self.acts = pickle.load(f)
 
     def check(self):
         datetime_4 = self.select(4, 'datetime')

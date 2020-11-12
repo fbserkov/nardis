@@ -7,7 +7,7 @@ class Database:
     def __init__(self, filename):
         self.filename = filename
         self.current_user = None
-        self.current_act = {}
+        self._current_act = None
         self._load()
 
     def _dump(self):
@@ -20,6 +20,13 @@ class Database:
                 with open(self.filename, 'wb') as file_1:
                     file_1.write(temp)
                     raise exc
+
+    def _find(self, act_):
+        number_, year_ = act_[0, 'number'], act_[0, 'year']
+        for index, act in enumerate(self.acts):
+            number, year = act[0, 'number'], act[0, 'year']
+            if number == number_ and year == year_:
+                return index
 
     def _load(self):
         with open(self.filename, 'rb') as f:
@@ -79,15 +86,19 @@ class Database:
     def get_subdivision(self):
         return self._settings['Подразделение']
 
-    def increase_act_number(self):
-        self._settings['Номер следующего акта'] = self.select(0, 'number') + 1
+    def init(self):
+        self._current_act = {}
 
     def insert(self, i, key, value):
-        self.current_act[i, key] = value
+        self._current_act[i, key] = value
 
     def save(self):
-        # TODO ...
+        index = self._find(self._current_act)
+        if index is None:
+            self.acts.append(self._current_act)
+            self._settings['Номер следующего акта'] = (
+                self.select(0, 'number') + 1)
         self._dump()
 
     def select(self, i, key):
-        return self.current_act[i, key]
+        return self._current_act[i, key]

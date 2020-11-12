@@ -41,7 +41,7 @@ class App:
         else:
             if not TopLevelAuth(self.db).status:
                 return False
-            self.parts.init()
+            self.init()
             self.parts.show()
             self.auth_status = True
         return self.auth_status
@@ -61,6 +61,10 @@ class App:
         self.root.resizable(width=False, height=False)
         if not sys.platform == 'linux':
             self.root.iconbitmap('nardis.ico')
+
+    def init(self):
+        self.db.init()
+        self.parts.init()
 
     def load_db(self):
         try:
@@ -108,7 +112,7 @@ class FrameMenu(Frame):
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
 
         self.new_button = Button(
-            self, text='Новый', command=app.parts.init, state='disabled')
+            self, text='Новый', command=app.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
 
         self.pdf_button = Button(

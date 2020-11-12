@@ -62,10 +62,6 @@ class App:
         if not sys.platform == 'linux':
             self.root.iconbitmap('nardis.ico')
 
-    def init(self):
-        self.parts.init()
-        self.db.new_act()  # TODO ?
-
     def load_db(self):
         try:
             return Database('nardis.db')
@@ -87,7 +83,6 @@ class App:
             self.parts.check()
             self.parts.insert()
             self.db.check()
-            self.db.increase_act_number()
             self.db.save()
             create_pdf('test.pdf', self.db)
         except CheckException as exc:
@@ -113,7 +108,7 @@ class FrameMenu(Frame):
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
 
         self.new_button = Button(
-            self, text='Новый', command=app.init, state='disabled')
+            self, text='Новый', command=app.parts.init, state='disabled')
         self.new_button.pack(side=LEFT, expand=True, fill=X)
 
         self.pdf_button = Button(

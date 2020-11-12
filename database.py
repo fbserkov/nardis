@@ -6,7 +6,22 @@ from item import CheckException
 class Database:
     def __init__(self, filename):
         self.filename = filename
-        self.current_user, self.current_act = None, {}
+        self.current_user = None
+        self.current_act = {}
+        self._load()
+
+    def _dump(self):
+        with open(self.filename, 'rb') as file_1:
+            temp = file_1.read()
+        with open(self.filename, 'wb') as file_2:
+            try:
+                pickle.dump((self._settings, self.acts), file_2)
+            except Exception as exc:
+                with open(self.filename, 'wb') as file_1:
+                    file_1.write(temp)
+                    raise exc
+
+    def _load(self):
         with open(self.filename, 'rb') as f:
             self._settings, self.acts = pickle.load(f)
 
@@ -70,27 +85,9 @@ class Database:
     def insert(self, i, key, value):
         self.current_act[i, key] = value
 
-    def new_act(self):  # TODO ?
-        if not self.acts:
-            self.acts.append({})
-        self.current_act = self.acts[-1]
-        if not self.current_act:
-            return
-        if self.select(0, 'number') == self.get_act_number():
-            return
-        self.current_act = {}
-        self.acts.append(self.current_act)
-
     def save(self):
-        with open(self.filename, 'rb') as file_1:
-            temp = file_1.read()
-        with open(self.filename, 'wb') as file_2:
-            try:
-                pickle.dump((self._settings, self.acts), file_2)
-            except Exception as exc:
-                with open(self.filename, 'wb') as file_1:
-                    file_1.write(temp)
-                    raise exc
+        # TODO ...
+        self._dump()
 
     def select(self, i, key):
         return self.current_act[i, key]

@@ -36,7 +36,7 @@ class PassportPart(PartBase):
 
     def update(self):
         self.items[0].update_number()
-        self.items[5].update_user()
+        self.items[5].update_doctor()
 
 
 class SurveyPart(PartBase):

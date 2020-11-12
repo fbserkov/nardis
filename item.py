@@ -209,14 +209,13 @@ class Item5(ItemBase):
         self.db.insert(5, 'doctor', doctor)
         self.db.insert(5, 'training', ', '.join(training))
 
-    def update_user(self):
-        user = self.db.current_user
-        if user == 'admin':
-            self.widgets[0].string_var.set('')
-            self.widgets[0]['state'] = 'normal'
-        else:
-            self.widgets[0].string_var.set(user)
+    def update_doctor(self):
+        doctor = self.db.get_current_doctor()
+        self.widgets[0].string_var.set(doctor)
+        if doctor:
             self.widgets[0]['state'] = 'disabled'
+        else:
+            self.widgets[0]['state'] = 'normal'
 
 
 class Item6(ItemBase):

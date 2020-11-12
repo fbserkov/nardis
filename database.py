@@ -5,9 +5,7 @@ from item import CheckException
 class Database:
     def __init__(self, filename):
         self._filename = filename
-        self.current_user = None
-        self._current_act = None
-
+        self._current_act, self._current_password = None, None
         with open(self._filename, 'rb') as f:
             self._settings, self.acts = pickle.load(f)
 
@@ -52,13 +50,16 @@ class Database:
 
     def check_password(self, password):
         if password in self._settings['Врачи'].keys():
-            self.current_user = (
-                self._settings['Врачи'][password])
+            self._current_password = password
             return True
         return False
 
     def get_chemicals(self):
         return self._settings['Вещества']
+
+    def get_current_doctor(self):
+        doctor = self._settings['Врачи'][self._current_password]
+        return '' if doctor == 'admin' else doctor
 
     def get_doctors(self):
         doctors = list(self._settings['Врачи'].values())

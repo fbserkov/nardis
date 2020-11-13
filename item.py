@@ -232,6 +232,10 @@ class Item5(ItemBase):
         self.db.insert(5, 'doctor', doctor)
         self.db.insert(5, 'training', ', '.join(training))
 
+    def select(self):
+        self.widgets[0].string_var.set(
+            self.db.select(5, 'doctor') + ', ' + self.db.select(5, 'training'))
+
     def update_doctor(self):
         doctor = self.db.get_current_doctor()
         self.widgets[0].string_var.set(doctor)

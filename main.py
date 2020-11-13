@@ -62,7 +62,9 @@ class App:
 
     def init(self, index=None):
         self.db.init(index)
-        self.parts.init(from_scratch=index is None)
+        self.parts.init()
+        if index is not None:
+            self.parts.select()
 
     def save(self):
         try:
@@ -172,13 +174,10 @@ class FrameParts(Frame):
         for part_frame in self.part_frames:
             part_frame.check()
 
-    def init(self, from_scratch):
+    def init(self):
         for part_frame in self.part_frames:
             part_frame.init()
-            if not from_scratch:
-                part_frame.select()
-        if from_scratch:
-            self.part_frames[0].update()
+        self.part_frames[0].update()
 
     def insert(self):
         for part_frame in self.part_frames:
@@ -188,6 +187,11 @@ class FrameParts(Frame):
     def hide(self):
         self.forget()
         self.is_visible = False
+
+    def select(self):
+        for part_frame in self.part_frames:
+            for item in part_frame.items.values():
+                item.select()
 
     def show(self):
         self.show_part(1)

@@ -259,6 +259,9 @@ class Item6(ItemBase):
     def insert(self):
         self.db.insert(6, 'appearance', self.widgets[0].get())
 
+    def select(self):
+        self.widgets[0].init(self.db.select(6, 'appearance'))
+
 
 class Item7(ItemBase):
     def __init__(self, master):
@@ -271,6 +274,9 @@ class Item7(ItemBase):
 
     def insert(self):
         self.db.insert(7, 'complaints', self.widgets[0].get())
+
+    def select(self):
+        self.widgets[0].init(self.db.select(7, 'complaints'))
 
 
 class Item8(ItemBase):

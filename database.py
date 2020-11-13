@@ -7,14 +7,21 @@ class Database:
         self._filename = filename
         self._current_act, self._current_password = None, None
         with open(self._filename, 'rb') as f:
-            self._settings, self.acts = pickle.load(f)
+            self._settings, self._acts = pickle.load(f)
+
+    @staticmethod
+    def _act2title(act):
+        return (
+            f'{act[0, "number"]}/{act[0, "year"]} '
+            f'{act[1, "full_name"]} ({act[17, "opinion"]})'
+        )
 
     def _dump(self):
         with open(self._filename, 'rb') as file_1:
             temp = file_1.read()
         with open(self._filename, 'wb') as file_2:
             try:
-                pickle.dump((self._settings, self.acts), file_2)
+                pickle.dump((self._settings, self._acts), file_2)
             except Exception as exc:
                 with open(self._filename, 'wb') as file_1:
                     file_1.write(temp)
@@ -22,7 +29,7 @@ class Database:
 
     def _find(self, act_):
         number_, year_ = act_[0, 'number'], act_[0, 'year']
-        for index, act in enumerate(self.acts):
+        for index, act in enumerate(self._acts):
             number, year = act[0, 'number'], act[0, 'year']
             if number == number_ and year == year_:
                 return index
@@ -54,6 +61,9 @@ class Database:
             return True
         return False
 
+    def get_acts_titles(self):
+        return [self._act2title(act) for act in self._acts]
+
     def get_current_doctor(self):
         doctor = self.select('doctors')[self._current_password]
         return '' if doctor == 'admin' else doctor
@@ -77,7 +87,7 @@ class Database:
     def save(self):
         index = self._find(self._current_act)
         if index is None:
-            self.acts.append(self._current_act)
+            self._acts.append(self._current_act)
             self.insert('next_number', self.select(0, 'number') + 1)
         self._dump()
 

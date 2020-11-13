@@ -210,16 +210,8 @@ class ListboxActs(Listbox):
         self.pack(fill=X)
         self.db, self.is_visible = db, False
 
-    @staticmethod
-    def _act2str(act):
-        return (
-            str(act[0, 'number']) + '/' + str(act[0, 'year']) + ' ' +
-            act[1, 'full_name'] + ' (' + act[17, 'opinion'] + ')'
-        )
-
     def _update(self):
-        self.choices.set(
-            [self._act2str(act) for act in reversed(self.db.acts) if act])
+        self.choices.set(self.db.get_acts_titles())
 
     def hide(self):
         self.frame.forget()

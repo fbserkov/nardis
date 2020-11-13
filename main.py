@@ -14,26 +14,69 @@ from template import create_pdf
 class App:
     def __init__(self):
         self.root = Tk()
-        self.customize()
-        self.auth_status = False
+        self._customize()
+        self.db, self.auth_status = None, False
 
         self.file_exists_error = False
-        self.lock()
+        self._lock()
         if self.file_exists_error:
             return
 
         self.file_not_found_error = False
-        self.db = self.load_db()
+        self._load()
         if self.file_not_found_error:
             return
 
-        ItemBase.db = self.db
-        self.parts = FrameParts()
-        self.acts = ListboxActs(self.db)
         self.menu = FrameMenu(self)
+        self.parts = FrameParts()
+        self.acts = ListboxActs(self)
         self.root.mainloop()
 
-    def cb_auth(self):
+    def _customize(self):
+        self.root.title('Наркологическая экспертиза')
+        self.root.geometry('610x650')
+        self.root.resizable(width=False, height=False)
+        if not sys.platform == 'linux':
+            self.root.iconbitmap('nardis.ico')
+
+    def _load(self):
+        try:
+            self.db = Database('nardis.db')
+            ItemBase.db = self.db
+        except FileNotFoundError:
+            self._show_popup(
+                title='Сообщение', message='База данных не найдена.')
+            self.file_not_found_error = True
+
+    def _lock(self):
+        try:
+            open('file.lock', 'x').close()
+        except FileExistsError:
+            self._show_popup(
+                title='Сообщение', message='Приложение уже запущено.')
+            self.file_exists_error = True
+
+    def _show_popup(self, title, message):
+        self.root.withdraw()
+        showinfo(title, message)
+
+    def init(self, index=None):
+        if index is not None:
+            print(index)
+        self.db.init()
+        self.parts.init()
+
+    def save(self):
+        try:
+            self.parts.check()
+            self.parts.insert()
+            self.db.check()
+            self.db.save()
+            create_pdf('test.pdf', self.db)
+        except CheckException as exc:
+            showinfo('Проверка', exc.text)
+
+    def switch_auth(self):
         if self.auth_status:
             self.parts.hide()
             self.acts.hide()
@@ -46,7 +89,7 @@ class App:
             self.auth_status = True
         return self.auth_status
 
-    def cb_list(self):
+    def switch_list(self):
         if self.acts.is_visible:
             self.acts.hide()
             self.parts.show()
@@ -54,47 +97,6 @@ class App:
             self.parts.hide()
             self.acts.show()
         return self.acts.is_visible
-
-    def customize(self):
-        self.root.title('Наркологическая экспертиза')
-        self.root.geometry('610x650')
-        self.root.resizable(width=False, height=False)
-        if not sys.platform == 'linux':
-            self.root.iconbitmap('nardis.ico')
-
-    def init(self):
-        self.db.init()
-        self.parts.init()
-
-    def load_db(self):
-        try:
-            return Database('nardis.db')
-        except FileNotFoundError:
-            self.show_popup(
-                title='Сообщение', message='База данных не найдена.')
-            self.file_not_found_error = True
-
-    def lock(self):
-        try:
-            open('file.lock', 'x').close()
-        except FileExistsError:
-            self.show_popup(
-                title='Сообщение', message='Приложение уже запущено.')
-            self.file_exists_error = True
-
-    def save(self):
-        try:
-            self.parts.check()
-            self.parts.insert()
-            self.db.check()
-            self.db.save()
-            create_pdf('test.pdf', self.db)
-        except CheckException as exc:
-            showinfo('Проверка', exc.text)
-
-    def show_popup(self, title, message):
-        self.root.withdraw()
-        showinfo(title, message)
 
     def unlock(self):
         if self.file_exists_error:
@@ -108,7 +110,7 @@ class FrameMenu(Frame):
         self.pack(fill=X)
         self.app = app
 
-        self.auth_button = Button(self, text='Вход', command=self.cb_auth)
+        self.auth_button = Button(self, text='Вход', command=self.switch_auth)
         self.auth_button.pack(side=LEFT, expand=True, fill=X)
 
         self.new_button = Button(
@@ -120,11 +122,11 @@ class FrameMenu(Frame):
         self.pdf_button.pack(side=LEFT, expand=True, fill=X)
 
         self.list_button = Button(
-            self, text='Список', command=self.cb_list, state='disabled')
+            self, text='Список', command=self.switch_list, state='disabled')
         self.list_button.pack(side=LEFT, expand=True, fill=X)
 
-    def cb_auth(self):
-        if self.app.cb_auth():
+    def switch_auth(self):
+        if self.app.switch_auth():
             self.auth_button['text'] = 'Выход'
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
@@ -137,8 +139,8 @@ class FrameMenu(Frame):
             self.list_button['state'] = 'disabled'
             self.list_button['text'] = 'Список'
 
-    def cb_list(self):
-        if self.app.cb_list():
+    def switch_list(self):
+        if self.app.switch_list():
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
             self.list_button['text'] = 'Форма'
@@ -203,15 +205,16 @@ class FrameParts(Frame):
 
 
 class ListboxActs(Listbox):
-    def __init__(self, db):
+    def __init__(self, app):
+        self.app, self.is_visible = app, False
         self.frame, self.choices = Frame(padx=2, pady=1), StringVar()
         Listbox.__init__(
             self, master=self.frame, listvariable=self.choices, height=34)
+        self.bind('<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
         self.pack(fill=X)
-        self.db, self.is_visible = db, False
 
     def _update(self):
-        self.choices.set(self.db.get_acts_titles())
+        self.choices.set(self.app.db.get_acts_titles())
 
     def hide(self):
         self.frame.forget()

@@ -61,10 +61,8 @@ class App:
         showinfo(title, message)
 
     def init(self, index=None):
-        if index is not None:
-            print(index)
-        self.db.init()
-        self.parts.init()
+        self.db.init(index)
+        self.parts.init()  # TODO
 
     def save(self):
         try:
@@ -210,8 +208,9 @@ class ListboxActs(Listbox):
         self.frame, self.choices = Frame(padx=2, pady=1), StringVar()
         Listbox.__init__(
             self, master=self.frame, listvariable=self.choices, height=34)
-        self.bind('<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
         self.pack(fill=X)
+        self.bind('<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
+        self.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')
 
     def _update(self):
         self.choices.set(self.app.db.get_acts_titles())

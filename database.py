@@ -73,8 +73,11 @@ class Database:
         doctors.remove('admin')
         return doctors
 
-    def init(self):
-        self._current_act = {}
+    def init(self, index=None):
+        if index is None:
+            self._current_act = {}
+        else:
+            self._current_act = self._acts[index]
 
     def insert(self, *args):
         if len(args) == 3:

@@ -175,6 +175,10 @@ class Item2(ItemBase):
         self.db.insert(2, 'document', self.widgets[0].get())
         self.db.insert(2, 'full_name', self.widgets[1].get())
 
+    def select(self):
+        self.widgets[0].init(self.db.select(2, 'document'))
+        self.widgets[1].init(self.db.select(2, 'full_name'))
+
 
 class Item3(ItemBase):
     def __init__(self, master):

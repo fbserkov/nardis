@@ -700,3 +700,7 @@ class Item17(ItemBase):
     def insert(self):
         self.db.insert(17, 'opinion', self.widgets[0].get())
         self.db.insert(17, 'date', str2date(self.widgets[1].get()))
+
+    def select(self):
+        self.widgets[0].init(self.db.select(17, 'opinion'))
+        self.widgets[1].init(date2str(self.db.select(17, 'date')))

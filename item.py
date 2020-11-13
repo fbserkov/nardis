@@ -372,6 +372,12 @@ class Item9(ItemBase):
         self.db.insert(9, 'scleras', self.widgets[2].get())
         self.db.insert(9, 'nystagmus', self.widgets[3].get())
 
+    def select(self):
+        self.widgets[0].init(self.db.select(9, 'pupils'))
+        self.widgets[1].init(self.db.select(9, 'reaction'))
+        self.widgets[2].init(self.db.select(9, 'scleras'))
+        self.widgets[3].init(self.db.select(9, 'nystagmus'))
+
 
 class Item10(ItemBase):
     def __init__(self, master):

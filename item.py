@@ -92,6 +92,10 @@ class Item0(ItemBase):
         self.db.insert(0, 'number', int(self.widgets[0].get()))
         self.db.insert(0, 'year', int(self.widgets[1].get()))
 
+    def select(self):
+        self.widgets[0].init(self.db.select(0, 'number'))
+        self.widgets[1].init(self.db.select(0, 'year'))
+
     def update_number(self):
         self.widgets[0].config(state='normal')
         self.widgets[0].insert(0, self.db.select('next_number'))

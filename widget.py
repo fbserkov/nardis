@@ -31,9 +31,11 @@ class EntryBase(Entry):
     def check(self, exc):
         return not self.get()
 
-    def init(self):
+    def init(self, line=None):
         self.delete(0, END)
-        if self.default:
+        if line:
+            self.insert(0, line)
+        elif self.default:
             self.insert(0, self.default)
 
 
@@ -42,9 +44,9 @@ class EntryDisabled(EntryBase):
         EntryBase.__init__(self, master, width, default)
         self.config(state='disabled', disabledforeground='#800000')
 
-    def init(self):
+    def init(self, line=None):
         self.config(state='normal')
-        EntryBase.init(self)
+        EntryBase.init(self, line)
         self.config(state='disabled')
 
 
@@ -61,9 +63,11 @@ class EntrySmart(EntryBase):
         if len(self.get()) < self.length:
             raise exc
 
-    def init(self):
+    def init(self, line=None):
         self.delete(0, END)
-        if self.default:
+        if line:
+            self.insert(0, line)
+        elif self.default:
             self.insert(0, strftime(self.default))
 
     def key_release(self, event):

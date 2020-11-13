@@ -2,7 +2,7 @@ from datetime import datetime
 
 from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
 
-from convert import date2str, str2date, str2datetime, str2time
+from convert import date2str, str2date, str2datetime, str2time, time2str
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
@@ -208,6 +208,11 @@ class Item4(ItemBase):
     def insert(self):
         self.db.insert(4, 'datetime', datetime.combine(
             str2date(self.widgets[0].get()), str2time(self.widgets[1].get())))
+
+    def select(self):
+        temp = self.db.select(4, 'datetime')
+        self.widgets[0].init(date2str(temp.date()))
+        self.widgets[1].init(time2str(temp.time()))
 
 
 class Item5(ItemBase):
@@ -661,6 +666,11 @@ class Item16(ItemBase):
     def insert(self):
         self.db.insert(16, 'datetime', datetime.combine(
             str2date(self.widgets[0].get()), str2time(self.widgets[1].get())))
+
+    def select(self):
+        temp = self.db.select(16, 'datetime')
+        self.widgets[0].init(date2str(temp.date()))
+        self.widgets[1].init(time2str(temp.time()))
 
 
 class Item17(ItemBase):

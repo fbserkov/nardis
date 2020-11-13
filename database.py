@@ -54,7 +54,7 @@ class Database:
             return True
         return False
 
-    def get_chemicals(self):
+    def get_substances(self):
         return self._settings['Вещества']
 
     def get_current_doctor(self):

@@ -553,8 +553,8 @@ class Item14(ItemBase):
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
         self.frames[4].columnconfigure(4, weight=1)
-        self.chemicals = self.db.get_chemicals()
-        for i, chemical in enumerate(self.chemicals):
+        self.substances = self.db.get_substances()
+        for i, chemical in enumerate(self.substances):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(self.frames[4])
             frame.grid(row=row, column=column, sticky=W + E)
@@ -578,7 +578,7 @@ class Item14(ItemBase):
 
     def get_result(self):
         result = ''
-        for i, chemical in enumerate(self.chemicals):
+        for i, chemical in enumerate(self.substances):
             temp = self.widgets[7 + i].get()
             if temp:
                 result += chemical + ' ' + temp + ', '

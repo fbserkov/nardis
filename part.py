@@ -16,6 +16,10 @@ class PartBase(LabelFrame):
         for item in self.items.values():
             item.init()
 
+    def select(self):
+        for item in self.items.values():
+            item.select()
+
 
 class CommonPart(PartBase):
     def __init__(self, master):

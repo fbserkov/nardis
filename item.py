@@ -25,6 +25,8 @@ class CheckException(Exception):
 
 
 class ItemBase:
+    db, frame = None, None
+
     def __init__(self, master, frames_number=None):
         self.widgets = []
         if frames_number:
@@ -60,7 +62,9 @@ class ItemBase:
         for widget in self.widgets:
             widget.init()
 
-    db, frame = None, None
+    @staticmethod
+    def select():  # TODO delete
+        pass
 
 
 class Item0(ItemBase):

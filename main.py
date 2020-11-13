@@ -62,7 +62,7 @@ class App:
 
     def init(self, index=None):
         self.db.init(index)
-        self.parts.init()  # TODO
+        self.parts.init(from_scratch=index is None)
 
     def save(self):
         try:
@@ -172,10 +172,13 @@ class FrameParts(Frame):
         for part_frame in self.part_frames:
             part_frame.check()
 
-    def init(self):
+    def init(self, from_scratch):
         for part_frame in self.part_frames:
             part_frame.init()
-        self.part_frames[0].update()
+            if not from_scratch:
+                part_frame.select()
+        if from_scratch:
+            self.part_frames[0].update()
 
     def insert(self):
         for part_frame in self.part_frames:

@@ -49,54 +49,42 @@ class Database:
             raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def check_password(self, password):
-        if password in self._settings['Врачи'].keys():
+        if password in self.select('doctors').keys():
             self._current_password = password
             return True
         return False
 
-    def get_substances(self):
-        return self._settings['Вещества']
-
     def get_current_doctor(self):
-        doctor = self._settings['Врачи'][self._current_password]
+        doctor = self.select('doctors')[self._current_password]
         return '' if doctor == 'admin' else doctor
 
     def get_doctors(self):
-        doctors = list(self._settings['Врачи'].values())
+        doctors = list(self.select('doctors').values())
         doctors.remove('admin')
         return doctors
-
-    def get_act_number(self):
-        return self._settings['Номер следующего акта']
-
-    def get_devices(self):
-        return self._settings['Технические средства']
-
-    def get_laboratory_name(self):
-        return self._settings['Лаборатория']
-
-    def get_methods(self):
-        return self._settings['Методы']
-
-    def get_organization(self):
-        return self._settings['Организация']
-
-    def get_subdivision(self):
-        return self._settings['Подразделение']
 
     def init(self):
         self._current_act = {}
 
-    def insert(self, i, key, value):
-        self._current_act[i, key] = value
+    def insert(self, *args):
+        if len(args) == 3:
+            i, key, value = args
+            self._current_act[i, key] = value
+        else:
+            key, value = args[:2]
+            self._settings[key] = value
 
     def save(self):
         index = self._find(self._current_act)
         if index is None:
             self.acts.append(self._current_act)
-            self._settings['Номер следующего акта'] = (
-                self.select(0, 'number') + 1)
+            self.insert('next_number', self.select(0, 'number') + 1)
         self._dump()
 
-    def select(self, i, key):
-        return self._current_act[i, key]
+    def select(self, *args):
+        if len(args) == 2:
+            i, key = args
+            return self._current_act[i, key]
+        else:
+            key = args[0]
+            return self._settings[key]

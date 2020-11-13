@@ -84,13 +84,13 @@ class Item0(ItemBase):
             raise CheckException('Не указан год\nв пункте 0.')
 
     def insert(self):
-        self.db.insert(0, 'organization', self.db.get_organization())
+        self.db.insert(0, 'organization', self.db.select('organization'))
         self.db.insert(0, 'number', int(self.widgets[0].get()))
         self.db.insert(0, 'year', int(self.widgets[1].get()))
 
     def update_number(self):
         self.widgets[0].config(state='normal')
-        self.widgets[0].insert(0, self.db.get_act_number())
+        self.widgets[0].insert(0, self.db.select('next_number'))
         self.widgets[0].config(state='disabled')
 
 
@@ -167,7 +167,7 @@ class Item3(ItemBase):
         ItemBase.__init__(self, master)
 
     def insert(self):
-        self.db.insert(3, 'subdivision', self.db.get_subdivision())
+        self.db.insert(3, 'subdivision', self.db.select('subdivision'))
 
 
 class Item4(ItemBase):
@@ -484,7 +484,7 @@ class Item13(ItemBase):
         line = '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого'
         Label(self.frames[0], text=line).pack(side=LEFT)
 
-        devices = self.db.get_devices()
+        devices = self.db.select('devices')
         self.sub_item_1 = SubItem13(1, self.frames, devices)
         self.sub_item_2 = SubItem13(2, self.frames, devices)
         self.widgets.extend(self.sub_item_1.widgets + self.sub_item_2.widgets)
@@ -537,7 +537,7 @@ class Item14(ItemBase):
 
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(
-            OptionMenuSmart(self.frames[2], self.db.get_methods()))
+            OptionMenuSmart(self.frames[2], self.db.select('methods')))
 
         line = 'Результаты химико-токсикологических исследований'
         Label(self.frames[3], text=line).pack(side=LEFT)
@@ -553,7 +553,7 @@ class Item14(ItemBase):
         self.frames[4].columnconfigure(0, weight=1)
         self.frames[4].columnconfigure(2, weight=1)
         self.frames[4].columnconfigure(4, weight=1)
-        self.substances = self.db.get_substances()
+        self.substances = self.db.select('substances')
         for i, chemical in enumerate(self.substances):
             row, column = int(i / 2), (i % 2) * 2 + 1
             frame = Frame(self.frames[4])
@@ -589,7 +589,7 @@ class Item14(ItemBase):
         self.db.insert(14, 'time', str2time(time))
         self.db.insert(14, 'material', self.widgets[1].get() if time else '')
         self.db.insert(
-            14, 'laboratory', self.db.get_laboratory_name() if time else '')
+            14, 'laboratory', self.db.select('laboratory') if time else '')
         self.db.insert(14, 'method', self.widgets[4].string_var.get())
         self.db.insert(
             14, 'number',

@@ -329,6 +329,12 @@ class Item8(ItemBase):
         self.db.insert(8, 'orientation', self.widgets[2].get())
         self.db.insert(8, 'schulte', schulte + ' сек.' if schulte else '')
 
+    def select(self):
+        self.widgets[0].init(self.db.select(8, 'consciousness'))
+        self.widgets[1].init(self.db.select(8, 'behavior'))
+        self.widgets[2].init(self.db.select(8, 'orientation'))
+        self.widgets[3].init(self.db.select(8, 'schulte').split(' ')[0])
+
 
 class Item9(ItemBase):
     def __init__(self, master):

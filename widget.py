@@ -33,7 +33,7 @@ class EntryBase(Entry):
 
     def init(self, line=None):
         self.delete(0, END)
-        if line:
+        if line is not None:
             self.insert(0, line)
         elif self.default:
             self.insert(0, self.default)
@@ -65,7 +65,7 @@ class EntrySmart(EntryBase):
 
     def init(self, line=None):
         self.delete(0, END)
-        if line:
+        if line is not None:
             self.insert(0, line)
         elif self.default:
             self.insert(0, strftime(self.default))

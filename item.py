@@ -535,6 +535,13 @@ class SubItem13:
         db.insert(13, f'result_{self.n}', result + ' мг/л' if result else '')
         db.insert(13, f'device_{self.n}', self.widgets[3].string_var.get())
 
+    def select(self, db):
+        temp = db.select(13, f'datetime_{self.n}')
+        self.widgets[0].init(date2str(temp.date()) if temp else '')
+        self.widgets[1].init(time2str(temp.time()) if temp else '')
+        self.widgets[2].init(db.select(13, f'result_{self.n}').split(' ')[0])
+        self.widgets[3].string_var.set(db.select(13, f'device_{self.n}'))
+
 
 class Item13(ItemBase):
     def __init__(self, master):
@@ -562,6 +569,13 @@ class Item13(ItemBase):
         self.sub_item_2.insert(self.db)
         if self.widgets[8].int_var.get():
             self.db.insert(13, 'result_1', self.forgery)
+
+    def select(self):
+        self.sub_item_1.select(self.db)
+        self.sub_item_2.select(self.db)
+        if self.db.select(13, 'result_1') == self.forgery:
+            self.widgets[2].init('')
+            self.widgets[8].int_var.set(1)
 
 
 class Item14(ItemBase):

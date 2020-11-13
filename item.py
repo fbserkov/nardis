@@ -435,6 +435,13 @@ class Item10(ItemBase):
         self.db.insert(10, 'coordination', self.widgets[3].get())
         self.db.insert(10, 'tashen', tashen + ' сек.' if tashen else '')
 
+    def select(self):
+        self.widgets[0].init(self.db.select(10, 'speech'))
+        self.widgets[1].init(self.db.select(10, 'gait'))
+        self.widgets[2].init(self.db.select(10, 'romberg'))
+        self.widgets[3].init(self.db.select(10, 'coordination'))
+        self.widgets[4].init(self.db.select(10, 'tashen').split(' ')[0])
+
 
 class Item11(ItemBase):
     def __init__(self, master):
@@ -450,6 +457,9 @@ class Item11(ItemBase):
 
     def insert(self):
         self.db.insert(11, 'comorbidity', self.widgets[0].get())
+
+    def select(self):
+        self.widgets[0].init(self.db.select(11, 'comorbidity'))
 
 
 class Item12(ItemBase):
@@ -472,6 +482,9 @@ class Item12(ItemBase):
 
     def insert(self):
         self.db.insert(12, 'drug_use', self.widgets[0].get())
+
+    def select(self):
+        self.widgets[0].init(self.db.select(12, 'drug_use'))
 
 
 class SubItem13:

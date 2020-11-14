@@ -72,7 +72,7 @@ class App:
             self.parts.insert()
             self.db.check()
             self.db.save()
-            create_pdf('test.pdf', self.db)
+            create_pdf(self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)
 

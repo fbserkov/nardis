@@ -141,10 +141,12 @@ class FrameMenu(Frame):
 
     def switch_list(self):
         if self.app.switch_list():
+            self.auth_button['state'] = 'disabled'
             self.new_button['state'] = 'disabled'
             self.pdf_button['state'] = 'disabled'
             self.list_button['text'] = 'Форма'
         else:
+            self.auth_button['state'] = 'normal'
             self.new_button['state'] = 'normal'
             self.pdf_button['state'] = 'normal'
             self.list_button['text'] = 'Список'

@@ -718,6 +718,9 @@ class Item15(ItemBase):
     def insert(self):
         self.db.insert(15, 'other', self.widgets[0].get())
 
+    def select(self):
+        self.widgets[0].init(self.db.select(15, 'other'))
+
 
 class Item16(ItemBase):
     def __init__(self, master):

@@ -241,11 +241,12 @@ class TopLevelAuth(Toplevel):
         self.db, self.status = db, False
 
         self.entry = Entry(self, font='-size 14', show='●')
-        self.entry.bind('<Key-Return>', lambda _: self.auth())
+        self.entry.bind('<Key-Return>', lambda _: self._auth())
+        self.entry.bind('<KeyPress>', lambda _: self._ok())
         self.entry.pack()
         self.entry.focus()
         self.button = Button(
-            self, font='-size 10', text='OK', command=self.auth)
+            self, font='-size 10', text='OK', command=self._auth)
         self.button.pack(fill=X)
 
         self.transient(self.master)
@@ -253,12 +254,15 @@ class TopLevelAuth(Toplevel):
         self.grab_set()
         self.wait_window()
 
-    def auth(self):
+    def _auth(self):
         if self.db.check_password(self.entry.get()):
             self.status = True
             self.destroy()
         else:
             self.button['text'] = 'Неверный пароль'
+
+    def _ok(self):
+        self.button['text'] = 'OK'
 
 
 if __name__ == '__main__':

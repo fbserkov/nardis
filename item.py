@@ -62,10 +62,6 @@ class ItemBase:
         for widget in self.widgets:
             widget.init()
 
-    @staticmethod
-    def select():  # TODO delete
-        pass
-
 
 class Item0(ItemBase):
     def __init__(self, master):
@@ -186,6 +182,10 @@ class Item3(ItemBase):
 
     def insert(self):
         self.db.insert(3, 'subdivision', self.db.select('subdivision'))
+
+    @staticmethod
+    def select():
+        pass
 
 
 class Item4(ItemBase):
@@ -596,16 +596,14 @@ class Item14(ItemBase):
         frame.pack(side=RIGHT)
         self.refusal = 'отказ от сдачи пробы биологического объекта (мочи)'
         self.forgery = 'фальсификация пробы биологического объекта (мочи)'
-        button_1 = CheckbuttonSmart(frame, text=self.refusal)
-        button_2 = CheckbuttonSmart(frame, text=self.forgery)
-        button_1.bind(
-            '<Button-1>', lambda _: self._uncheck_extra(button_1, button_2))
-        button_2.bind(
-            '<Button-1>', lambda _: self._uncheck_extra(button_2, button_1))
-        button_1.grid(row=0, sticky=W)
-        button_2.grid(row=1)
-        self.widgets.append(button_1)
-        self.widgets.append(button_2)
+        btn_1 = CheckbuttonSmart(frame, text=self.refusal)
+        btn_2 = CheckbuttonSmart(frame, text=self.forgery)
+        btn_1.bind('<Button-1>', lambda _: self._uncheck_extra(btn_1, btn_2))
+        btn_2.bind('<Button-1>', lambda _: self._uncheck_extra(btn_2, btn_1))
+        btn_1.grid(row=0, sticky=W)
+        btn_2.grid(row=1)
+        self.widgets.append(btn_1)
+        self.widgets.append(btn_2)
 
         Label(self.frames[2], text='метод исследования').pack(side=LEFT)
         self.widgets.append(
@@ -651,11 +649,11 @@ class Item14(ItemBase):
                 self.widgets[7 + i].init(result[chemical])
 
     @staticmethod
-    def _uncheck_extra(button_1, button_2):
-        if button_1.int_var.get():
+    def _uncheck_extra(btn_1, btn_2):
+        if btn_1.int_var.get():
             return
-        if button_2.int_var.get():
-            button_2.int_var.set(0)
+        if btn_2.int_var.get():
+            btn_2.int_var.set(0)
 
     def check(self, index):
         ItemBase.check(self, index)

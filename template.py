@@ -250,7 +250,12 @@ def item_14(db):
     )
     liner('Normal+', 'название лаборатории', db.select(14, 'laboratory'))
     liner('Normal+', 'методы исследований', db.select(14, 'method'))
-    liner('Normal+', 'результаты исследований', db.select(14, 'result'))
+    result = db.select(14, 'result')
+    liner(
+        'Normal+', 'результаты исследований',
+        ', '.join(f'{k} {v}' for k, v in result.items())
+        if type(result) is dict else result,
+    )
     liner(
         'Normal+',
         'номер справки о результатах химико-токсикологических исследований',

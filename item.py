@@ -599,9 +599,9 @@ class Item14(ItemBase):
         button_1 = CheckbuttonSmart(frame, text=self.refusal)
         button_2 = CheckbuttonSmart(frame, text=self.forgery)
         button_1.bind(
-            '<Button-1>', lambda _: self.uncheck_extra(button_1, button_2))
+            '<Button-1>', lambda _: self._uncheck_extra(button_1, button_2))
         button_2.bind(
-            '<Button-1>', lambda _: self.uncheck_extra(button_2, button_1))
+            '<Button-1>', lambda _: self._uncheck_extra(button_2, button_1))
         button_1.grid(row=0, sticky=W)
         button_2.grid(row=1)
         self.widgets.append(button_1)
@@ -637,24 +637,36 @@ class Item14(ItemBase):
             entry.pack(side=RIGHT)
             self.widgets.append(entry)
 
-    def check(self, index):
-        ItemBase.check(self, index)
-        if self.get_result() and not self.widgets[0].get():
-            raise CheckException('Не указано время\nв пункте 14.')
-        if self.get_result() and not self.widgets[4].string_var.get():
-            raise CheckException('Не указан метод\nв пункте 14.')
-        if self.get_result() and not self.widgets[6].get():
-            raise CheckException('Не указан номер справки\nв пункте 14.')
-        if self.widgets[6].get() and not self.widgets[5].get():
-            raise CheckException('Не указан год\nв пункте 14.')
-
-    def get_result(self):
-        result = ''
+    def _get_result(self):
+        result = {}
         for i, chemical in enumerate(self.substances):
             temp = self.widgets[7 + i].get()
             if temp:
-                result += chemical + ' ' + temp + ', '
+                result[chemical] = temp
         return result
+
+    def _set_result(self, result):
+        for i, chemical in enumerate(self.substances):
+            if chemical in result:
+                self.widgets[7 + i].init(result[chemical])
+
+    @staticmethod
+    def _uncheck_extra(button_1, button_2):
+        if button_1.int_var.get():
+            return
+        if button_2.int_var.get():
+            button_2.int_var.set(0)
+
+    def check(self, index):
+        ItemBase.check(self, index)
+        if self._get_result() and not self.widgets[0].get():
+            raise CheckException('Не указано время\nв пункте 14.')
+        if self._get_result() and not self.widgets[4].string_var.get():
+            raise CheckException('Не указан метод\nв пункте 14.')
+        if self._get_result() and not self.widgets[6].get():
+            raise CheckException('Не указан номер справки\nв пункте 14.')
+        if self.widgets[6].get() and not self.widgets[5].get():
+            raise CheckException('Не указан год\nв пункте 14.')
 
     def insert(self):
         time, number = self.widgets[0].get(), self.widgets[6].get()
@@ -667,7 +679,7 @@ class Item14(ItemBase):
             14, 'number',
             number + '/' + self.widgets[5].get() if number else '',
         )
-        self.db.insert(14, 'result', self.get_result())
+        self.db.insert(14, 'result', self._get_result())
 
         line = self.refusal if self.widgets[2].int_var.get() else ''
         if self.widgets[3].int_var.get():
@@ -675,12 +687,24 @@ class Item14(ItemBase):
         if line:
             self.db.insert(14, 'result', line)
 
-    @staticmethod
-    def uncheck_extra(button_1, button_2):
-        if button_1.int_var.get():
-            return
-        if button_2.int_var.get():
-            button_2.int_var.set(0)
+    def select(self):
+        material = self.db.select(14, 'material')
+        self.widgets[0].init(time2str(self.db.select(14, 'time')))
+        self.widgets[1].init(material if material else None)
+        self.widgets[4].string_var.set(self.db.select(14, 'method'))
+
+        temp = self.db.select(14, 'number')
+        number, year = temp.split('/') if temp else ('', None)
+        self.widgets[5].init(year)
+        self.widgets[6].init(number)
+
+        result = self.db.select(14, 'result')
+        if result == self.refusal:
+            self.widgets[2].int_var.set(1)
+        elif result == self.forgery:
+            self.widgets[3].int_var.set(1)
+        else:
+            self._set_result(result)
 
 
 class Item15(ItemBase):

@@ -2,7 +2,9 @@ import os
 import sys
 
 from tkinter import (
-    Button, Entry, Frame, LEFT, Listbox, StringVar, Tk, Toplevel, X)
+    Button, Entry, Frame, LEFT, Listbox, RIGHT,
+    Scrollbar, StringVar, Tk, Toplevel, X, Y,
+)
 from tkinter.messagebox import showinfo
 
 from database import Database
@@ -215,8 +217,13 @@ class ListboxActs(Listbox):
     def __init__(self, app):
         self.app, self.is_visible = app, False
         self.frame, self.choices = Frame(padx=2, pady=1), StringVar()
+
+        sb = Scrollbar(self.frame, command=self.yview)
         Listbox.__init__(
-            self, master=self.frame, listvariable=self.choices, height=34)
+            self, master=self.frame, listvariable=self.choices,
+            yscrollcommand=sb.set, height=34,
+        )
+        sb.pack(side=RIGHT, fill=Y)
         self.pack(fill=X)
         self.bind('<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
         self.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')

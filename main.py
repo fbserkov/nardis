@@ -80,15 +80,11 @@ class App:
 
     def switch_auth(self):
         if self.auth_status:
-            self.menu.buttons[2]['state'] = 'disabled'
             self.parts.hide()
-            self.acts.hide()
             self.auth_status = False
         else:
             if not TopLevelAuth(self.db).status:
                 return False
-            if not self.db.get_current_doctor():
-                self.menu.buttons[2]['state'] = 'normal'
             self.init()
             self.parts.show()
             self.auth_status = True
@@ -113,70 +109,83 @@ class FrameMenu(Frame):
     def __init__(self, app):
         Frame.__init__(self)
         self.pack(fill=X)
-        self.app = app
+        self._app = app
 
-        self.buttons = (
+        self._buttons = (
             Button(self, text='Вход', command=self.switch_auth),
             Button(self, text='Новый', command=app.init),
             Button(self, text='Настройки'),
             Button(self, text='Сохранить', command=app.save),
             Button(self, text='Список', command=self.switch_list),
         )
-        min_width = max(button.winfo_reqwidth() for button in self.buttons)
+        min_width = max(button.winfo_reqwidth() for button in self._buttons)
         for i in range(5):
             self.columnconfigure(i, weight=1, minsize=min_width)
-            self.buttons[i].grid(row=0, column=i, sticky=E + W)
-            self.buttons[i]['state'] = 'disabled'
-        self.buttons[0]['state'] = 'normal'
+            self._buttons[i].grid(row=0, column=i, sticky=E + W)
+            self._buttons[i]['state'] = 'disabled'
+        self._buttons[0]['state'] = 'normal'
 
     def switch_auth(self):
-        if self.app.switch_auth():
-            self.buttons[0]['text'] = 'Выход'
-            self.buttons[1]['state'] = 'normal'
-            self.buttons[3]['state'] = 'normal'
-            self.buttons[4]['state'] = 'normal'
-            self.buttons[4]['text'] = 'Список'
+        if self._app.switch_auth():
+            self._buttons[0]['text'] = 'Выход'
+            self._buttons[1]['state'] = 'normal'
+            if not self._app.db.get_current_doctor():
+                self._buttons[2]['state'] = 'normal'
+            self._buttons[3]['state'] = 'normal'
+            self._buttons[4]['state'] = 'normal'
+            self._buttons[4]['text'] = 'Список'
         else:
-            self.buttons[0]['text'] = 'Вход'
-            self.buttons[1]['state'] = 'disabled'
-            self.buttons[3]['state'] = 'disabled'
-            self.buttons[4]['state'] = 'disabled'
-            self.buttons[4]['text'] = 'Список'
+            self._buttons[0]['text'] = 'Вход'
+            self._buttons[1]['state'] = 'disabled'
+            self._buttons[2]['state'] = 'disabled'
+            self._buttons[3]['state'] = 'disabled'
+            self._buttons[4]['state'] = 'disabled'
+            self._buttons[4]['text'] = 'Список'
 
     def switch_list(self):
-        if self.app.switch_list():
-            self.buttons[0]['state'] = 'disabled'
-            self.buttons[1]['state'] = 'disabled'
-            self.buttons[3]['state'] = 'disabled'
-            self.buttons[4]['text'] = 'Форма'
+        if self._app.switch_list():
+            self._buttons[0]['state'] = 'disabled'
+            self._buttons[1]['state'] = 'disabled'
+            self._buttons[3]['state'] = 'disabled'
+            self._buttons[4]['text'] = 'Форма'
         else:
-            self.buttons[0]['state'] = 'normal'
-            self.buttons[1]['state'] = 'normal'
-            self.buttons[3]['state'] = 'normal'
-            self.buttons[4]['text'] = 'Список'
+            self._buttons[0]['state'] = 'normal'
+            self._buttons[1]['state'] = 'normal'
+            self._buttons[3]['state'] = 'normal'
+            self._buttons[4]['text'] = 'Список'
 
 
 class FrameParts(Frame):
     def __init__(self):
         Frame.__init__(self)
-        self.index, self.is_visible = 0, False
+        self._index, self.is_visible = 0, False  # TODO is_visible isn't use
 
         frame = Frame(self)
-        self.buttons = (
+        self._buttons = (
             Button(frame, text='I'), Button(frame, text='II'),
             Button(frame, text='III'), Button(frame, text='IV'),
         )
-        min_width = max(button.winfo_reqwidth() for button in self.buttons)
-        for i, button in enumerate(self.buttons):
+        min_width = max(button.winfo_reqwidth() for button in self._buttons)
+        for i, button in enumerate(self._buttons):
             frame.columnconfigure(i, weight=1, minsize=min_width)
             button.grid(row=0, column=i, sticky=E + W)
-            button['command'] = lambda j=i: self.show_part(j + 1)
+            button['command'] = lambda j=i: self._switch_part(j + 1)
         frame.pack(fill=X)
 
         self.part_frames = (
             PassportPart(self), CommonPart(self),
             SurveyPart(self), ExaminationPart(self),
         )
+
+    def _switch_part(self, index):
+        if self._index == index:
+            return
+        self.part_frames[self._index - 1].forget()
+        self._buttons[self._index - 1].config(font='-size 10')
+        if index:
+            self.part_frames[index - 1].pack(fill=X)
+            self._buttons[index - 1].config(font='-size 10 -weight bold')
+        self._index = index
 
     def check(self):
         for part_frame in self.part_frames:
@@ -202,30 +211,20 @@ class FrameParts(Frame):
                 item.select()
 
     def show(self):
-        self.show_part(1)
+        self._switch_part(1)
         self.pack(fill=X)
         self.is_visible = True
-
-    def show_part(self, index):
-        if self.index == index:
-            return
-        self.part_frames[self.index - 1].forget()
-        self.buttons[self.index - 1].config(font='-size 10')
-        if index:
-            self.part_frames[index - 1].pack(fill=X)
-            self.buttons[index - 1].config(font='-size 10 -weight bold')
-        self.index = index
 
 
 class ListboxActs(Listbox):
     def __init__(self, app):
         self.app, self.is_visible = app, False
-        self.frame, self.choices = Frame(), StringVar()
+        self.frame, self.choices = Frame(bd=4), StringVar()
 
         sb = Scrollbar(self.frame, command=self.yview)
         Listbox.__init__(
             self, master=self.frame, listvariable=self.choices,
-            yscrollcommand=sb.set, height=33,
+            yscrollcommand=sb.set, height=32,
         )
         sb.pack(side=RIGHT, fill=Y)
         self.pack(fill=X)

@@ -31,7 +31,7 @@ class App:
 
         self.menu = FrameMenu(self)
         self.parts = FrameParts()
-        self.acts = ListboxActs(self)
+        self.acts = FrameList(self)
         self.root.mainloop()
 
     def _customize(self):
@@ -216,31 +216,31 @@ class FrameParts(Frame):
         self.is_visible = True
 
 
-class ListboxActs(Listbox):
+class FrameList(Frame):
     def __init__(self, app):
-        self.app, self.is_visible = app, False
-        self.frame, self.choices = Frame(bd=4), StringVar()
+        Frame.__init__(self, bd=4)
+        self.app, self.choices, self.is_visible = app, StringVar(), False
 
-        sb = Scrollbar(self.frame, command=self.yview)
-        Listbox.__init__(
-            self, master=self.frame, listvariable=self.choices,
-            yscrollcommand=sb.set, height=32,
-        )
-        sb.pack(side=RIGHT, fill=Y)
-        self.pack(fill=X)
-        self.bind('<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
-        self.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')
+        listbox = Listbox(master=self, listvariable=self.choices, height=32)
+        scrollbar = Scrollbar(self, command=listbox.yview)
+        listbox['yscrollcommand'] = scrollbar.set
+
+        scrollbar.pack(side=RIGHT, fill=Y)
+        listbox.pack(fill=X)
+        listbox.bind(
+            '<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
+        listbox.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')
 
     def _update(self):
         self.choices.set(self.app.db.get_acts_titles())
 
     def hide(self):
-        self.frame.forget()
+        self.forget()
         self.is_visible = False
 
     def show(self):
         self._update()
-        self.frame.pack(fill=X)
+        self.pack(fill=X)
         self.is_visible = True
 
 

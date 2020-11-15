@@ -80,12 +80,15 @@ class App:
 
     def switch_auth(self):
         if self.auth_status:
+            self.menu.buttons[2]['state'] = 'disabled'
             self.parts.hide()
             self.acts.hide()
             self.auth_status = False
         else:
             if not TopLevelAuth(self.db).status:
                 return False
+            if not self.db.get_current_doctor():
+                self.menu.buttons[2]['state'] = 'normal'
             self.init()
             self.parts.show()
             self.auth_status = True

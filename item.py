@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from tkinter import E, Frame, Label, LEFT, RIGHT, W, X
+from tkinter import E, Frame, Label, LEFT, N, S, Scrollbar, RIGHT, W, X
 
 from convert import date2str, str2date, str2datetime, str2time, time2str
 from widget import (
     CheckbuttonSmart, EntryBase, EntryDate, EntryDisabled, EntryResult,
     EntryTime, EntryTimer, EntryYear, LabelAdd, LabelAddSmart, LabelReplace,
-    LabelReplaceSmart, LabelReplaceSmartDate, OptionMenuSmart,
+    LabelReplaceSmart, LabelReplaceSmartDate, ListboxSmart, OptionMenuSmart,
 )
 
 
@@ -620,33 +620,34 @@ class Item14(ItemBase):
         self.widgets.append(entry)
         Label(self.frames[3], text='номер справки').pack(side=RIGHT)
 
-        self.frames[4].columnconfigure(0, weight=1)
-        self.frames[4].columnconfigure(2, weight=1)
-        self.frames[4].columnconfigure(4, weight=1)
+        signs = '«-»', '«+»'
+        lines = f'Отрицательные {signs[0]}:', f'Положительные {signs[1]}:'
         self.substances = self.db.select('substances')
-        for i, chemical in enumerate(self.substances):
-            row, column = int(i / 2), (i % 2) * 2 + 1
-            frame = Frame(self.frames[4])
-            frame.grid(row=row, column=column, sticky=W + E)
-            Label(frame, text=chemical).pack(side=LEFT)
-            entry = EntryDisabled(frame, width=4)
-            LabelReplaceSmart(frame, text='«+»', bind=(entry, ''))
-            LabelReplaceSmart(frame, text='«-»', bind=(entry, ''))
-            entry.pack(side=RIGHT)
-            self.widgets.append(entry)
+        for i in range(2):
+            self.frames[4].columnconfigure(i, weight=1)
+            Label(self.frames[4], text=lines[i]).grid(row=0, column=i)
+            listbox = ListboxSmart(
+                self.frames[4], sign=signs[i], choices=self.substances)
+            listbox.grid(row=1, column=i, sticky=E + W)
+            self.widgets.append(listbox)
+
+        def yview2(*args):
+            self.widgets[7].yview(*args)
+            self.widgets[8].yview(*args)
+        scrollbar = Scrollbar(self.frames[4], command=yview2)
+        scrollbar.grid(row=1, column=2, sticky=N + S)
+        self.widgets[7]['yscrollcommand'] = scrollbar.set
+        self.widgets[8]['yscrollcommand'] = scrollbar.set
 
     def _get_result(self):
         result = {}
-        for i, chemical in enumerate(self.substances):
-            temp = self.widgets[7 + i].get()
-            if temp:
-                result[chemical] = temp
+        self.widgets[7].get_result(result)
+        self.widgets[8].get_result(result)
         return result
 
     def _set_result(self, result):
-        for i, chemical in enumerate(self.substances):
-            if chemical in result:
-                self.widgets[7 + i].init(result[chemical])
+        self.widgets[7].set_result(result)
+        self.widgets[8].set_result(result)
 
     @staticmethod
     def _uncheck_extra(btn_1, btn_2):

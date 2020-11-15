@@ -36,7 +36,7 @@ class App:
 
     def _customize(self):
         self.root.title('Наркологическая экспертиза')
-        self.root.geometry('610x650')
+        self.root.geometry('610x630')
         self.root.resizable(width=False, height=False)
         if not sys.platform == 'linux':
             self.root.iconbitmap('nardis.ico')
@@ -216,12 +216,12 @@ class FrameParts(Frame):
 class ListboxActs(Listbox):
     def __init__(self, app):
         self.app, self.is_visible = app, False
-        self.frame, self.choices = Frame(padx=2, pady=1), StringVar()
+        self.frame, self.choices = Frame(), StringVar()
 
         sb = Scrollbar(self.frame, command=self.yview)
         Listbox.__init__(
             self, master=self.frame, listvariable=self.choices,
-            yscrollcommand=sb.set, height=34,
+            yscrollcommand=sb.set, height=33,
         )
         sb.pack(side=RIGHT, fill=Y)
         self.pack(fill=X)

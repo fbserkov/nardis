@@ -1,7 +1,7 @@
 from time import strftime, strptime
 from tkinter import (
-    Checkbutton, END, Entry, IntVar, Label,
-    LEFT, OptionMenu, RIGHT, StringVar, X,
+    Checkbutton, END, Entry, IntVar, Label, LEFT,
+    Listbox, MULTIPLE, OptionMenu, RIGHT, StringVar, X,
 )
 
 
@@ -14,7 +14,7 @@ class CheckbuttonSmart(Checkbutton):
         )
 
     @staticmethod
-    def check(exc):
+    def check(_):
         pass
 
     def init(self):
@@ -28,7 +28,7 @@ class EntryBase(Entry):
         if width:
             self['width'] = width
 
-    def check(self, exc):
+    def check(self, _):
         return not self.get()
 
     def init(self, line=None):
@@ -256,6 +256,35 @@ class LabelReplaceSmartDate(LabelReplaceSmart):
             date.insert(0, strftime('%d.%m.%Y'))
 
 
+class ListboxSmart(Listbox):
+    def __init__(self, master, sign, choices):
+        Listbox.__init__(
+            self, master, height=5, selectmode=MULTIPLE, exportselection=False)
+        self.sign, self.choices = sign, choices
+
+    @staticmethod
+    def check(_):
+        pass
+
+    def get_result(self, result):
+        for index in self.curselection():
+            result[self.get(index)] = self.sign
+
+    def init(self):
+        self.selection_clear(0, END)
+        self['listvariable'] = StringVar(self.master, value=self.choices)
+
+    def set_result(self, result):
+        for index, choice in enumerate(self.choices):
+            if result.get(choice) == self.sign:
+                self.selection_set(index)
+        for key in result:
+            if key not in self.choices:
+                if result[key] == self.sign:
+                    self.insert(END, key)
+                    self.selection_set(self.index(END) - 1)
+
+
 class OptionMenuSmart(OptionMenu):
     def __init__(self, master, values):
         self.string_var = StringVar(master)
@@ -265,7 +294,7 @@ class OptionMenuSmart(OptionMenu):
         self.pack(fill=X)
 
     @staticmethod
-    def check(exc):
+    def check(_):
         pass
 
     def init(self):

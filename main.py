@@ -2,8 +2,8 @@ import os
 import sys
 
 from tkinter import (
-    Button, Entry, Frame, LEFT, Listbox, RIGHT,
-    Scrollbar, StringVar, Tk, Toplevel, X, Y,
+    Button, E, Entry, Frame, Listbox, RIGHT,
+    Scrollbar, StringVar, Tk, Toplevel, W, X, Y,
 )
 from tkinter.messagebox import showinfo
 
@@ -112,46 +112,45 @@ class FrameMenu(Frame):
         self.pack(fill=X)
         self.app = app
 
-        self.auth_button = Button(self, text='Вход', command=self.switch_auth)
-        self.auth_button.pack(side=LEFT, expand=True, fill=X)
-
-        self.new_button = Button(
-            self, text='Новый', command=app.init, state='disabled')
-        self.new_button.pack(side=LEFT, expand=True, fill=X)
-
-        self.pdf_button = Button(
-            self, text='Сохранить', command=app.save, state='disabled')
-        self.pdf_button.pack(side=LEFT, expand=True, fill=X)
-
-        self.list_button = Button(
-            self, text='Список', command=self.switch_list, state='disabled')
-        self.list_button.pack(side=LEFT, expand=True, fill=X)
+        self.buttons = (
+            Button(self, text='Вход', command=self.switch_auth),
+            Button(self, text='Новый', command=app.init),
+            Button(self, text='Настройки'),
+            Button(self, text='Сохранить', command=app.save),
+            Button(self, text='Список', command=self.switch_list),
+        )
+        min_width = max(button.winfo_reqwidth() for button in self.buttons)
+        for i in range(5):
+            self.columnconfigure(i, weight=1, minsize=min_width)
+            self.buttons[i].grid(row=0, column=i, sticky=E + W)
+            self.buttons[i]['state'] = 'disabled'
+        self.buttons[0]['state'] = 'normal'
 
     def switch_auth(self):
         if self.app.switch_auth():
-            self.auth_button['text'] = 'Выход'
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.list_button['state'] = 'normal'
-            self.list_button['text'] = 'Список'
+            self.buttons[0]['text'] = 'Выход'
+            self.buttons[1]['state'] = 'normal'
+            self.buttons[3]['state'] = 'normal'
+            self.buttons[4]['state'] = 'normal'
+            self.buttons[4]['text'] = 'Список'
         else:
-            self.auth_button['text'] = 'Вход'
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.list_button['state'] = 'disabled'
-            self.list_button['text'] = 'Список'
+            self.buttons[0]['text'] = 'Вход'
+            self.buttons[1]['state'] = 'disabled'
+            self.buttons[3]['state'] = 'disabled'
+            self.buttons[4]['state'] = 'disabled'
+            self.buttons[4]['text'] = 'Список'
 
     def switch_list(self):
         if self.app.switch_list():
-            self.auth_button['state'] = 'disabled'
-            self.new_button['state'] = 'disabled'
-            self.pdf_button['state'] = 'disabled'
-            self.list_button['text'] = 'Форма'
+            self.buttons[0]['state'] = 'disabled'
+            self.buttons[1]['state'] = 'disabled'
+            self.buttons[3]['state'] = 'disabled'
+            self.buttons[4]['text'] = 'Форма'
         else:
-            self.auth_button['state'] = 'normal'
-            self.new_button['state'] = 'normal'
-            self.pdf_button['state'] = 'normal'
-            self.list_button['text'] = 'Список'
+            self.buttons[0]['state'] = 'normal'
+            self.buttons[1]['state'] = 'normal'
+            self.buttons[3]['state'] = 'normal'
+            self.buttons[4]['text'] = 'Список'
 
 
 class FrameParts(Frame):
@@ -164,9 +163,11 @@ class FrameParts(Frame):
             Button(frame, text='I'), Button(frame, text='II'),
             Button(frame, text='III'), Button(frame, text='IV'),
         )
-        for i, obj in enumerate(self.buttons):
-            obj['command'] = lambda j=i: self.show_part(j + 1)
-            obj.pack(side=LEFT, expand=True, fill=X)
+        min_width = max(button.winfo_reqwidth() for button in self.buttons)
+        for i, button in enumerate(self.buttons):
+            frame.columnconfigure(i, weight=1, minsize=min_width)
+            button.grid(row=0, column=i, sticky=E + W)
+            button['command'] = lambda j=i: self.show_part(j + 1)
         frame.pack(fill=X)
 
         self.part_frames = (

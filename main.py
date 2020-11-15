@@ -30,8 +30,8 @@ class App:
             return
 
         self.menu = FrameMenu(self)
-        self.parts = FrameParts()
-        self.acts = FrameList(self)
+        self.parts = FormParts()
+        self.acts = ActsList(self)
         self.root.mainloop()
 
     def _customize(self):
@@ -155,7 +155,7 @@ class FrameMenu(Frame):
             self._buttons[4]['text'] = 'Список'
 
 
-class FrameParts(Frame):
+class FormParts(Frame):
     def __init__(self):
         Frame.__init__(self)
         self._index, self.is_visible = 0, False  # TODO is_visible isn't use
@@ -172,7 +172,7 @@ class FrameParts(Frame):
             button['command'] = lambda j=i: self._switch_part(j + 1)
         frame.pack(fill=X)
 
-        self.part_frames = (
+        self._parts = (
             PassportPart(self), CommonPart(self),
             SurveyPart(self), ExaminationPart(self),
         )
@@ -180,25 +180,25 @@ class FrameParts(Frame):
     def _switch_part(self, index):
         if self._index == index:
             return
-        self.part_frames[self._index - 1].forget()
+        self._parts[self._index - 1].forget()
         self._buttons[self._index - 1].config(font='-size 10')
         if index:
-            self.part_frames[index - 1].pack(fill=X)
+            self._parts[index - 1].pack(fill=X)
             self._buttons[index - 1].config(font='-size 10 -weight bold')
         self._index = index
 
     def check(self):
-        for part_frame in self.part_frames:
-            part_frame.check()
+        for part in self._parts:
+            part.check()
 
     def init(self):
-        for part_frame in self.part_frames:
-            part_frame.init()
-        self.part_frames[0].update()
+        for part in self._parts:
+            part.init()
+        self._parts[0].update()
 
     def insert(self):
-        for part_frame in self.part_frames:
-            for item in part_frame.items.values():
+        for part in self._parts:
+            for item in part.items.values():
                 item.insert()
 
     def hide(self):
@@ -206,8 +206,8 @@ class FrameParts(Frame):
         self.is_visible = False
 
     def select(self):
-        for part_frame in self.part_frames:
-            for item in part_frame.items.values():
+        for part in self._parts:
+            for item in part.items.values():
                 item.select()
 
     def show(self):
@@ -216,12 +216,12 @@ class FrameParts(Frame):
         self.is_visible = True
 
 
-class FrameList(Frame):
+class ActsList(Frame):
     def __init__(self, app):
         Frame.__init__(self, bd=4)
-        self.app, self.choices, self.is_visible = app, StringVar(), False
+        self._app, self._choices, self.is_visible = app, StringVar(), False
 
-        listbox = Listbox(master=self, listvariable=self.choices, height=32)
+        listbox = Listbox(master=self, listvariable=self._choices, height=32)
         scrollbar = Scrollbar(self, command=listbox.yview)
         listbox['yscrollcommand'] = scrollbar.set
 
@@ -232,7 +232,7 @@ class FrameList(Frame):
         listbox.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')
 
     def _update(self):
-        self.choices.set(self.app.db.get_acts_titles())
+        self._choices.set(self._app.db.get_acts_titles())
 
     def hide(self):
         self.forget()

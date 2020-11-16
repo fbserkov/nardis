@@ -17,10 +17,11 @@ class SubFrame(Frame):
         self.is_visible = True
 
 
-class ActsList(Frame):
+class ActsList(SubFrame):
     def __init__(self, app):
-        Frame.__init__(self, bd=4)
-        self._app, self._choices, self.is_visible = app, StringVar(), False
+        SubFrame.__init__(self)
+        self['bd'] = 4
+        self._app, self._choices = app, StringVar()
 
         listbox = Listbox(master=self, listvariable=self._choices, height=32)
         scrollbar = Scrollbar(self, command=listbox.yview)
@@ -35,20 +36,15 @@ class ActsList(Frame):
     def _update(self):
         self._choices.set(self._app.db.get_acts_titles())
 
-    def hide(self):
-        self.forget()
-        self.is_visible = False
-
     def show(self):
         self._update()
-        self.pack(fill=X)
-        self.is_visible = True
+        SubFrame.show(self)
 
 
-class FormParts(Frame):
+class FormParts(SubFrame):
     def __init__(self):
-        Frame.__init__(self)
-        self._index, self.is_visible = 0, False  # TODO is_visible isn't use
+        SubFrame.__init__(self)
+        self._index = 0
 
         frame = Frame(self)
         self._buttons = (
@@ -91,10 +87,6 @@ class FormParts(Frame):
             for item in part.items.values():
                 item.insert()
 
-    def hide(self):
-        self.forget()
-        self.is_visible = False
-
     def select(self):
         for part in self._parts:
             for item in part.items.values():
@@ -102,8 +94,7 @@ class FormParts(Frame):
 
     def show(self):
         self._switch_part(1)
-        self.pack(fill=X)
-        self.is_visible = True
+        SubFrame.show(self)
 
 
 class Settings(SubFrame):

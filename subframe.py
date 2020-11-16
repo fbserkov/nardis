@@ -1,5 +1,5 @@
 from tkinter import (
-    Button, E, END, Entry, Frame, Label, LEFT, Listbox,
+    Button, E, END, Entry, Frame, IntVar, Label, LEFT, Listbox,
     N, RIGHT, Scrollbar, StringVar, Text, W, X, Y,
 )
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
@@ -128,6 +128,30 @@ class Settings(SubFrame):
         self.devices = Text(frame, height=5)
         self.devices.pack()
 
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Лаборатория:').pack(side=LEFT)
+        self.laboratory = StringVar(frame)
+        Entry(frame, textvariable=self.laboratory).pack(fill=X)
+
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Методы исследования:').pack(side=LEFT, anchor=N)
+        self.methods = Text(frame, height=5)
+        self.methods.pack()
+
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Вещества:').pack(side=LEFT, anchor=N)
+        self.substances = Text(frame, height=5)
+        self.substances.pack()
+
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Номер следующего акта:').pack(side=LEFT)
+        self.next_number = IntVar(frame)
+        Entry(frame, textvariable=self.next_number).pack(fill=X)
+
     def hide(self):
         self.save()
         SubFrame.hide(self)
@@ -139,13 +163,22 @@ class Settings(SubFrame):
         self.subdivision.set(self.db.select('subdivision'))
 
         self.doctors.delete('1.0', END)
-        doctors = self.db.select('doctors')
         self.doctors.insert(
-            '1.0', '\n'.join(k + ': ' + v for k, v in doctors.items()))
+            '1.0', '\n'.join(
+                k + ': ' + v for k, v in self.db.select('doctors').items()))
 
         self.devices.delete('1.0', END)
-        devices = self.db.select('devices')
-        self.devices.insert('1.0', '\n'.join(devices))
+        self.devices.insert('1.0', '\n'.join(self.db.select('devices')))
+
+        self.laboratory.set(self.db.select('laboratory'))
+
+        self.methods.delete('1.0', END)
+        self.methods.insert('1.0', '\n'.join(self.db.select('methods')))
+
+        self.substances.delete('1.0', END)
+        self.substances.insert('1.0', '\n'.join(self.db.select('substances')))
+
+        self.next_number.set(self.db.select('next_number'))
 
     def save(self):
         self.db.insert(
@@ -153,12 +186,25 @@ class Settings(SubFrame):
 
         self.db.insert('subdivision', self.subdivision.get())
 
-        doctors = self.doctors.get('1.0', END + '-1c')
         self.db.insert(
-            'doctors', dict(line.split(': ') for line in doctors.split('\n')))
+            'doctors', dict(
+                doctor.split(': ') for doctor
+                in self.doctors.get('1.0', END + '-1c').split('\n')
+            )
+        )
 
-        devices = self.devices.get('1.0', END + '-1c')
-        self.db.insert('devices', devices.split('\n'))
+        self.db.insert(
+            'devices', self.devices.get('1.0', END + '-1c').split('\n'))
+
+        self.db.insert('laboratory', self.laboratory.get())
+
+        self.db.insert(
+            'methods', self.methods.get('1.0', END + '-1c').split('\n'))
+
+        self.db.insert(
+            'substances', self.substances.get('1.0', END + '-1c').split('\n'))
+
+        self.db.insert('next_number', self.next_number.get())
 
         self.db.save_settings()
 

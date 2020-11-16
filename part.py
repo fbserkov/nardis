@@ -35,8 +35,8 @@ class PassportPart(PartBase):
         self.items = {i: create_item(self, i) for i in (0, 1, 2, 3, 4, 5, 16)}
 
     def update(self):
-        self.items[0].update_number()
-        self.items[5].update_doctor()
+        self.items[0].update()
+        self.items[5].update()
 
 
 class SurveyPart(PartBase):

@@ -92,7 +92,7 @@ class Item0(ItemBase):
         self.widgets[0].init(self.db.select(0, 'number'))
         self.widgets[1].init(self.db.select(0, 'year'))
 
-    def update_number(self):
+    def update(self):
         self.widgets[0].config(state='normal')
         self.widgets[0].insert(0, self.db.select('next_number'))
         self.widgets[0].config(state='disabled')
@@ -219,8 +219,6 @@ class Item5(ItemBase):
     def __init__(self, master):
         ItemBase.__init__(self, master, frames_number=2)
         Label(self.frames[0], text='5. Кем освидетельствован').pack(side=LEFT)
-        self.widgets.append(
-            OptionMenuSmart(self.frames[1], self.db.get_doctors()))
 
     def check(self, index):
         ItemBase.check(self, index)
@@ -236,7 +234,14 @@ class Item5(ItemBase):
         self.widgets[0].string_var.set(
             self.db.select(5, 'doctor') + ', ' + self.db.select(5, 'training'))
 
-    def update_doctor(self):
+    def update(self):
+        option_menu = OptionMenuSmart(self.frames[1], self.db.get_doctors())
+        if self.widgets:
+            self.widgets[0].forget()
+            self.widgets[0] = option_menu
+        else:
+            self.widgets.append(option_menu)
+
         doctor = self.db.get_current_doctor()
         self.widgets[0].string_var.set(doctor)
         if doctor:

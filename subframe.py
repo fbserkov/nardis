@@ -116,6 +116,12 @@ class Settings(SubFrame):
         self.subdivision = StringVar(frame)
         Entry(frame, textvariable=self.subdivision).pack(fill=X)
 
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Врачи:').pack(side=LEFT, anchor=N)
+        self.doctors = Text(frame, height=5)
+        self.doctors.pack()
+
     def hide(self):
         self.save()
         SubFrame.hide(self)
@@ -123,12 +129,24 @@ class Settings(SubFrame):
     def init(self):
         self.organization.delete('1.0', END)
         self.organization.insert('1.0', self.db.select('organization'))
+
         self.subdivision.set(self.db.select('subdivision'))
+
+        self.doctors.delete('1.0', END)
+        doctors = self.db.select('doctors')
+        self.doctors.insert(
+            '1.0', '\n'.join(k + ': ' + v for k, v in doctors.items()))
 
     def save(self):
         self.db.insert(
             'organization', self.organization.get('1.0', END + '-1c'))
+
         self.db.insert('subdivision', self.subdivision.get())
+
+        doctors = self.doctors.get('1.0', END + '-1c')
+        self.db.insert(
+            'doctors', dict(line.split(': ') for line in doctors.split('\n')))
+
         self.db.save_settings()
 
     def show(self):

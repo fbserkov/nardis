@@ -122,6 +122,12 @@ class Settings(SubFrame):
         self.doctors = Text(frame, height=5)
         self.doctors.pack()
 
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Технические средства:').pack(side=LEFT, anchor=N)
+        self.devices = Text(frame, height=5)
+        self.devices.pack()
+
     def hide(self):
         self.save()
         SubFrame.hide(self)
@@ -137,6 +143,10 @@ class Settings(SubFrame):
         self.doctors.insert(
             '1.0', '\n'.join(k + ': ' + v for k, v in doctors.items()))
 
+        self.devices.delete('1.0', END)
+        devices = self.db.select('devices')
+        self.devices.insert('1.0', '\n'.join(devices))
+
     def save(self):
         self.db.insert(
             'organization', self.organization.get('1.0', END + '-1c'))
@@ -146,6 +156,9 @@ class Settings(SubFrame):
         doctors = self.doctors.get('1.0', END + '-1c')
         self.db.insert(
             'doctors', dict(line.split(': ') for line in doctors.split('\n')))
+
+        devices = self.devices.get('1.0', END + '-1c')
+        self.db.insert('devices', devices.split('\n'))
 
         self.db.save_settings()
 

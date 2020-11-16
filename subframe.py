@@ -1,5 +1,7 @@
 from tkinter import (
-    Button, E, Frame, Listbox, RIGHT, Scrollbar, StringVar, W, X, Y)
+    Button, E, END, Entry, Frame, Label, LEFT, Listbox,
+    N, RIGHT, Scrollbar, StringVar, Text, W, X, Y,
+)
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
 
 
@@ -98,5 +100,37 @@ class FormParts(SubFrame):
 
 
 class Settings(SubFrame):
-    def __init__(self):
+    def __init__(self, db):
+        self.db = db
         SubFrame.__init__(self)
+
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Организация:').pack(side=LEFT, anchor=N)
+        self.organization = Text(frame, height=5)
+        self.organization.pack()
+
+        frame = Frame(self, bd=4)
+        frame.pack(fill=X)
+        Label(frame, text='Подразделение:').pack(side=LEFT)
+        self.subdivision = StringVar(frame)
+        Entry(frame, textvariable=self.subdivision).pack(fill=X)
+
+    def hide(self):
+        self.save()
+        SubFrame.hide(self)
+
+    def init(self):
+        self.organization.delete('1.0', END)
+        self.organization.insert('1.0', self.db.select('organization'))
+        self.subdivision.set(self.db.select('subdivision'))
+
+    def save(self):
+        self.db.insert(
+            'organization', self.organization.get('1.0', END + '-1c'))
+        self.db.insert('subdivision', self.subdivision.get())
+        self.db.save_settings()
+
+    def show(self):
+        self.init()
+        SubFrame.show(self)

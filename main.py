@@ -28,7 +28,7 @@ class App:
 
         self.menu = FrameMenu(self)
         self.parts = FormParts()
-        self.settings = Settings()
+        self.settings = Settings(self.db)
         self.acts = ActsList(self)
         self.root.mainloop()
 
@@ -71,7 +71,7 @@ class App:
             self.parts.check()
             self.parts.insert()
             self.db.check()
-            self.db.save()
+            self.db.save_act()
             create_pdf(self.db)
         except CheckException as exc:
             showinfo('Проверка', exc.text)

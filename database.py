@@ -87,11 +87,14 @@ class Database:
             key, value = args[:2]
             self._settings[key] = value
 
-    def save(self):
+    def save_act(self):
         index = self._find(self._current_act)
         if index is None:
             self._acts.append(self._current_act)
             self.insert('next_number', self.select(0, 'number') + 1)
+        self._dump()
+
+    def save_settings(self):
         self._dump()
 
     def select(self, *args):

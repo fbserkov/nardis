@@ -3,6 +3,20 @@ from tkinter import (
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
 
 
+class SubFrame(Frame):
+    def __init__(self):
+        Frame.__init__(self)
+        self.is_visible = False
+
+    def hide(self):
+        self.forget()
+        self.is_visible = False
+
+    def show(self):
+        self.pack(fill=X)
+        self.is_visible = True
+
+
 class ActsList(Frame):
     def __init__(self, app):
         Frame.__init__(self, bd=4)
@@ -90,3 +104,8 @@ class FormParts(Frame):
         self._switch_part(1)
         self.pack(fill=X)
         self.is_visible = True
+
+
+class Settings(SubFrame):
+    def __init__(self):
+        SubFrame.__init__(self)

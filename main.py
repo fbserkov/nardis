@@ -6,7 +6,7 @@ from tkinter.messagebox import showinfo
 
 from database import Database
 from item import CheckException, ItemBase
-from subframe import ActsList, FormParts
+from subframe import ActsList, FormParts, Settings
 from template import create_pdf
 
 
@@ -28,6 +28,7 @@ class App:
 
         self.menu = FrameMenu(self)
         self.parts = FormParts()
+        self.settings = Settings()
         self.acts = ActsList(self)
         self.root.mainloop()
 
@@ -96,6 +97,15 @@ class App:
             self.acts.show()
         return self.acts.is_visible
 
+    def switch_settings(self):
+        if self.settings.is_visible:
+            self.settings.hide()
+            self.parts.show()
+        else:
+            self.parts.hide()
+            self.settings.show()
+        return self.settings.is_visible
+
     def unlock(self):
         if self.file_exists_error:
             return
@@ -112,7 +122,8 @@ class FrameMenu(Frame):
         self._buttons = {
             keys[0]: Button(self, text='Вход', command=self.switch_auth),
             keys[1]: Button(self, text='Новый', command=app.init),
-            keys[2]: Button(self, text='Настройки'),
+            keys[2]: Button(
+                self, text='Настройки', command=self.switch_settings),
             keys[3]: Button(self, text='Сохранить', command=app.save),
             keys[4]: Button(self, text='Список', command=self.switch_list),
         }
@@ -154,6 +165,20 @@ class FrameMenu(Frame):
                 self._buttons['settings']['state'] = 'normal'
             self._buttons['save']['state'] = 'normal'
             self._buttons['list']['text'] = 'Список'
+
+    def switch_settings(self):
+        if self._app.switch_settings():
+            self._buttons['auth']['state'] = 'disabled'
+            self._buttons['new']['state'] = 'disabled'
+            self._buttons['settings']['text'] = 'Сохранить'
+            self._buttons['save']['state'] = 'disabled'
+            self._buttons['list']['state'] = 'disabled'
+        else:
+            self._buttons['auth']['state'] = 'normal'
+            self._buttons['new']['state'] = 'normal'
+            self._buttons['settings']['text'] = 'Настройки'
+            self._buttons['save']['state'] = 'normal'
+            self._buttons['list']['state'] = 'normal'
 
 
 class TopLevelAuth(Toplevel):

@@ -108,48 +108,52 @@ class FrameMenu(Frame):
         self.pack(fill=X)
         self._app = app
 
-        self._buttons = (
-            Button(self, text='Вход', command=self.switch_auth),
-            Button(self, text='Новый', command=app.init),
-            Button(self, text='Настройки'),
-            Button(self, text='Сохранить', command=app.save),
-            Button(self, text='Список', command=self.switch_list),
-        )
-        min_width = max(button.winfo_reqwidth() for button in self._buttons)
-        for i in range(5):
+        keys = {0: 'auth', 1: 'new', 2: 'settings', 3: 'save', 4: 'list'}
+        self._buttons = {
+            keys[0]: Button(self, text='Вход', command=self.switch_auth),
+            keys[1]: Button(self, text='Новый', command=app.init),
+            keys[2]: Button(self, text='Настройки'),
+            keys[3]: Button(self, text='Сохранить', command=app.save),
+            keys[4]: Button(self, text='Список', command=self.switch_list),
+        }
+        min_width = max(btn.winfo_reqwidth() for btn in self._buttons.values())
+        for i, key in keys.items():
             self.columnconfigure(i, weight=1, minsize=min_width)
-            self._buttons[i].grid(row=0, column=i, sticky=E + W)
-            self._buttons[i]['state'] = 'disabled'
-        self._buttons[0]['state'] = 'normal'
+            self._buttons[key].grid(row=0, column=i, sticky=E + W)
+            self._buttons[key]['state'] = 'disabled'
+        self._buttons['auth']['state'] = 'normal'
 
     def switch_auth(self):
         if self._app.switch_auth():
-            self._buttons[0]['text'] = 'Выход'
-            self._buttons[1]['state'] = 'normal'
+            self._buttons['auth']['text'] = 'Выход'
+            self._buttons['new']['state'] = 'normal'
             if not self._app.db.get_current_doctor():
-                self._buttons[2]['state'] = 'normal'
-            self._buttons[3]['state'] = 'normal'
-            self._buttons[4]['state'] = 'normal'
-            self._buttons[4]['text'] = 'Список'
+                self._buttons['settings']['state'] = 'normal'
+            self._buttons['save']['state'] = 'normal'
+            self._buttons['list']['state'] = 'normal'
+            self._buttons['list']['text'] = 'Список'
         else:
-            self._buttons[0]['text'] = 'Вход'
-            self._buttons[1]['state'] = 'disabled'
-            self._buttons[2]['state'] = 'disabled'
-            self._buttons[3]['state'] = 'disabled'
-            self._buttons[4]['state'] = 'disabled'
-            self._buttons[4]['text'] = 'Список'
+            self._buttons['auth']['text'] = 'Вход'
+            self._buttons['new']['state'] = 'disabled'
+            self._buttons['settings']['state'] = 'disabled'
+            self._buttons['save']['state'] = 'disabled'
+            self._buttons['list']['state'] = 'disabled'
+            self._buttons['list']['text'] = 'Список'
 
     def switch_list(self):
         if self._app.switch_list():
-            self._buttons[0]['state'] = 'disabled'
-            self._buttons[1]['state'] = 'disabled'
-            self._buttons[3]['state'] = 'disabled'
-            self._buttons[4]['text'] = 'Форма'
+            self._buttons['auth']['state'] = 'disabled'
+            self._buttons['new']['state'] = 'disabled'
+            self._buttons['settings']['state'] = 'disabled'
+            self._buttons['save']['state'] = 'disabled'
+            self._buttons['list']['text'] = 'Форма'
         else:
-            self._buttons[0]['state'] = 'normal'
-            self._buttons[1]['state'] = 'normal'
-            self._buttons[3]['state'] = 'normal'
-            self._buttons[4]['text'] = 'Список'
+            self._buttons['auth']['state'] = 'normal'
+            self._buttons['new']['state'] = 'normal'
+            if not self._app.db.get_current_doctor():
+                self._buttons['settings']['state'] = 'normal'
+            self._buttons['save']['state'] = 'normal'
+            self._buttons['list']['text'] = 'Список'
 
 
 class TopLevelAuth(Toplevel):

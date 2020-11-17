@@ -28,6 +28,9 @@ class ExaminationPart(PartBase):
         PartBase.__init__(self, master, 'Данные освидетельствования')
         self.items = {i: create_item(self, i) for i in (13, 14, 15, 17)}
 
+    def update_menu(self):
+        self.items[13].update_menu()
+
 
 class PassportPart(PartBase):
     def __init__(self, master):

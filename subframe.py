@@ -100,6 +100,7 @@ class FormParts(SubFrame):
 
     def update_menu(self):
         self._parts[0].update_menu()
+        self._parts[3].update_menu()
 
 
 class Settings(SubFrame):

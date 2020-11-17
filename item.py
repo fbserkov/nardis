@@ -494,34 +494,34 @@ class Item12(ItemBase):
 
 class SubItem13:
     def __init__(self, n, frames, devices):
-        frames = frames[1:3] if n == 1 else frames[4:]
+        self.frames = frames[1:3] if n == 1 else frames[4:]
         title = 'Первое' if n == 1 else 'Второе'
         default = '%H:%M' if n == 1 else None
         self.n, self.widgets = n, []
 
         for i in 1, 3, 5:
-            frames[0].columnconfigure(i, weight=1)
-        Label(frames[0], text=f'13.{n}. {title} исследование').grid(
+            self.frames[0].columnconfigure(i, weight=1)
+        Label(self.frames[0], text=f'13.{n}. {title} исследование').grid(
             row=0, column=0)
 
-        frame = Frame(frames[0])
+        frame = Frame(self.frames[0])
         frame.grid(row=0, column=2)
         Label(frame, text='Дата').pack(side=LEFT)
         self.widgets.append(EntryDate(frame, '%d.%m.%Y'))
 
-        frame = Frame(frames[0])
+        frame = Frame(self.frames[0])
         frame.grid(row=0, column=4)
         Label(frame, text='Время').pack(side=LEFT)
         self.widgets.append(EntryTime(frame, default))
 
-        frame = Frame(frames[0])
+        frame = Frame(self.frames[0])
         frame.grid(row=0, column=6)
         Label(frame, text='Результат').pack(side=LEFT)
         self.widgets.append(EntryResult(frame))
         Label(frame, text='мг/л').pack(side=LEFT)
 
-        Label(frames[1], text='техническое средство').pack(side=LEFT)
-        self.widgets.append(OptionMenuSmart(frames[1], devices))
+        Label(self.frames[1], text='техническое средство').pack(side=LEFT)
+        self.widgets.append(OptionMenuSmart(self.frames[1], devices))
 
     def check(self):
         if self.widgets[2].get() and not self.widgets[0].get():
@@ -546,6 +546,10 @@ class SubItem13:
         self.widgets[1].init(time2str(temp.time()) if temp else '')
         self.widgets[2].init(db.select(13, f'result_{self.n}').split(' ')[0])
         self.widgets[3].string_var.set(db.select(13, f'device_{self.n}'))
+
+    def update_menu(self, devices):
+        self.widgets[3].forget()
+        self.widgets[3] = OptionMenuSmart(self.frames[1], devices)
 
 
 class Item13(ItemBase):
@@ -581,6 +585,11 @@ class Item13(ItemBase):
         if self.db.select(13, 'result_1') == self.forgery:
             self.widgets[2].init('')
             self.widgets[8].int_var.set(1)
+
+    def update_menu(self):
+        devices = self.db.select('devices')
+        self.sub_item_1.update_menu(devices)
+        self.sub_item_2.update_menu(devices)
 
 
 class Item14(ItemBase):

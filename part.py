@@ -30,6 +30,7 @@ class ExaminationPart(PartBase):
 
     def update_menu(self):
         self.items[13].update_menu()
+        self.items[14].update_menu()
 
 
 class PassportPart(PartBase):

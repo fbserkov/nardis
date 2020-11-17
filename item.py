@@ -719,6 +719,11 @@ class Item14(ItemBase):
         else:
             self._set_result(result)
 
+    def update_menu(self):
+        self.widgets[4].forget()
+        self.widgets[4] = OptionMenuSmart(
+            self.frames[2], self.db.select('methods'))
+
 
 class Item15(ItemBase):
     def __init__(self, master):

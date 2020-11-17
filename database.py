@@ -5,7 +5,7 @@ from item import CheckException
 class Database:
     def __init__(self, filename):
         self._filename = filename
-        self._current_act, self._current_password = None, None
+        self._current_act, self._current_user = None, None
         with open(self._filename, 'rb') as f:
             self._settings, self._acts = pickle.load(f)
 
@@ -56,21 +56,18 @@ class Database:
             raise CheckException('Несоответствие\nв пунктах 4 и 16.')
 
     def check_password(self, password):
-        if password in self.select('doctors').keys():
-            self._current_password = password
-            return True
-        return False
+        self._current_user = self.select('doctors').get(password)
+        return self._current_user
 
     def get_acts_titles(self):
         return [self._act2title(act) for act in self._acts]
 
     def get_current_doctor(self):
-        doctor = self.select('doctors')[self._current_password]
-        return '' if doctor == 'admin' else doctor
+        return '' if self.user_is_administrator() else self._current_user
 
     def get_doctors(self):
         doctors = list(self.select('doctors').values())
-        doctors.remove('admin')
+        doctors.remove('administrator')
         return doctors
 
     def init(self, index=None):
@@ -104,3 +101,6 @@ class Database:
         else:
             key = args[0]
             return self._settings[key]
+
+    def user_is_administrator(self):
+        return self._current_user == 'administrator'

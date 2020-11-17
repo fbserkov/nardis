@@ -98,6 +98,9 @@ class FormParts(SubFrame):
         self._switch_part(1)
         SubFrame.show(self)
 
+    def update_menu(self):
+        self._parts[0].update_menu()
+
 
 class Settings(SubFrame):
     def __init__(self, db):

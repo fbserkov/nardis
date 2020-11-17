@@ -100,6 +100,7 @@ class App:
     def switch_settings(self):
         if self.settings.is_visible:
             self.settings.hide()
+            self.parts.update_menu()
             self.parts.show()
         else:
             self.parts.hide()

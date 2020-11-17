@@ -284,6 +284,11 @@ class ListboxSmart(Listbox):
                     self.insert(END, key)
                     self.selection_set(self.index(END) - 1)
 
+    def update_choices(self, choices):
+        self.selection_clear(0, END)
+        self.choices = choices
+        self['listvariable'] = StringVar(self.master, value=self.choices)
+
 
 class OptionMenuSmart(OptionMenu):
     def __init__(self, master, values):

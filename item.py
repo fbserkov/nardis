@@ -636,12 +636,13 @@ class Item14(ItemBase):
 
         signs = '«-»', '«+»'
         lines = f'Отрицательные {signs[0]}:', f'Положительные {signs[1]}:'
-        self.substances = self.db.select('substances')
         for i in range(2):
             self.frames[4].columnconfigure(i, weight=1)
             Label(self.frames[4], text=lines[i]).grid(row=0, column=i)
             listbox = ListboxSmart(
-                self.frames[4], sign=signs[i], choices=self.substances)
+                self.frames[4], sign=signs[i],
+                choices=self.db.select('substances'),
+            )
             listbox.grid(row=1, column=i, sticky=E + W)
             self.widgets.append(listbox)
 
@@ -669,6 +670,11 @@ class Item14(ItemBase):
             return
         if btn_2.int_var.get():
             btn_2.int_var.set(0)
+
+    def _update_choices(self):
+        substances = self.db.select('substances')
+        self.widgets[7].update_choices(substances)
+        self.widgets[8].update_choices(substances)
 
     def check(self, index):
         ItemBase.check(self, index)
@@ -723,6 +729,7 @@ class Item14(ItemBase):
         self.widgets[4].forget()
         self.widgets[4] = OptionMenuSmart(
             self.frames[2], self.db.select('methods'))
+        self._update_choices()
 
 
 class Item15(ItemBase):

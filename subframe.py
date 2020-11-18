@@ -173,7 +173,14 @@ class Settings(SubFrame):
         self.entry = Entry(frame, textvariable=self.password)
         self.entry.pack(side=RIGHT)
 
-    def _init(self):
+    def _switch_entry(self):
+        self.entry['show'] = '●' if self.button.get() else ''
+
+    def hide(self):
+        self.save()
+        SubFrame.hide(self)
+
+    def init(self):
         self.organization.delete('1.0', END)
         self.organization.insert('1.0', self.db.select('organization'))
 
@@ -201,7 +208,7 @@ class Settings(SubFrame):
         self._switch_entry()
         self.password.set(self.db.select('password'))
 
-    def _save(self):
+    def save(self):
         self.db.insert(
             'organization', self.organization.get('1.0', END + '-1c'))
 
@@ -231,13 +238,6 @@ class Settings(SubFrame):
 
         self.db.save_settings()
 
-    def _switch_entry(self):
-        self.entry['show'] = '●' if self.button.get() else ''
-
-    def hide(self):
-        self._save()
-        SubFrame.hide(self)
-
     def show(self):
-        self._init()
+        self.init()
         SubFrame.show(self)

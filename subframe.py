@@ -177,15 +177,20 @@ class Settings(SubFrame):
         self.password['show'] = '●' if self.button.get() else ''
 
     def check(self):
-        # self.organization
+        if self.organization.check():
+            raise CheckException('Не указана организация.')
         if self.subdivision.check(_=None):
             raise CheckException('Не указано подраздение.')
-        # self.doctors
-        # self.devices
+        if self.doctors.check():
+            raise CheckException('Не указаны врачи.')
+        if self.devices.check():
+            raise CheckException('Не указаны технические средства.')
         if self.laboratory.check(_=None):
             raise CheckException('Не указана лаборатория.')
-        # self.substances
-        # self.methods
+        if self.substances.check():
+            raise CheckException('Не указаны вещества.')
+        if self.methods.check():
+            raise CheckException('Не указаны методы исследования.')
         if self.next_number.check(_=None):
             raise CheckException('Не указан номер\nследующего акта.')
         if self.password.check(_=None):

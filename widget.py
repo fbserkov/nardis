@@ -321,3 +321,6 @@ class TextSmart(Text):
     def __init__(self, master, height):
         Text.__init__(
             self, master, height=height, font='-size 10', fg='#800000')
+
+    def check(self):
+        return not self.get('1.0', END + '-1c')

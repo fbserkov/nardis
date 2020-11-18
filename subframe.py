@@ -1,11 +1,11 @@
 from tkinter import (
-    Button, E, END, Entry, Frame, IntVar, Label, LEFT, Listbox,
-    N, RIGHT, S, Scrollbar, StringVar, Text, W, X, Y,
+    Button, E, END, Frame, Label, LEFT, Listbox, N,
+    RIGHT, S, Scrollbar, StringVar, Text, W, X, Y,
 )
 
-from item import CheckException
+# from item import CheckException
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
-from widget import CheckbuttonSmart
+from widget import CheckbuttonSmart, EntryBase
 
 
 class SubFrame(Frame):
@@ -120,8 +120,8 @@ class Settings(SubFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Подразделение:').pack(side=LEFT)
-        self.subdivision = StringVar(frame)
-        Entry(frame, textvariable=self.subdivision).pack(fill=X)
+        self.subdivision = EntryBase(frame)
+        self.subdivision.pack(fill=X)
 
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
@@ -138,8 +138,8 @@ class Settings(SubFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Лаборатория:').pack(side=LEFT)
-        self.laboratory = StringVar(frame)
-        Entry(frame, textvariable=self.laboratory).pack(fill=X)
+        self.laboratory = EntryBase(frame)
+        self.laboratory.pack(fill=X)
 
         sup_frame = Frame(self)
         sup_frame.columnconfigure(0, weight=1)
@@ -161,8 +161,8 @@ class Settings(SubFrame):
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=1, column=1)
         Label(frame, text='Номер следующего акта:').pack(side=LEFT)
-        self.next_number = IntVar(frame)
-        Entry(frame, textvariable=self.next_number).pack()
+        self.next_number = EntryBase(frame)
+        self.next_number.pack()
 
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=2, column=1, sticky=S)
@@ -170,15 +170,15 @@ class Settings(SubFrame):
         self.button = CheckbuttonSmart(frame, line='скрыть', default=1)
         self.button['command'] = self._switch_entry
         self.button.pack(side=RIGHT)
-        self.password = StringVar(frame)
-        self.entry = Entry(frame, textvariable=self.password)
-        self.entry.pack(side=RIGHT)
+        self.password = EntryBase(frame)
+        self.password.pack(side=RIGHT)
 
     def _switch_entry(self):
-        self.entry['show'] = '●' if self.button.get() else ''
+        self.password['show'] = '●' if self.button.get() else ''
 
     def check(self):
-        raise CheckException('Здесь могла быть ваша реклама.')  # TODO
+        # raise CheckException('Здесь могла быть ваша реклама.')  # TODO
+        pass
 
     def hide(self):
         SubFrame.hide(self)
@@ -187,7 +187,7 @@ class Settings(SubFrame):
         self.organization.delete('1.0', END)
         self.organization.insert('1.0', self.db.select('organization'))
 
-        self.subdivision.set(self.db.select('subdivision'))
+        self.subdivision.init(self.db.select('subdivision'))
 
         self.doctors.delete('1.0', END)
         self.doctors.insert(
@@ -197,7 +197,7 @@ class Settings(SubFrame):
         self.devices.delete('1.0', END)
         self.devices.insert('1.0', '\n'.join(self.db.select('devices')))
 
-        self.laboratory.set(self.db.select('laboratory'))
+        self.laboratory.init(self.db.select('laboratory'))
 
         self.substances.delete('1.0', END)
         self.substances.insert('1.0', '\n'.join(self.db.select('substances')))
@@ -205,11 +205,11 @@ class Settings(SubFrame):
         self.methods.delete('1.0', END)
         self.methods.insert('1.0', '\n'.join(self.db.select('methods')))
 
-        self.next_number.set(self.db.select('next_number'))
+        self.next_number.init(self.db.select('next_number'))
 
         self.button.init()
         self._switch_entry()
-        self.password.set(self.db.select('password'))
+        self.password.init(self.db.select('password'))
 
     def save(self):
         self.db.insert(

@@ -194,7 +194,7 @@ class TopLevelAuth(Toplevel):
         self.title('Введите пароль')
         self.db, self.status = db, False
 
-        self.entry = Entry(self, font='-size 14', show='●')
+        self.entry = Entry(self, font='-size 14', fg='#800000', show='●')
         self.entry.bind('<Key-Return>', lambda _: self._auth())
         self.entry.bind('<KeyPress>', lambda _: self._ok())
         self.entry.pack()

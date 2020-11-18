@@ -564,7 +564,7 @@ class Item13(ItemBase):
         self.widgets.extend(self.sub_item_1.widgets + self.sub_item_2.widgets)
 
         self.forgery = 'фальсификация выдоха'
-        checkbutton = CheckbuttonSmart(self.frames[3], text=self.forgery)
+        checkbutton = CheckbuttonSmart(self.frames[3], line=self.forgery)
         checkbutton.pack(side=RIGHT)
         self.widgets.append(checkbutton)
 
@@ -576,7 +576,7 @@ class Item13(ItemBase):
     def insert(self):
         self.sub_item_1.insert(self.db)
         self.sub_item_2.insert(self.db)
-        if self.widgets[8].int_var.get():
+        if self.widgets[8].get():
             self.db.insert(13, 'result_1', self.forgery)
 
     def select(self):
@@ -584,7 +584,7 @@ class Item13(ItemBase):
         self.sub_item_2.select(self.db)
         if self.db.select(13, 'result_1') == self.forgery:
             self.widgets[2].init('')
-            self.widgets[8].int_var.set(1)
+            self.widgets[8].set(1)
 
     def update_menu(self):
         devices = self.db.select('devices')
@@ -610,8 +610,8 @@ class Item14(ItemBase):
         frame.pack(side=RIGHT)
         self.refusal = 'отказ от сдачи пробы биологического объекта (мочи)'
         self.forgery = 'фальсификация пробы биологического объекта (мочи)'
-        btn_1 = CheckbuttonSmart(frame, text=self.refusal)
-        btn_2 = CheckbuttonSmart(frame, text=self.forgery)
+        btn_1 = CheckbuttonSmart(frame, line=self.refusal)
+        btn_2 = CheckbuttonSmart(frame, line=self.forgery)
         btn_1.bind('<Button-1>', lambda _: self._uncheck_extra(btn_1, btn_2))
         btn_2.bind('<Button-1>', lambda _: self._uncheck_extra(btn_2, btn_1))
         btn_1.grid(row=0, sticky=W)
@@ -666,10 +666,10 @@ class Item14(ItemBase):
 
     @staticmethod
     def _uncheck_extra(btn_1, btn_2):
-        if btn_1.int_var.get():
+        if btn_1.get():
             return
-        if btn_2.int_var.get():
-            btn_2.int_var.set(0)
+        if btn_2.get():
+            btn_2.set(0)
 
     def _update_choices(self):
         substances = self.db.select('substances')
@@ -700,8 +700,8 @@ class Item14(ItemBase):
         )
         self.db.insert(14, 'result', self._get_result())
 
-        line = self.refusal if self.widgets[2].int_var.get() else ''
-        if self.widgets[3].int_var.get():
+        line = self.refusal if self.widgets[2].get() else ''
+        if self.widgets[3].get():
             line = self.forgery
         if line:
             self.db.insert(14, 'result', line)
@@ -719,9 +719,9 @@ class Item14(ItemBase):
 
         result = self.db.select(14, 'result')
         if result == self.refusal:
-            self.widgets[2].int_var.set(1)
+            self.widgets[2].set(1)
         elif result == self.forgery:
-            self.widgets[3].int_var.set(1)
+            self.widgets[3].set(1)
         else:
             self._set_result(result)
 

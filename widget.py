@@ -6,19 +6,25 @@ from tkinter import (
 
 
 class CheckbuttonSmart(Checkbutton):
-    def __init__(self, master, text):
-        self.int_var = IntVar(master)
+    def __init__(self, master, line, default=0):
+        self.default, self._int_var = default, IntVar(master)
         Checkbutton.__init__(
-            self, master, text=text,
-            variable=self.int_var, onvalue=1, offvalue=0,
+            self, master, text=line,
+            variable=self._int_var, onvalue=1, offvalue=0,
         )
 
     @staticmethod
     def check(_):
         pass
 
+    def get(self):
+        return self._int_var.get()
+
     def init(self):
-        self.int_var.set(0)
+        self._int_var.set(self.default)
+
+    def set(self, value):
+        return self._int_var.set(value)
 
 
 class EntryBase(Entry):

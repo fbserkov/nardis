@@ -166,14 +166,12 @@ class Settings(SubFrame):
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=2, column=1, sticky=S)
         Label(frame, text='Пароль:').pack(side=LEFT)
-        self.admin_button = CheckbuttonSmart(frame, line='скрыть', default=1)
-        self.admin_button['command'] = self._switch_entry
-        self.admin_button.init()
-        self.admin_button.pack(side=RIGHT)
-        self.admin_password = StringVar(frame)
-        self.admin_entry = Entry(frame, textvariable=self.admin_password)
-        self.admin_entry.pack(side=RIGHT)
-        self._switch_entry()
+        self.button = CheckbuttonSmart(frame, line='скрыть', default=1)
+        self.button['command'] = self._switch_entry
+        self.button.pack(side=RIGHT)
+        self.password = StringVar(frame)
+        self.entry = Entry(frame, textvariable=self.password)
+        self.entry.pack(side=RIGHT)
 
     def _init(self):
         self.organization.delete('1.0', END)
@@ -191,13 +189,17 @@ class Settings(SubFrame):
 
         self.laboratory.set(self.db.select('laboratory'))
 
-        self.methods.delete('1.0', END)
-        self.methods.insert('1.0', '\n'.join(self.db.select('methods')))
-
         self.substances.delete('1.0', END)
         self.substances.insert('1.0', '\n'.join(self.db.select('substances')))
 
+        self.methods.delete('1.0', END)
+        self.methods.insert('1.0', '\n'.join(self.db.select('methods')))
+
         self.next_number.set(self.db.select('next_number'))
+
+        self.button.init()
+        self._switch_entry()
+        self.password.set(self.db.select('password'))
 
     def _save(self):
         self.db.insert(
@@ -218,17 +220,19 @@ class Settings(SubFrame):
         self.db.insert('laboratory', self.laboratory.get())
 
         self.db.insert(
-            'methods', self.methods.get('1.0', END + '-1c').split('\n'))
-
-        self.db.insert(
             'substances', self.substances.get('1.0', END + '-1c').split('\n'))
 
+        self.db.insert(
+            'methods', self.methods.get('1.0', END + '-1c').split('\n'))
+
         self.db.insert('next_number', self.next_number.get())
+
+        self.db.insert('password', self.password.get())
 
         self.db.save_settings()
 
     def _switch_entry(self):
-        self.admin_entry['show'] = '●' if self.admin_button.get() else ''
+        self.entry['show'] = '●' if self.button.get() else ''
 
     def hide(self):
         self._save()

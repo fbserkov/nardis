@@ -237,11 +237,11 @@ class Item5(ItemBase):
             self.db.select(5, 'doctor') + ', ' + self.db.select(5, 'training'))
 
     def update_doctor(self):
-        doctor = self.db.get_current_doctor()
-        self.widgets[0].string_var.set(doctor)
-        if doctor:
+        if self.db.current_doctor:
+            self.widgets[0].string_var.set(self.db.current_doctor)
             self.widgets[0]['state'] = 'disabled'
         else:
+            self.widgets[0].string_var.set('')
             self.widgets[0]['state'] = 'normal'
 
     def update_menu(self):

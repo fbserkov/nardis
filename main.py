@@ -139,7 +139,7 @@ class FrameMenu(Frame):
         if self._app.switch_auth():
             self._buttons['auth']['text'] = 'Выход'
             self._buttons['new']['state'] = 'normal'
-            if self._app.db.user_is_administrator():
+            if self._app.db.is_opened_by_admin:
                 self._buttons['settings']['state'] = 'normal'
             self._buttons['save']['state'] = 'normal'
             self._buttons['list']['state'] = 'normal'
@@ -162,7 +162,7 @@ class FrameMenu(Frame):
         else:
             self._buttons['auth']['state'] = 'normal'
             self._buttons['new']['state'] = 'normal'
-            if self._app.db.user_is_administrator():
+            if self._app.db.is_opened_by_admin:
                 self._buttons['settings']['state'] = 'normal'
             self._buttons['save']['state'] = 'normal'
             self._buttons['list']['text'] = 'Список'

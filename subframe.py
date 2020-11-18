@@ -175,14 +175,7 @@ class Settings(SubFrame):
         self.admin_entry.pack(side=RIGHT)
         self._switch_entry()
 
-    def _switch_entry(self):
-        self.admin_entry['show'] = '●' if self.admin_button.get() else ''
-
-    def hide(self):
-        self.save()
-        SubFrame.hide(self)
-
-    def init(self):
+    def _init(self):
         self.organization.delete('1.0', END)
         self.organization.insert('1.0', self.db.select('organization'))
 
@@ -206,7 +199,7 @@ class Settings(SubFrame):
 
         self.next_number.set(self.db.select('next_number'))
 
-    def save(self):
+    def _save(self):
         self.db.insert(
             'organization', self.organization.get('1.0', END + '-1c'))
 
@@ -234,6 +227,13 @@ class Settings(SubFrame):
 
         self.db.save_settings()
 
+    def _switch_entry(self):
+        self.admin_entry['show'] = '●' if self.admin_button.get() else ''
+
+    def hide(self):
+        self._save()
+        SubFrame.hide(self)
+
     def show(self):
-        self.init()
+        self._init()
         SubFrame.show(self)

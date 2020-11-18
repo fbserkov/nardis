@@ -1,8 +1,10 @@
 from tkinter import (
     Button, E, END, Entry, Frame, IntVar, Label, LEFT, Listbox,
-    N, RIGHT, Scrollbar, StringVar, Text, W, X, Y,
+    N, RIGHT, S, Scrollbar, StringVar, Text, W, X, Y,
 )
+
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
+from widget import CheckbuttonSmart
 
 
 class SubFrame(Frame):
@@ -138,23 +140,43 @@ class Settings(SubFrame):
         self.laboratory = StringVar(frame)
         Entry(frame, textvariable=self.laboratory).pack(fill=X)
 
-        frame = Frame(self, bd=4)
-        frame.pack(fill=X)
-        Label(frame, text='Методы исследования:').pack(side=LEFT, anchor=N)
-        self.methods = Text(frame, height=5)
-        self.methods.pack()
+        sup_frame = Frame(self)
+        sup_frame.columnconfigure(0, weight=1)
+        sup_frame.columnconfigure(1, weight=1)
+        sup_frame.pack(fill=X)
 
-        frame = Frame(self, bd=4)
-        frame.pack(fill=X)
-        Label(frame, text='Вещества:').pack(side=LEFT, anchor=N)
-        self.substances = Text(frame, height=5)
+        frame = Frame(sup_frame, bd=4)
+        frame.grid(row=0, column=0, rowspan=3)
+        Label(frame, text='Вещества:').pack(anchor=W)
+        self.substances = Text(frame, height=12)
         self.substances.pack()
 
-        frame = Frame(self, bd=4)
-        frame.pack(fill=X)
+        frame = Frame(sup_frame, bd=4)
+        frame.grid(row=0, column=1, sticky=N)
+        Label(frame, text='Методы исследования:').pack(anchor=W)
+        self.methods = Text(frame, height=8)
+        self.methods.pack()
+
+        frame = Frame(sup_frame, bd=4)
+        frame.grid(row=1, column=1)
         Label(frame, text='Номер следующего акта:').pack(side=LEFT)
         self.next_number = IntVar(frame)
-        Entry(frame, textvariable=self.next_number).pack(fill=X)
+        Entry(frame, textvariable=self.next_number).pack()
+
+        frame = Frame(sup_frame, bd=4)
+        frame.grid(row=2, column=1, sticky=S)
+        Label(frame, text='Пароль:').pack(side=LEFT)
+        self.admin_button = CheckbuttonSmart(frame, line='скрыть', default=1)
+        self.admin_button['command'] = self._switch_entry
+        self.admin_button.init()
+        self.admin_button.pack(side=RIGHT)
+        self.admin_password = StringVar(frame)
+        self.admin_entry = Entry(frame, textvariable=self.admin_password)
+        self.admin_entry.pack(side=RIGHT)
+        self._switch_entry()
+
+    def _switch_entry(self):
+        self.admin_entry['show'] = '●' if self.admin_button.get() else ''
 
     def hide(self):
         self.save()

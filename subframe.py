@@ -3,7 +3,7 @@ from tkinter import (
     N, RIGHT, S, Scrollbar, StringVar, W, X, Y,
 )
 
-# from item import CheckException
+from item import CheckException
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
 from widget import CheckbuttonSmart, EntryBase, TextSmart
 
@@ -177,8 +177,19 @@ class Settings(SubFrame):
         self.password['show'] = '●' if self.button.get() else ''
 
     def check(self):
-        # raise CheckException('Здесь могла быть ваша реклама.')  # TODO
-        pass
+        # self.organization
+        if self.subdivision.check(_=None):
+            raise CheckException('Не указано подраздение.')
+        # self.doctors
+        # self.devices
+        if self.laboratory.check(_=None):
+            raise CheckException('Не указана лаборатория.')
+        # self.substances
+        # self.methods
+        if self.next_number.check(_=None):
+            raise CheckException('Не указан номер\nследующего акта.')
+        if self.password.check(_=None):
+            raise CheckException('Не указан пароль.')
 
     def hide(self):
         SubFrame.hide(self)

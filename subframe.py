@@ -3,6 +3,7 @@ from tkinter import (
     N, RIGHT, S, Scrollbar, StringVar, Text, W, X, Y,
 )
 
+from item import CheckException
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
 from widget import CheckbuttonSmart
 
@@ -176,8 +177,10 @@ class Settings(SubFrame):
     def _switch_entry(self):
         self.entry['show'] = '●' if self.button.get() else ''
 
+    def check(self):
+        raise CheckException('Здесь могла быть ваша реклама.')  # TODO
+
     def hide(self):
-        self.save()
         SubFrame.hide(self)
 
     def init(self):
@@ -239,5 +242,4 @@ class Settings(SubFrame):
         self.db.save_settings()
 
     def show(self):
-        self.init()
         SubFrame.show(self)

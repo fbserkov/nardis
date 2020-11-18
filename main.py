@@ -99,11 +99,17 @@ class App:
 
     def switch_settings(self):
         if self.settings.is_visible:
-            self.settings.hide()
-            self.parts.update_menu()
-            self.parts.show()
+            try:
+                self.settings.check()
+                self.settings.save()
+                self.settings.hide()
+                self.parts.update_menu()
+                self.parts.show()
+            except CheckException as exc:
+                showinfo('Проверка', exc.text)
         else:
             self.parts.hide()
+            self.settings.init()
             self.settings.show()
         return self.settings.is_visible
 

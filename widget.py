@@ -1,7 +1,7 @@
 from time import strftime, strptime
 from tkinter import (
-    Checkbutton, END, Entry, IntVar, Label, LEFT,
-    Listbox, MULTIPLE, OptionMenu, RIGHT, StringVar, X,
+    Checkbutton, END, Entry, IntVar, Label, LEFT, Listbox,
+    MULTIPLE, OptionMenu, RIGHT, StringVar, Text, X,
 )
 
 
@@ -265,7 +265,9 @@ class LabelReplaceSmartDate(LabelReplaceSmart):
 class ListboxSmart(Listbox):
     def __init__(self, master, sign, choices):
         Listbox.__init__(
-            self, master, height=5, selectmode=MULTIPLE, exportselection=False)
+            self, master, height=5, selectmode=MULTIPLE, exportselection=False,
+            font='-size 10', fg='#800000', selectforeground='#800000',
+        )
         self.sign, self.choices = sign, choices
 
     @staticmethod
@@ -302,6 +304,8 @@ class OptionMenuSmart(OptionMenu):
         OptionMenu.__init__(self, master, self.string_var, *values)
         self.config(
             font='-size 10', fg='#800000', disabledforeground='#800000')
+        self['menu'].config(
+            font='-size 10', fg='#800000', activeforeground='#800000')
         self.pack(fill=X)
 
     @staticmethod
@@ -311,3 +315,9 @@ class OptionMenuSmart(OptionMenu):
     def init(self):
         if self['state'] == 'normal':
             self.string_var.set('')
+
+
+class TextSmart(Text):
+    def __init__(self, master, height):
+        Text.__init__(
+            self, master, height=height, font='-size 10', fg='#800000')

@@ -1,11 +1,11 @@
 from tkinter import (
-    Button, E, END, Frame, Label, LEFT, Listbox, N,
-    RIGHT, S, Scrollbar, StringVar, Text, W, X, Y,
+    Button, E, END, Frame, Label, LEFT, Listbox,
+    N, RIGHT, S, Scrollbar, StringVar, W, X, Y,
 )
 
 # from item import CheckException
 from part import CommonPart, ExaminationPart, PassportPart, SurveyPart
-from widget import CheckbuttonSmart, EntryBase
+from widget import CheckbuttonSmart, EntryBase, TextSmart
 
 
 class SubFrame(Frame):
@@ -114,7 +114,7 @@ class Settings(SubFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Организация:').pack(side=LEFT, anchor=N)
-        self.organization = Text(frame, height=5)
+        self.organization = TextSmart(frame, height=5)
         self.organization.pack()
 
         frame = Frame(self, bd=4)
@@ -126,13 +126,13 @@ class Settings(SubFrame):
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Врачи:').pack(side=LEFT, anchor=N)
-        self.doctors = Text(frame, height=5)
+        self.doctors = TextSmart(frame, height=5)
         self.doctors.pack()
 
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Технические средства:').pack(side=LEFT, anchor=N)
-        self.devices = Text(frame, height=5)
+        self.devices = TextSmart(frame, height=5)
         self.devices.pack()
 
         frame = Frame(self, bd=4)
@@ -149,13 +149,13 @@ class Settings(SubFrame):
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=0, column=0, rowspan=3)
         Label(frame, text='Вещества:').pack(anchor=W)
-        self.substances = Text(frame, height=12)
+        self.substances = TextSmart(frame, height=12)
         self.substances.pack()
 
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=0, column=1, sticky=N)
         Label(frame, text='Методы исследования:').pack(anchor=W)
-        self.methods = Text(frame, height=8)
+        self.methods = TextSmart(frame, height=8)
         self.methods.pack()
 
         frame = Frame(sup_frame, bd=4)

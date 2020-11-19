@@ -321,6 +321,25 @@ class TextSmart(Text):
     def __init__(self, master, height):
         Text.__init__(
             self, master, height=height, font='-size 10', fg='#800000')
+        self._type = None
+        self.pack()
 
     def check(self):
-        return not self.get('1.0', END + '-1c')
+        return not self.get()
+
+    def get(self, _1=None, _2=None):
+        result = Text.get(self, '1.0', END + '-1c')
+        if self._type is list:
+            result = result.split('\n')
+        elif self._type is dict:
+            result = dict(line.split(': ') for line in result.split('\n'))
+        return result
+
+    def init(self, line):
+        self._type = type(line)
+        self.delete('1.0', END)
+        if self._type is list:
+            line = '\n'.join(line)
+        elif self._type is dict:
+            line = '\n'.join(f'{k}: {v}' for k, v in line.items())
+        self.insert('1.0', line)

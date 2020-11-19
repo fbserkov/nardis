@@ -1,6 +1,6 @@
 from tkinter import (
-    Button, E, END, Frame, Label, LEFT, Listbox,
-    N, RIGHT, S, Scrollbar, StringVar, W, X, Y,
+    Button, E, Frame, Label, LEFT, Listbox, N,
+    RIGHT, S, Scrollbar, StringVar, W, X, Y,
 )
 
 from item import CheckException
@@ -115,7 +115,6 @@ class Settings(SubFrame):
         frame.pack(fill=X)
         Label(frame, text='Организация:').pack(side=LEFT, anchor=N)
         self.organization = TextSmart(frame, height=5)
-        self.organization.pack()
 
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
@@ -127,13 +126,11 @@ class Settings(SubFrame):
         frame.pack(fill=X)
         Label(frame, text='Врачи:').pack(side=LEFT, anchor=N)
         self.doctors = TextSmart(frame, height=5)
-        self.doctors.pack()
 
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
         Label(frame, text='Технические средства:').pack(side=LEFT, anchor=N)
         self.devices = TextSmart(frame, height=5)
-        self.devices.pack()
 
         frame = Frame(self, bd=4)
         frame.pack(fill=X)
@@ -150,13 +147,11 @@ class Settings(SubFrame):
         frame.grid(row=0, column=0, rowspan=3)
         Label(frame, text='Вещества:').pack(anchor=W)
         self.substances = TextSmart(frame, height=12)
-        self.substances.pack()
 
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=0, column=1, sticky=N)
         Label(frame, text='Методы исследования:').pack(anchor=W)
         self.methods = TextSmart(frame, height=8)
-        self.methods.pack()
 
         frame = Frame(sup_frame, bd=4)
         frame.grid(row=1, column=1)
@@ -200,27 +195,13 @@ class Settings(SubFrame):
         SubFrame.hide(self)
 
     def init(self):
-        self.organization.delete('1.0', END)
-        self.organization.insert('1.0', self.db.select('organization'))
-
+        self.organization.init(self.db.select('organization'))
         self.subdivision.init(self.db.select('subdivision'))
-
-        self.doctors.delete('1.0', END)
-        self.doctors.insert(
-            '1.0', '\n'.join(
-                k + ': ' + v for k, v in self.db.select('doctors').items()))
-
-        self.devices.delete('1.0', END)
-        self.devices.insert('1.0', '\n'.join(self.db.select('devices')))
-
+        self.doctors.init(self.db.select('doctors'))
+        self.devices.init(self.db.select('devices'))
         self.laboratory.init(self.db.select('laboratory'))
-
-        self.substances.delete('1.0', END)
-        self.substances.insert('1.0', '\n'.join(self.db.select('substances')))
-
-        self.methods.delete('1.0', END)
-        self.methods.insert('1.0', '\n'.join(self.db.select('methods')))
-
+        self.substances.init(self.db.select('substances'))
+        self.methods.init(self.db.select('methods'))
         self.next_number.init(self.db.select('next_number'))
 
         self.button.init()
@@ -228,33 +209,15 @@ class Settings(SubFrame):
         self.password.init(self.db.select('password'))
 
     def save(self):
-        self.db.insert(
-            'organization', self.organization.get('1.0', END + '-1c'))
-
+        self.db.insert('organization', self.organization.get())
         self.db.insert('subdivision', self.subdivision.get())
-
-        self.db.insert(
-            'doctors', dict(
-                doctor.split(': ') for doctor
-                in self.doctors.get('1.0', END + '-1c').split('\n')
-            )
-        )
-
-        self.db.insert(
-            'devices', self.devices.get('1.0', END + '-1c').split('\n'))
-
+        self.db.insert('doctors', self.doctors.get())
+        self.db.insert('devices', self.devices.get())
         self.db.insert('laboratory', self.laboratory.get())
-
-        self.db.insert(
-            'substances', self.substances.get('1.0', END + '-1c').split('\n'))
-
-        self.db.insert(
-            'methods', self.methods.get('1.0', END + '-1c').split('\n'))
-
+        self.db.insert('substances', self.substances.get())
+        self.db.insert('methods', self.methods.get())
         self.db.insert('next_number', self.next_number.get())
-
         self.db.insert('password', self.password.get())
-
         self.db.save_settings()
 
     def show(self):

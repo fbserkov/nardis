@@ -321,19 +321,32 @@ class TextSmart(Text):
     def __init__(self, master, height):
         Text.__init__(
             self, master, height=height, font='-size 10', fg='#800000')
-        self._type = None
+        self._type, self._length_error, self._value_error = None, False, False
         self.pack()
 
-    def check(self):
-        return not self.get()
+    def check(self, exc_class=None):
+        if not self.get():
+            return True
+        if self._length_error:
+            self._length_error = False
+            raise exc_class('Одинаковые пароли\nу разных врачей.')
+        if self._value_error:
+            self._value_error = False
+            raise exc_class('Проверьте двоеточия\nв списке врачей.')
 
     def get(self, _1=None, _2=None):
-        result = Text.get(self, '1.0', END + '-1c')
+        value = Text.get(self, '1.0', END + '-1c')
         if self._type is list:
-            result = result.split('\n')
+            value = value.split('\n') if value else []
         elif self._type is dict:
-            result = dict(line.split(': ') for line in result.split('\n'))
-        return result
+            lines = value.split('\n') if value else []
+            try:
+                value = dict(line.split(': ') for line in lines)
+                if not len(lines) == len(value):
+                    self._length_error = True
+            except ValueError:
+                self._value_error = True
+        return value
 
     def init(self, line):
         self._type = type(line)

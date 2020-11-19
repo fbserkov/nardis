@@ -176,7 +176,7 @@ class Settings(SubFrame):
             raise CheckException('Не указана организация.')
         if self.subdivision.check(_=None):
             raise CheckException('Не указано подраздение.')
-        if self.doctors.check():
+        if self.doctors.check(exc_class=CheckException):
             raise CheckException('Не указаны врачи.')
         if self.devices.check():
             raise CheckException('Не указаны технические средства.')
@@ -188,6 +188,8 @@ class Settings(SubFrame):
             raise CheckException('Не указаны методы исследования.')
         if self.next_number.check(_=None):
             raise CheckException('Не указан номер\nследующего акта.')
+        if not self.next_number.get().isdigit():
+            raise CheckException('Номер следующего акта должен быть числом.')
         if self.password.check(_=None):
             raise CheckException('Не указан пароль.')
 

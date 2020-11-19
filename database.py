@@ -1,13 +1,20 @@
 import pickle
+
+from default import default_settings
 from item import CheckException
 
 
 class Database:
-    def __init__(self, filename):
+    def __init__(self, filename=None):
         self._filename, self.is_opened_by_admin = filename, False
         self._current_act, self.current_doctor = None, None
-        with open(self._filename, 'rb') as f:
-            self._settings, self._acts = pickle.load(f)
+        if filename:
+            with open(self._filename, 'rb') as f:
+                self._settings, self._acts = pickle.load(f)
+        else:
+            self._settings, self._acts = default_settings, []
+            with open('nardis.db', 'wb') as file:
+                pickle.dump((self._settings, self._acts), file)
 
     @staticmethod
     def _act2title(act):

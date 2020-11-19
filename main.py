@@ -44,8 +44,11 @@ class App:
             self.db = Database('nardis.db')
             ItemBase.db = self.db
         except FileNotFoundError:
+            self.db = Database()
             self._show_popup(
-                title='Сообщение', message='База данных не найдена.')
+                title='Сообщение',
+                message='Создана пустая база\nданных (пароль: 000)',
+            )
             self.file_not_found_error = True
 
     def _lock(self):

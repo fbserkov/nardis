@@ -16,6 +16,11 @@ class Database:
             f'{act[1, "full_name"]} ({act[17, "opinion"]})'
         )
 
+    def _doctor_filter(self, act):
+        if self.is_opened_by_admin:
+            return True
+        return act[5, 'doctor'] == self.current_doctor.split(', ')[0]
+
     def _dump(self):
         with open(self._filename, 'rb') as file_1:
             temp = file_1.read()
@@ -63,7 +68,10 @@ class Database:
         return True if self.current_doctor else False
 
     def get_acts_titles(self):
-        return [self._act2title(act) for act in self._acts]
+        return {
+            self._act2title(act): i for i, act in enumerate(self._acts)
+            if self._doctor_filter(act)
+        }
 
     def get_doctors(self):
         return list(self.select('doctors').values())

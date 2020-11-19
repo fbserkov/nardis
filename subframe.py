@@ -26,7 +26,7 @@ class ActsList(SubFrame):
     def __init__(self, app):
         SubFrame.__init__(self)
         self['bd'] = 4
-        self._app, self._choices = app, StringVar()
+        self._app, self._choices, self._mapping = app, StringVar(), None
 
         listbox = Listbox(master=self, listvariable=self._choices, height=32)
         scrollbar = Scrollbar(self, command=listbox.yview)
@@ -35,11 +35,16 @@ class ActsList(SubFrame):
         scrollbar.pack(side=RIGHT, fill=Y)
         listbox.pack(fill=X)
         listbox.bind(
-            '<Double-1>', lambda e: app.init(e.widget.curselection()[0]))
+            '<Double-1>', lambda e: app.init(self._find_index(e.widget)))
         listbox.bind('<Double-1>', lambda _: app.menu.switch_list(), add='+')
 
+    def _find_index(self, listbox):
+        i = listbox.curselection()[0]
+        return self._mapping[listbox.get(i)]
+
     def _update(self):
-        self._choices.set(self._app.db.get_acts_titles())
+        self._mapping = self._app.db.get_acts_titles()
+        self._choices.set(list(reversed(self._mapping.keys())))
 
     def show(self):
         self._update()

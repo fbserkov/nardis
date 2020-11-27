@@ -17,224 +17,6 @@ registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
 registerFontFamily('Arial', normal='Arial', bold='ArialBd')
 
 
-def _item_0(db):
-    _tbl(
-        db.select(0, 'organization'),
-        'Медицинская документация\nУчетная форма № 307/у-05\n'
-        'Утверждена приказом Министерства\nздравоохранения '
-        'Российской Федерации\nот 18 декабря 2015 г. № 933н',
-    )
-    _spacer(3)
-    _liner('АКТ', is_centered=True)
-    _liner(
-        'медицинского освидетельствования на состояние опьянения',
-        is_centered=True,
-    )
-    _liner(
-        '(алкогольного, наркотического или иного токсического)',
-        is_centered=True,
-    )
-    _liner(
-        '№', str(db.select(0, 'number')) + '/' + str(db.select(0, 'year')),
-        is_centered=True,
-    )
-    _spacer(2)
-    datetime = db.select(4, 'datetime')
-    _liner('', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
-
-
-def _item_1(db):
-    _spacer(1)
-    _liner('1. Сведения об освидетельствуемом лице:')
-    _liner('Фамилия, имя, отчество', db.select(1, 'full_name'))
-    _liner('Дата рождения', date2str(db.select(1, 'date')))
-    _liner('Адрес места жительства', db.select(1, 'address'))
-    _liner(
-        'Сведения об освидетельствуемом лице заполнены на основании',
-        db.select(1, 'document'),
-    )
-
-
-def _item_2(db):
-    _spacer(1)
-    _liner(
-        '2. Основание для медицинского освидетельствования',
-        db.select(2, 'document'),
-    )
-    _liner('Кем направлен', db.select(2, 'full_name'))
-
-
-def _item_3(db):
-    _spacer(1)
-    _liner(
-        '3. Наименование структурного подразделения медицинской организации, '
-        'в котором проводится медицинское освидетельствование',
-        db.select(3, 'subdivision'),
-    )
-
-
-def _item_4(db):
-    _spacer(1)
-    _liner(
-        '4. Дата и точное время начала медицинского освидетельствования',
-        datetime2str(db.select(4, 'datetime')),
-    )
-
-
-def _item_5(db):
-    _spacer(1)
-    _liner('5. Кем освидетельствован', db.select(5, 'doctor'))
-    _liner(
-        'Cведения о прохождении подготовки по вопросам проведения '
-        'медицинского освидетельствования (наименование медицинской '
-        'организации, дата выдачи документа)', db.select(5, 'training'),
-    )
-
-
-def _item_6(db):
-    _spacer(1)
-    _liner('6. Внешний вид освидетельствуемого', db.select(6, 'appearance'))
-
-
-def _item_7(db):
-    _spacer(1)
-    _liner(
-        '7. Жалобы освидетельствуемого на свое состояние',
-        db.select(7, 'complaints'),
-    )
-
-
-def _item_8(db):
-    _spacer(1)
-    _liner('8. Изменения психической деятельности освидетельствуемого')
-    _liner('состояние сознания', db.select(8, 'consciousness'))
-    _liner('поведение', db.select(8, 'behavior'))
-    _liner(
-        'ориентировка в месте, времени, ситуации', db.select(8, 'orientation'))
-    _liner('Результат пробы Шульте', db.select(8, 'schulte'))
-
-
-def _item_9(db):
-    _spacer(1)
-    _liner('9. Вегетативно-сосудистые реакции освидетельствуемого')
-    _liner('зрачки', db.select(9, 'pupils'))
-    _liner('реакция на свет', db.select(9, 'reaction'))
-    _liner('склеры', db.select(9, 'scleras'))
-    _liner('нистагм', db.select(9, 'nystagmus'))
-
-
-def _item_10(db):
-    _spacer(1)
-    _liner('10. Двигательная сфера освидетельствуемого')
-    _liner('речь', db.select(10, 'speech'))
-    _liner('походка', db.select(10, 'gait'))
-    _liner('устойчивость в позе Ромберга', db.select(10, 'romberg'))
-    _liner(
-        'точность выполнения координационных проб',
-        db.select(10, 'coordination'),
-    )
-    _liner('результат пробы Ташена', db.select(10, 'tashen'))
-
-
-def _item_11(db):
-    _spacer(1)
-    _liner(
-        '11. Наличие заболеваний нервной системы, '
-        'психических расстройств, перенесенных травм '
-        '(со слов освидетельствуемого)', db.select(11, 'comorbidity'),
-    )
-
-
-def _item_12(db):
-    _spacer(1)
-    _liner(
-        '12. Сведения о последнем употреблении алкоголя, '
-        'лекарственных средств, наркотических средств и психотропных веществ '
-        '(со слов освидетельствуемого)', db.select(12, 'drug_use'),
-    )
-
-
-def _item_13(db):
-    _spacer(1)
-    _liner('13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого')
-    _liner(
-        '13.1 Время первого исследования',
-        datetime2str_time(db.select(13, 'datetime_1')),
-    )
-    _liner(
-        'наименование технического средства измерения, '
-        'его заводской номер, дата последней поверки, '
-        'погрешность технического средства измерения',
-        db.select(13, 'device_1'),
-    )
-    _liner('результат исследования', db.select(13, 'result_1'))
-    _liner(
-        '13.2 Второе исследование через 15-20 минут: время исследования',
-        datetime2str_time(db.select(13, 'datetime_2')),
-    )
-    _liner(
-        'наименование технического средства измерения, '
-        'его заводской номер, дата последней поверки, '
-        'погрешность технического средства измерения',
-        db.select(13, 'device_2'),
-    )
-    _liner('результат исследования', db.select(13, 'result_2'))
-
-
-def _item_14(db):
-    _spacer(1)
-    time = time2str(db.select(14, 'time'))
-    _liner(
-        '14. Время отбора биологического объекта '
-        'у освидетельствуемого (среда)',
-        time + f' ({db.select(14, "material")})' if time else '',
-    )
-    _liner(
-        'Результаты химико-токсикологических '
-        'исследований биологических объектов'
-    )
-    _liner('название лаборатории', db.select(14, 'laboratory'))
-    _liner('методы исследований', db.select(14, 'method'))
-    result = db.select(14, 'result')
-    _liner(
-        'результаты исследований',
-        ', '.join(k + ' ' + v for k, v in result.items())
-        if type(result) is dict else result,
-    )
-    _liner(
-        'номер справки о результатах химико-токсикологических исследований',
-        db.select(14, 'number'),
-    )
-
-
-def _item_15(db):
-    _spacer(1)
-    _liner(
-        '15. Другие данные медицинского осмотра или представленных документов',
-        db.select(15, 'other'),
-    )
-
-
-def _item_16(db):
-    _spacer(1)
-    _liner(
-        '16. Дата и точное время окончания медицинского освидетельствования',
-        datetime2str(db.select(16, 'datetime')),
-    )
-
-
-def _item_17(db):
-    _spacer(1)
-    _liner('17. Медицинское заключение', db.select(17, 'opinion'))
-    _liner('дата его вынесения', date2str(db.select(17, 'date')))
-
-
-def _item_18(db):
-    _spacer(1)
-    _liner('18. Подпись врача ______________', f'/ {db.select(5, "doctor")} /')
-    _liner('М.П.', is_indented=True)
-
-
 def _liner(text, bold='', is_centered=False, is_indented=False):
     if bold:
         text += ' ' + f'<b>{bold}</b>'
@@ -266,7 +48,7 @@ def _spacer(n):
         _story.append(Spacer(1, LEADING))
 
 
-def _tbl(line1, line2):
+def _tbl(line1, line2):  # TODO remake
     temp = Table([[line1, line2]])
     temp.setStyle(TableStyle([
         ('FONTNAME', (0, 0), (1, 0), 'Arial'),
@@ -304,8 +86,214 @@ class PDF:
         self.doctor = db.select(5, 'doctor')
         self.db = db
 
+    def _item_0(self):
+        _tbl(
+            self.db.select(0, 'organization'),
+            'Медицинская документация\nУчетная форма № 307/у-05\n'
+            'Утверждена приказом Министерства\nздравоохранения '
+            'Российской Федерации\nот 18 декабря 2015 г. № 933н',
+        )
+        _spacer(3)
+        _liner('АКТ', is_centered=True)
+        _liner(
+            'медицинского освидетельствования на состояние опьянения',
+            is_centered=True,
+        )
+        _liner(
+            '(алкогольного, наркотического или иного токсического)',
+            is_centered=True,
+        )
+        number, year = self.db.select(0, 'number'), self.db.select(0, 'year')
+        _liner('№', str(number) + '/' + str(year), is_centered=True)
+        _spacer(2)
+        datetime = self.db.select(4, 'datetime')
+        _liner('', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
+
+    def _item_1(self):
+        _spacer(1)
+        _liner('1. Сведения об освидетельствуемом лице:')
+        _liner('Фамилия, имя, отчество', self.db.select(1, 'full_name'))
+        _liner('Дата рождения', date2str(self.db.select(1, 'date')))
+        _liner('Адрес места жительства', self.db.select(1, 'address'))
+        _liner(
+            'Сведения об освидетельствуемом лице заполнены на основании',
+            self.db.select(1, 'document'),
+        )
+
+    def _item_2(self):
+        _spacer(1)
+        _liner(
+            '2. Основание для медицинского освидетельствования',
+            self.db.select(2, 'document'),
+        )
+        _liner('Кем направлен', self.db.select(2, 'full_name'))
+
+    def _item_3(self):
+        _spacer(1)
+        _liner(
+            '3. Наименование структурного подразделения медицинской '
+            'организации, в котором проводится медицинское '
+            'освидетельствование', self.db.select(3, 'subdivision'),
+        )
+
+    def _item_4(self):
+        _spacer(1)
+        _liner(
+            '4. Дата и точное время начала медицинского освидетельствования',
+            datetime2str(self.db.select(4, 'datetime')),
+        )
+
+    def _item_5(self):
+        _spacer(1)
+        _liner('5. Кем освидетельствован', self.db.select(5, 'doctor'))
+        _liner(
+            'Cведения о прохождении подготовки по вопросам проведения '
+            'медицинского освидетельствования (наименование медицинской '
+            'организации, дата выдачи документа)',
+            self.db.select(5, 'training'),
+        )
+
+    def _item_6(self):
+        _spacer(1)
+        _liner(
+            '6. Внешний вид освидетельствуемого',
+            self.db.select(6, 'appearance'),
+        )
+
+    def _item_7(self):
+        _spacer(1)
+        _liner(
+            '7. Жалобы освидетельствуемого на свое состояние',
+            self.db.select(7, 'complaints'),
+        )
+
+    def _item_8(self):
+        _spacer(1)
+        _liner('8. Изменения психической деятельности освидетельствуемого')
+        _liner('состояние сознания', self.db.select(8, 'consciousness'))
+        _liner('поведение', self.db.select(8, 'behavior'))
+        _liner(
+            'ориентировка в месте, времени, ситуации',
+            self.db.select(8, 'orientation'))
+        _liner('Результат пробы Шульте', self.db.select(8, 'schulte'))
+
+    def _item_9(self):
+        _spacer(1)
+        _liner('9. Вегетативно-сосудистые реакции освидетельствуемого')
+        _liner('зрачки', self.db.select(9, 'pupils'))
+        _liner('реакция на свет', self.db.select(9, 'reaction'))
+        _liner('склеры', self.db.select(9, 'scleras'))
+        _liner('нистагм', self.db.select(9, 'nystagmus'))
+
+    def _item_10(self):
+        _spacer(1)
+        _liner('10. Двигательная сфера освидетельствуемого')
+        _liner('речь', self.db.select(10, 'speech'))
+        _liner('походка', self.db.select(10, 'gait'))
+        _liner('устойчивость в позе Ромберга', self.db.select(10, 'romberg'))
+        _liner(
+            'точность выполнения координационных проб',
+            self.db.select(10, 'coordination'),
+        )
+        _liner('результат пробы Ташена', self.db.select(10, 'tashen'))
+
+    def _item_11(self):
+        _spacer(1)
+        _liner(
+            '11. Наличие заболеваний нервной системы, '
+            'психических расстройств, перенесенных травм '
+            '(со слов освидетельствуемого)', self.db.select(11, 'comorbidity'),
+        )
+
+    def _item_12(self):
+        _spacer(1)
+        _liner(
+            '12. Сведения о последнем употреблении алкоголя, лекарственных '
+            'средств, наркотических средств и психотропных веществ '
+            '(со слов освидетельствуемого)', self.db.select(12, 'drug_use'),
+        )
+
+    def _item_13(self):
+        _spacer(1)
+        _liner('13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого')
+        _liner(
+            '13.1 Время первого исследования',
+            datetime2str_time(self.db.select(13, 'datetime_1')),
+        )
+        _liner(
+            'наименование технического средства измерения, '
+            'его заводской номер, дата последней поверки, '
+            'погрешность технического средства измерения',
+            self.db.select(13, 'device_1'),
+        )
+        _liner('результат исследования', self.db.select(13, 'result_1'))
+        _liner(
+            '13.2 Второе исследование через 15-20 минут: время исследования',
+            datetime2str_time(self.db.select(13, 'datetime_2')),
+        )
+        _liner(
+            'наименование технического средства измерения, '
+            'его заводской номер, дата последней поверки, '
+            'погрешность технического средства измерения',
+            self.db.select(13, 'device_2'),
+        )
+        _liner('результат исследования', self.db.select(13, 'result_2'))
+
+    def _item_14(self):
+        _spacer(1)
+        time = time2str(self.db.select(14, 'time'))
+        material = self.db.select(14, 'material')
+        _liner(
+            '14. Время отбора биологического объекта '
+            'у освидетельствуемого (среда)',
+            time + (' (' + material + ')' if time else ''),
+        )
+        _liner(
+            'Результаты химико-токсикологических '
+            'исследований биологических объектов'
+        )
+        _liner('название лаборатории', self.db.select(14, 'laboratory'))
+        _liner('методы исследований', self.db.select(14, 'method'))
+        result = self.db.select(14, 'result')
+        _liner(
+            'результаты исследований',
+            ', '.join(k + ' ' + v for k, v in result.items())
+            if type(result) is dict else result,
+        )
+        _liner(
+            'номер справки о результатах химико-токсикологических '
+            'исследований', self.db.select(14, 'number'),
+        )
+
+    def _item_15(self):
+        _spacer(1)
+        _liner(
+            '15. Другие данные медицинского осмотра или '
+            'представленных документов', self.db.select(15, 'other'),
+        )
+
+    def _item_16(self):
+        _spacer(1)
+        _liner(
+            '16. Дата и точное время окончания '
+            'медицинского освидетельствования',
+            datetime2str(self.db.select(16, 'datetime')),
+        )
+
+    def _item_17(self):
+        _spacer(1)
+        _liner('17. Медицинское заключение', self.db.select(17, 'opinion'))
+        _liner('дата его вынесения', date2str(self.db.select(17, 'date')))
+
+    def _item_18(self):
+        _spacer(1)
+        doctor = self.db.select(5, 'doctor')
+        _liner('18. Подпись врача ______________', '/ ' + doctor + ' /')
+        _liner('М.П.', is_indented=True)
+
     def create(self):
         for i in range(19):
-            fnc_name = '_item_' + str(i)
-            globals()[fnc_name](self.db)
+            name = '_item_' + str(i)
+            bound_method = self.__getattribute__(name)
+            bound_method()
         Doc(self.filename, self.doctor).build()

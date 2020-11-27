@@ -1,6 +1,7 @@
 from os.path import join
 
 from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.pdfbase import ttfonts, pdfmetrics
@@ -9,10 +10,11 @@ from reportlab.platypus import (
 
 from convert import date2str, datetime2str, datetime2str_time, time2str
 
+LEADING = 14
 _styles = getSampleStyleSheet()
-_styles.add(ParagraphStyle('Normal+', leading=14))
-_styles.add(ParagraphStyle('Center', leading=14, alignment=TA_CENTER))
-_styles.add(ParagraphStyle('Indent', leading=14, leftIndent=12.5 * cm))
+_styles.add(ParagraphStyle('Normal+', leading=LEADING))  # TODO see 6.2 <para>
+_styles.add(ParagraphStyle('Center', leading=LEADING, alignment=TA_CENTER))
+_styles.add(ParagraphStyle('Indent', leading=LEADING, leftIndent=12.5 * cm))
 
 pdfmetrics.registerFont(ttfonts.TTFont('arial', 'ArialMT.ttf'))
 pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
@@ -272,11 +274,11 @@ def _liner(style, line1, line2=''):
 
 def _page_1(canvas, names):
     canvas.setFont('arial', 12)
-    canvas.drawString(2.5*cm, 1*cm + 28, 'Подпись врача ______________')
-    canvas.drawString(14.0*cm, 1*cm + 14, 'М.П.')
-    canvas.drawString(16.5*cm, 1*cm, 'Страница 1 из 2')
+    canvas.drawString(2.5*cm, 1*cm + 2*LEADING, 'Подпись врача ______________')
+    canvas.drawString(14*cm, 1*cm + LEADING, 'М.П.')
+    canvas.drawRightString(A4[0] - 1*cm, 1*cm, 'Страница 1 из 2')
     canvas.setFont('arialbd', 12)
-    canvas.drawString(9.0 * cm, 1 * cm + 28, names)
+    canvas.drawString(9.0 * cm, 1 * cm + 2*LEADING, names)
 
 
 def _page_2(canvas):
@@ -286,7 +288,7 @@ def _page_2(canvas):
 
 def _spacer(n):
     for i in range(n):
-        _story.append(Spacer(1, 14))
+        _story.append(Spacer(1, LEADING))
 
 
 def _tbl(line1, line2):
@@ -295,7 +297,7 @@ def _tbl(line1, line2):
         ('FONTNAME', (0, 0), (1, 0), 'arial'),
         ('ALIGN', (0, 0), (1, 0), 'CENTER'),
         ('SIZE', (0, 0), (1, 0), 12),
-        ('LEADING', (0, 0), (1, 0), 14)
+        ('LEADING', (0, 0), (1, 0), LEADING)
     ]))
     _story.append(temp)
 

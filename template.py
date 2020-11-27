@@ -17,18 +17,6 @@ registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
 registerFontFamily('Arial', normal='Arial', bold='ArialBd')
 
 
-def _liner(text, bold='', is_centered=False, is_indented=False):
-    if bold:
-        text += ' ' + f'<b>{bold}</b>'
-    attributes = f'fontName=Arial fontSize={SIZE}'
-    attributes += f' leading={LEADING}'
-    if is_centered:
-        attributes += ' alignment=center'
-    if is_indented:
-        attributes += f' leftIndent={12.5*cm}'
-    _story.append(Paragraph(f'<para {attributes}>' + text + '</para>'))
-
-
 def _page_1(canvas, names):
     canvas.setFont('Arial', SIZE)
     canvas.drawString(2.5*cm, 1*cm + 2*LEADING, 'Подпись врача ______________')
@@ -51,6 +39,19 @@ class Doc:
             leftMargin=1.5*cm, rightMargin=1*cm,
             topMargin=1.5*cm, bottomMargin=3*cm,
         )
+
+    def add_paragraph(
+            self, text, bold='', is_centered=False, is_indented=False):
+        if bold:
+            text += ' ' + f'<b>{bold}</b>'
+        attributes = f'fontName=Arial fontSize={SIZE}'
+        attributes += f' leading={LEADING}'
+        if is_centered:
+            attributes += ' alignment=center'
+        if is_indented:
+            attributes += f' leftIndent={12.5 * cm}'
+        self._story.append(
+            Paragraph(f'<para {attributes}>' + text + '</para>'))
 
     def add_spacer(self, n):
         for i in range(n):
@@ -84,6 +85,7 @@ class PDF:
         full_name, doctor = db.select(1, 'full_name'), db.select(5, 'doctor')
         filename = f'{year}_{number:04} {full_name}.pdf'
         self.db, self.doc = db, Doc(filename, doctor)
+        self._d_ap = self.doc.add_paragraph
 
     def _item_0(self):
         self.doc.add_table(
@@ -93,43 +95,43 @@ class PDF:
             'Российской Федерации\nот 18 декабря 2015 г. № 933н',
         )
         self.doc.add_spacer(3)
-        _liner('АКТ', is_centered=True)
-        _liner(
+        self._d_ap('АКТ', is_centered=True)
+        self._d_ap(
             'медицинского освидетельствования на состояние опьянения',
             is_centered=True,
         )
-        _liner(
+        self._d_ap(
             '(алкогольного, наркотического или иного токсического)',
             is_centered=True,
         )
         number, year = self.db.select(0, 'number'), self.db.select(0, 'year')
-        _liner('№', str(number) + '/' + str(year), is_centered=True)
+        self._d_ap('№', str(number) + '/' + str(year), is_centered=True)
         self.doc.add_spacer(2)
         datetime = self.db.select(4, 'datetime')
-        _liner('', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
+        self._d_ap('', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
 
     def _item_1(self):
         self.doc.add_spacer(1)
-        _liner('1. Сведения об освидетельствуемом лице:')
-        _liner('Фамилия, имя, отчество', self.db.select(1, 'full_name'))
-        _liner('Дата рождения', date2str(self.db.select(1, 'date')))
-        _liner('Адрес места жительства', self.db.select(1, 'address'))
-        _liner(
+        self._d_ap('1. Сведения об освидетельствуемом лице:')
+        self._d_ap('Фамилия, имя, отчество', self.db.select(1, 'full_name'))
+        self._d_ap('Дата рождения', date2str(self.db.select(1, 'date')))
+        self._d_ap('Адрес места жительства', self.db.select(1, 'address'))
+        self._d_ap(
             'Сведения об освидетельствуемом лице заполнены на основании',
             self.db.select(1, 'document'),
         )
 
     def _item_2(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '2. Основание для медицинского освидетельствования',
             self.db.select(2, 'document'),
         )
-        _liner('Кем направлен', self.db.select(2, 'full_name'))
+        self._d_ap('Кем направлен', self.db.select(2, 'full_name'))
 
     def _item_3(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '3. Наименование структурного подразделения медицинской '
             'организации, в котором проводится медицинское '
             'освидетельствование', self.db.select(3, 'subdivision'),
@@ -137,15 +139,15 @@ class PDF:
 
     def _item_4(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '4. Дата и точное время начала медицинского освидетельствования',
             datetime2str(self.db.select(4, 'datetime')),
         )
 
     def _item_5(self):
         self.doc.add_spacer(1)
-        _liner('5. Кем освидетельствован', self.db.select(5, 'doctor'))
-        _liner(
+        self._d_ap('5. Кем освидетельствован', self.db.select(5, 'doctor'))
+        self._d_ap(
             'Cведения о прохождении подготовки по вопросам проведения '
             'медицинского освидетельствования (наименование медицинской '
             'организации, дата выдачи документа)',
@@ -154,51 +156,52 @@ class PDF:
 
     def _item_6(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '6. Внешний вид освидетельствуемого',
             self.db.select(6, 'appearance'),
         )
 
     def _item_7(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '7. Жалобы освидетельствуемого на свое состояние',
             self.db.select(7, 'complaints'),
         )
 
     def _item_8(self):
         self.doc.add_spacer(1)
-        _liner('8. Изменения психической деятельности освидетельствуемого')
-        _liner('состояние сознания', self.db.select(8, 'consciousness'))
-        _liner('поведение', self.db.select(8, 'behavior'))
-        _liner(
+        self._d_ap('8. Изменения психической деятельности освидетельствуемого')
+        self._d_ap('состояние сознания', self.db.select(8, 'consciousness'))
+        self._d_ap('поведение', self.db.select(8, 'behavior'))
+        self._d_ap(
             'ориентировка в месте, времени, ситуации',
             self.db.select(8, 'orientation'))
-        _liner('Результат пробы Шульте', self.db.select(8, 'schulte'))
+        self._d_ap('Результат пробы Шульте', self.db.select(8, 'schulte'))
 
     def _item_9(self):
         self.doc.add_spacer(1)
-        _liner('9. Вегетативно-сосудистые реакции освидетельствуемого')
-        _liner('зрачки', self.db.select(9, 'pupils'))
-        _liner('реакция на свет', self.db.select(9, 'reaction'))
-        _liner('склеры', self.db.select(9, 'scleras'))
-        _liner('нистагм', self.db.select(9, 'nystagmus'))
+        self._d_ap('9. Вегетативно-сосудистые реакции освидетельствуемого')
+        self._d_ap('зрачки', self.db.select(9, 'pupils'))
+        self._d_ap('реакция на свет', self.db.select(9, 'reaction'))
+        self._d_ap('склеры', self.db.select(9, 'scleras'))
+        self._d_ap('нистагм', self.db.select(9, 'nystagmus'))
 
     def _item_10(self):
         self.doc.add_spacer(1)
-        _liner('10. Двигательная сфера освидетельствуемого')
-        _liner('речь', self.db.select(10, 'speech'))
-        _liner('походка', self.db.select(10, 'gait'))
-        _liner('устойчивость в позе Ромберга', self.db.select(10, 'romberg'))
-        _liner(
+        self._d_ap('10. Двигательная сфера освидетельствуемого')
+        self._d_ap('речь', self.db.select(10, 'speech'))
+        self._d_ap('походка', self.db.select(10, 'gait'))
+        self._d_ap(
+            'устойчивость в позе Ромберга', self.db.select(10, 'romberg'))
+        self._d_ap(
             'точность выполнения координационных проб',
             self.db.select(10, 'coordination'),
         )
-        _liner('результат пробы Ташена', self.db.select(10, 'tashen'))
+        self._d_ap('результат пробы Ташена', self.db.select(10, 'tashen'))
 
     def _item_11(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '11. Наличие заболеваний нервной системы, '
             'психических расстройств, перенесенных травм '
             '(со слов освидетельствуемого)', self.db.select(11, 'comorbidity'),
@@ -206,7 +209,7 @@ class PDF:
 
     def _item_12(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '12. Сведения о последнем употреблении алкоголя, лекарственных '
             'средств, наркотических средств и психотропных веществ '
             '(со слов освидетельствуемого)', self.db.select(12, 'drug_use'),
@@ -214,66 +217,67 @@ class PDF:
 
     def _item_13(self):
         self.doc.add_spacer(1)
-        _liner('13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого')
-        _liner(
+        self._d_ap(
+            '13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого')
+        self._d_ap(
             '13.1 Время первого исследования',
             datetime2str_time(self.db.select(13, 'datetime_1')),
         )
-        _liner(
+        self._d_ap(
             'наименование технического средства измерения, '
             'его заводской номер, дата последней поверки, '
             'погрешность технического средства измерения',
             self.db.select(13, 'device_1'),
         )
-        _liner('результат исследования', self.db.select(13, 'result_1'))
-        _liner(
+        self._d_ap('результат исследования', self.db.select(13, 'result_1'))
+        self._d_ap(
             '13.2 Второе исследование через 15-20 минут: время исследования',
             datetime2str_time(self.db.select(13, 'datetime_2')),
         )
-        _liner(
+        self._d_ap(
             'наименование технического средства измерения, '
             'его заводской номер, дата последней поверки, '
             'погрешность технического средства измерения',
             self.db.select(13, 'device_2'),
         )
-        _liner('результат исследования', self.db.select(13, 'result_2'))
+        self._d_ap('результат исследования', self.db.select(13, 'result_2'))
 
     def _item_14(self):
         self.doc.add_spacer(1)
         time = time2str(self.db.select(14, 'time'))
         material = self.db.select(14, 'material')
-        _liner(
+        self._d_ap(
             '14. Время отбора биологического объекта '
             'у освидетельствуемого (среда)',
             time + (' (' + material + ')' if time else ''),
         )
-        _liner(
+        self._d_ap(
             'Результаты химико-токсикологических '
             'исследований биологических объектов'
         )
-        _liner('название лаборатории', self.db.select(14, 'laboratory'))
-        _liner('методы исследований', self.db.select(14, 'method'))
+        self._d_ap('название лаборатории', self.db.select(14, 'laboratory'))
+        self._d_ap('методы исследований', self.db.select(14, 'method'))
         result = self.db.select(14, 'result')
-        _liner(
+        self._d_ap(
             'результаты исследований',
             ', '.join(k + ' ' + v for k, v in result.items())
             if type(result) is dict else result,
         )
-        _liner(
+        self._d_ap(
             'номер справки о результатах химико-токсикологических '
             'исследований', self.db.select(14, 'number'),
         )
 
     def _item_15(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '15. Другие данные медицинского осмотра или '
             'представленных документов', self.db.select(15, 'other'),
         )
 
     def _item_16(self):
         self.doc.add_spacer(1)
-        _liner(
+        self._d_ap(
             '16. Дата и точное время окончания '
             'медицинского освидетельствования',
             datetime2str(self.db.select(16, 'datetime')),
@@ -281,14 +285,14 @@ class PDF:
 
     def _item_17(self):
         self.doc.add_spacer(1)
-        _liner('17. Медицинское заключение', self.db.select(17, 'opinion'))
-        _liner('дата его вынесения', date2str(self.db.select(17, 'date')))
+        self._d_ap('17. Медицинское заключение', self.db.select(17, 'opinion'))
+        self._d_ap('дата его вынесения', date2str(self.db.select(17, 'date')))
 
     def _item_18(self):
         self.doc.add_spacer(1)
         doctor = self.db.select(5, 'doctor')
-        _liner('18. Подпись врача ______________', '/ ' + doctor + ' /')
-        _liner('М.П.', is_indented=True)
+        self._d_ap('18. Подпись врача ______________', '/ ' + doctor + ' /')
+        self._d_ap('М.П.', is_indented=True)
 
     def create(self):
         for i in range(19):

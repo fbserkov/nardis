@@ -19,13 +19,16 @@ def font_registration():
 class Doc:
     def __init__(self, filename, doctor):
         font_registration()
+        self._story, self.doctor = [], doctor
+        self.width, self.size, self.leading = A4[0], 12, 14
+
         self.doc = SimpleDocTemplate(
             join('acts', filename),
             leftMargin=1.5 * cm, rightMargin=1 * cm,
             topMargin=1.5 * cm, bottomMargin=3 * cm,
         )
-        self.doctor, self._story = doctor, []
-        self.size, self.leading, self.width = 12, 14, A4[0]
+        self.doc.author, self.doc.creator = 2 * ('Fedor Serkov',)
+        self.doc.subject, self.doc.title = 'narcology', 'nardis'
 
     def _page_1(self, canvas, _):
         canvas.setFont('Arial', self.size)

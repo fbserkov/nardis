@@ -4,7 +4,8 @@ from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
-from reportlab.pdfbase import ttfonts, pdfmetrics
+from reportlab.pdfbase import ttfonts
+from reportlab.pdfbase.pdfmetrics import registerFont, registerFontFamily
 from reportlab.platypus import (
     Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
 
@@ -16,8 +17,9 @@ _styles.add(ParagraphStyle('Normal+', leading=LEADING))  # TODO see 6.2 <para>
 _styles.add(ParagraphStyle('Center', leading=LEADING, alignment=TA_CENTER))
 _styles.add(ParagraphStyle('Indent', leading=LEADING, leftIndent=12.5 * cm))
 
-pdfmetrics.registerFont(ttfonts.TTFont('arial', 'ArialMT.ttf'))
-pdfmetrics.registerFont(ttfonts.TTFont('arialbd', 'Arial-BoldMT.ttf'))
+registerFont(ttfonts.TTFont('Arial', join('fonts', 'ArialMT.ttf')))
+registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
+registerFontFamily('Arial', normal='Arial', bold='ArialBd')
 
 _story = []
 
@@ -264,25 +266,25 @@ def _item_18(db):
     _liner('Indent', 'М.П.')
 
 
-def _liner(style, line1, line2=''):
-    if line1:
-        line1 = '<font name="arial" size=12>' + line1 + '</font>'
-    if line2:
-        line2 = ' ' + '<font name="arialbd" size=12>' + line2 + '</font>'
-    _story.append(Paragraph(line1 + line2, _styles[style]))
+def _liner(style, normal, bold=''):
+    line = normal
+    if bold:
+        line += ' <b>' + bold + '</b>'
+    _story.append(Paragraph(
+        '<font name="Arial" size=12>' + line + '</font>', _styles[style]))
 
 
 def _page_1(canvas, names):
-    canvas.setFont('arial', 12)
+    canvas.setFont('Arial', 12)
     canvas.drawString(2.5*cm, 1*cm + 2*LEADING, 'Подпись врача ______________')
     canvas.drawString(14*cm, 1*cm + LEADING, 'М.П.')
     canvas.drawRightString(A4[0] - 1*cm, 1*cm, 'Страница 1 из 2')
-    canvas.setFont('arialbd', 12)
+    canvas.setFont('ArialBd', 12)
     canvas.drawString(9.0 * cm, 1 * cm + 2*LEADING, names)
 
 
 def _page_2(canvas):
-    canvas.setFont('arial', 12)
+    canvas.setFont('Arial', 12)
     canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
 
 
@@ -294,7 +296,7 @@ def _spacer(n):
 def _tbl(line1, line2):
     temp = Table([[line1, line2]])
     temp.setStyle(TableStyle([
-        ('FONTNAME', (0, 0), (1, 0), 'arial'),
+        ('FONTNAME', (0, 0), (1, 0), 'Arial'),
         ('ALIGN', (0, 0), (1, 0), 'CENTER'),
         ('SIZE', (0, 0), (1, 0), 12),
         ('LEADING', (0, 0), (1, 0), LEADING)

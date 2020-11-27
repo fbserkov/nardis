@@ -1,3 +1,4 @@
+import locale
 import os
 import sys
 
@@ -8,6 +9,8 @@ from database import Database
 from item import CheckException, ItemBase
 from subframe import ActsList, FormParts, Settings
 from template import create_pdf
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class App:

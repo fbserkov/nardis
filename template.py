@@ -1,4 +1,3 @@
-import locale
 from os.path import join
 
 from reportlab.lib.enums import TA_CENTER
@@ -9,8 +8,6 @@ from reportlab.platypus import (
     Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
 
 from convert import date2str, datetime2str, datetime2str_time, time2str
-
-locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 _styles = getSampleStyleSheet()
 _styles.add(ParagraphStyle('Normal+', leading=14))

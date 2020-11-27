@@ -43,11 +43,6 @@ def _page_2(canvas):
     canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
 
 
-def _spacer(n):
-    for i in range(n):
-        _story.append(Spacer(1, LEADING))
-
-
 class Doc:
     def __init__(self, filename, doctor):
         self.doctor, self._story = doctor, _story
@@ -56,6 +51,10 @@ class Doc:
             leftMargin=1.5*cm, rightMargin=1*cm,
             topMargin=1.5*cm, bottomMargin=3*cm,
         )
+
+    def add_spacer(self, n):
+        for i in range(n):
+            self._story.append(Spacer(1, LEADING))
 
     def add_table(self, organization, form):
         self._story.append(
@@ -93,7 +92,7 @@ class PDF:
             'Утверждена приказом Министерства\nздравоохранения '
             'Российской Федерации\nот 18 декабря 2015 г. № 933н',
         )
-        _spacer(3)
+        self.doc.add_spacer(3)
         _liner('АКТ', is_centered=True)
         _liner(
             'медицинского освидетельствования на состояние опьянения',
@@ -105,12 +104,12 @@ class PDF:
         )
         number, year = self.db.select(0, 'number'), self.db.select(0, 'year')
         _liner('№', str(number) + '/' + str(year), is_centered=True)
-        _spacer(2)
+        self.doc.add_spacer(2)
         datetime = self.db.select(4, 'datetime')
         _liner('', datetime.strftime(f'"{datetime.day}" %B %Y г.'))
 
     def _item_1(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('1. Сведения об освидетельствуемом лице:')
         _liner('Фамилия, имя, отчество', self.db.select(1, 'full_name'))
         _liner('Дата рождения', date2str(self.db.select(1, 'date')))
@@ -121,7 +120,7 @@ class PDF:
         )
 
     def _item_2(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '2. Основание для медицинского освидетельствования',
             self.db.select(2, 'document'),
@@ -129,7 +128,7 @@ class PDF:
         _liner('Кем направлен', self.db.select(2, 'full_name'))
 
     def _item_3(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '3. Наименование структурного подразделения медицинской '
             'организации, в котором проводится медицинское '
@@ -137,14 +136,14 @@ class PDF:
         )
 
     def _item_4(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '4. Дата и точное время начала медицинского освидетельствования',
             datetime2str(self.db.select(4, 'datetime')),
         )
 
     def _item_5(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('5. Кем освидетельствован', self.db.select(5, 'doctor'))
         _liner(
             'Cведения о прохождении подготовки по вопросам проведения '
@@ -154,21 +153,21 @@ class PDF:
         )
 
     def _item_6(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '6. Внешний вид освидетельствуемого',
             self.db.select(6, 'appearance'),
         )
 
     def _item_7(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '7. Жалобы освидетельствуемого на свое состояние',
             self.db.select(7, 'complaints'),
         )
 
     def _item_8(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('8. Изменения психической деятельности освидетельствуемого')
         _liner('состояние сознания', self.db.select(8, 'consciousness'))
         _liner('поведение', self.db.select(8, 'behavior'))
@@ -178,7 +177,7 @@ class PDF:
         _liner('Результат пробы Шульте', self.db.select(8, 'schulte'))
 
     def _item_9(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('9. Вегетативно-сосудистые реакции освидетельствуемого')
         _liner('зрачки', self.db.select(9, 'pupils'))
         _liner('реакция на свет', self.db.select(9, 'reaction'))
@@ -186,7 +185,7 @@ class PDF:
         _liner('нистагм', self.db.select(9, 'nystagmus'))
 
     def _item_10(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('10. Двигательная сфера освидетельствуемого')
         _liner('речь', self.db.select(10, 'speech'))
         _liner('походка', self.db.select(10, 'gait'))
@@ -198,7 +197,7 @@ class PDF:
         _liner('результат пробы Ташена', self.db.select(10, 'tashen'))
 
     def _item_11(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '11. Наличие заболеваний нервной системы, '
             'психических расстройств, перенесенных травм '
@@ -206,7 +205,7 @@ class PDF:
         )
 
     def _item_12(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '12. Сведения о последнем употреблении алкоголя, лекарственных '
             'средств, наркотических средств и психотропных веществ '
@@ -214,7 +213,7 @@ class PDF:
         )
 
     def _item_13(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('13. Наличие алкоголя в выдыхаемом воздухе освидетельствуемого')
         _liner(
             '13.1 Время первого исследования',
@@ -240,7 +239,7 @@ class PDF:
         _liner('результат исследования', self.db.select(13, 'result_2'))
 
     def _item_14(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         time = time2str(self.db.select(14, 'time'))
         material = self.db.select(14, 'material')
         _liner(
@@ -266,14 +265,14 @@ class PDF:
         )
 
     def _item_15(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '15. Другие данные медицинского осмотра или '
             'представленных документов', self.db.select(15, 'other'),
         )
 
     def _item_16(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner(
             '16. Дата и точное время окончания '
             'медицинского освидетельствования',
@@ -281,12 +280,12 @@ class PDF:
         )
 
     def _item_17(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         _liner('17. Медицинское заключение', self.db.select(17, 'opinion'))
         _liner('дата его вынесения', date2str(self.db.select(17, 'date')))
 
     def _item_18(self):
-        _spacer(1)
+        self.doc.add_spacer(1)
         doctor = self.db.select(5, 'doctor')
         _liner('18. Подпись врача ______________', '/ ' + doctor + ' /')
         _liner('М.П.', is_indented=True)

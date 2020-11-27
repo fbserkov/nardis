@@ -1,8 +1,7 @@
 from os.path import join
 
-from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.pdfbase import ttfonts
 from reportlab.pdfbase.pdfmetrics import registerFont, registerFontFamily
@@ -12,16 +11,11 @@ from reportlab.platypus import (
 from convert import date2str, datetime2str, datetime2str_time, time2str
 
 LEADING, SIZE = 14, 12
-_styles = getSampleStyleSheet()
-_styles.add(ParagraphStyle('Normal+', leading=LEADING))  # TODO see 6.2 <para>
-_styles.add(ParagraphStyle('Center', leading=LEADING, alignment=TA_CENTER))
-_styles.add(ParagraphStyle('Indent', leading=LEADING, leftIndent=12.5 * cm))
+_story, _styles = [], getSampleStyleSheet()
 
 registerFont(ttfonts.TTFont('Arial', join('fonts', 'ArialMT.ttf')))
 registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
 registerFontFamily('Arial', normal='Arial', bold='ArialBd')
-
-_story = []
 
 
 def _item_0(db):
@@ -267,11 +261,19 @@ def _item_18(db):
 
 
 def _liner(style, normal, bold=''):
-    line = normal
+    text = normal
     if bold:
-        line += ' <b>' + bold + '</b>'
-    _story.append(Paragraph(
-        f'<font name="Arial" size={SIZE}>{line}</font>', _styles[style]))
+        text += ' <b>' + bold + '</b>'
+    text = f'<font name="Arial" size={SIZE}>{text}</font>'
+
+    my_style = _styles['Normal']
+    my_style.leading = LEADING
+    if style == 'Center':
+        text = f'<para alignment=center>' + text + '</para>'
+    elif style == 'Indent':
+        text = f'<para leftIndent={12.5*cm}>' + text + '</para>'
+
+    _story.append(Paragraph(text, my_style))
 
 
 def _page_1(canvas, names):
@@ -317,7 +319,7 @@ def create_pdf(db):
         topMargin=1.5*cm, bottomMargin=3*cm,
     ).build(
         _story,
-        onFirstPage=lambda canvas, _: _page_1(
+        onFirstPage=lambda canvas, _: _page_1(  # TODO do not need lambda (5.2)
             canvas, f'/ {db.select(5, "doctor")} /'),
         onLaterPages=lambda canvas, _: _page_2(canvas),
     )

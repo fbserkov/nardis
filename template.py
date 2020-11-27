@@ -1,7 +1,6 @@
 from os.path import join
 
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.pdfbase import ttfonts
 from reportlab.pdfbase.pdfmetrics import registerFont, registerFontFamily
@@ -11,7 +10,7 @@ from reportlab.platypus import (
 from convert import date2str, datetime2str, datetime2str_time, time2str
 
 LEADING, SIZE = 14, 12
-_story, _styles = [], getSampleStyleSheet()
+_story = []
 
 registerFont(ttfonts.TTFont('Arial', join('fonts', 'ArialMT.ttf')))
 registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
@@ -263,17 +262,14 @@ def _item_18(db):
 def _liner(style, normal, bold=''):
     text = normal
     if bold:
-        text += ' <b>' + bold + '</b>'
-    text = f'<font name="Arial" size={SIZE}>{text}</font>'
-
-    my_style = _styles['Normal']
-    my_style.leading = LEADING
+        text += ' ' + f'<b>{bold}</b>'
+    attributes = f'fontName=Arial fontSize={SIZE}'
+    attributes += f' leading={LEADING}'
     if style == 'Center':
-        text = f'<para alignment=center>' + text + '</para>'
-    elif style == 'Indent':
-        text = f'<para leftIndent={12.5*cm}>' + text + '</para>'
-
-    _story.append(Paragraph(text, my_style))
+        attributes += ' alignment=center'
+    if style == 'Indent':
+        attributes += f' leftIndent={12.5*cm}'
+    _story.append(Paragraph(f'<para {attributes}>' + text + '</para>'))
 
 
 def _page_1(canvas, names):

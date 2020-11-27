@@ -48,24 +48,26 @@ def _spacer(n):
         _story.append(Spacer(1, LEADING))
 
 
-def _tbl(line1, line2):  # TODO remake
-    temp = Table([[line1, line2]])
-    temp.setStyle(TableStyle([
-        ('FONTNAME', (0, 0), (1, 0), 'Arial'),
-        ('ALIGN', (0, 0), (1, 0), 'CENTER'),
-        ('SIZE', (0, 0), (1, 0), SIZE),
-        ('LEADING', (0, 0), (1, 0), LEADING)
-    ]))
-    _story.append(temp)
-
-
 class Doc:
     def __init__(self, filename, doctor):
-        self.doctor = doctor
+        self.doctor, self._story = doctor, _story
         self.doc = SimpleDocTemplate(
             join('acts', filename),
             leftMargin=1.5*cm, rightMargin=1*cm,
             topMargin=1.5*cm, bottomMargin=3*cm,
+        )
+
+    def add_table(self, organization, form):
+        self._story.append(
+            Table(
+                data=[[organization, form]],
+                style=TableStyle([
+                    ('FONTNAME', (0, 0), (1, 0), 'Arial'),
+                    ('ALIGN', (0, 0), (1, 0), 'CENTER'),
+                    ('SIZE', (0, 0), (1, 0), SIZE),
+                    ('LEADING', (0, 0), (1, 0), LEADING),
+                ])
+            )
         )
 
     def build(self):
@@ -79,15 +81,13 @@ class Doc:
 
 class PDF:
     def __init__(self, db):
-        year = db.select(0, 'year')
-        number = db.select(0, 'number')
-        full_name = db.select(1, 'full_name')
-        self.filename = f'{year}_{number:04} {full_name}.pdf'
-        self.doctor = db.select(5, 'doctor')
-        self.db = db
+        year, number = db.select(0, 'year'), db.select(0, 'number')
+        full_name, doctor = db.select(1, 'full_name'), db.select(5, 'doctor')
+        filename = f'{year}_{number:04} {full_name}.pdf'
+        self.db, self.doc = db, Doc(filename, doctor)
 
     def _item_0(self):
-        _tbl(
+        self.doc.add_table(
             self.db.select(0, 'organization'),
             'Медицинская документация\nУчетная форма № 307/у-05\n'
             'Утверждена приказом Министерства\nздравоохранения '
@@ -296,4 +296,4 @@ class PDF:
             name = '_item_' + str(i)
             bound_method = self.__getattribute__(name)
             bound_method()
-        Doc(self.filename, self.doctor).build()
+        self.doc.build()

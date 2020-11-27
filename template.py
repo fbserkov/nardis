@@ -11,7 +11,7 @@ from reportlab.platypus import (
 
 from convert import date2str, datetime2str, datetime2str_time, time2str
 
-LEADING = 14
+LEADING, SIZE = 14, 12
 _styles = getSampleStyleSheet()
 _styles.add(ParagraphStyle('Normal+', leading=LEADING))  # TODO see 6.2 <para>
 _styles.add(ParagraphStyle('Center', leading=LEADING, alignment=TA_CENTER))
@@ -271,20 +271,20 @@ def _liner(style, normal, bold=''):
     if bold:
         line += ' <b>' + bold + '</b>'
     _story.append(Paragraph(
-        '<font name="Arial" size=12>' + line + '</font>', _styles[style]))
+        f'<font name="Arial" size={SIZE}>{line}</font>', _styles[style]))
 
 
 def _page_1(canvas, names):
-    canvas.setFont('Arial', 12)
+    canvas.setFont('Arial', SIZE)
     canvas.drawString(2.5*cm, 1*cm + 2*LEADING, 'Подпись врача ______________')
     canvas.drawString(14*cm, 1*cm + LEADING, 'М.П.')
     canvas.drawRightString(A4[0] - 1*cm, 1*cm, 'Страница 1 из 2')
-    canvas.setFont('ArialBd', 12)
+    canvas.setFont('ArialBd', SIZE)
     canvas.drawString(9.0 * cm, 1 * cm + 2*LEADING, names)
 
 
 def _page_2(canvas):
-    canvas.setFont('Arial', 12)
+    canvas.setFont('Arial', SIZE)
     canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
 
 
@@ -298,7 +298,7 @@ def _tbl(line1, line2):
     temp.setStyle(TableStyle([
         ('FONTNAME', (0, 0), (1, 0), 'Arial'),
         ('ALIGN', (0, 0), (1, 0), 'CENTER'),
-        ('SIZE', (0, 0), (1, 0), 12),
+        ('SIZE', (0, 0), (1, 0), SIZE),
         ('LEADING', (0, 0), (1, 0), LEADING)
     ]))
     _story.append(temp)

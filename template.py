@@ -277,26 +277,35 @@ def _tbl(line1, line2):
     _story.append(temp)
 
 
+class Doc:
+    def __init__(self, filename, doctor):
+        self.doctor = doctor
+        self.doc = SimpleDocTemplate(
+            join('acts', filename),
+            leftMargin=1.5*cm, rightMargin=1*cm,
+            topMargin=1.5*cm, bottomMargin=3*cm,
+        )
+
+    def build(self):
+        self.doc.build(
+            _story,  # TODO do not need lambda (5.2)
+            onFirstPage=lambda canvas, _: _page_1(
+                canvas, '/ ' + self.doctor + ' /'),
+            onLaterPages=lambda canvas, _: _page_2(canvas),
+        )
+
+
 class PDF:
     def __init__(self, db):
-        self.db = db
-
-        year = self.db.select(0, 'year')
-        number = self.db.select(0, 'number')
-        full_name = self.db.select(1, 'full_name')
+        year = db.select(0, 'year')
+        number = db.select(0, 'number')
+        full_name = db.select(1, 'full_name')
         self.filename = f'{year}_{number:04} {full_name}.pdf'
+        self.doctor = db.select(5, 'doctor')
+        self.db = db
 
     def create(self):
         for i in range(19):
             fnc_name = '_item_' + str(i)
             globals()[fnc_name](self.db)
-
-        SimpleDocTemplate(
-            join('acts', self.filename), leftMargin=1.5*cm, rightMargin=1*cm,
-            topMargin=1.5*cm, bottomMargin=3*cm,
-        ).build(
-            _story,  # TODO do not need lambda (5.2)
-            onFirstPage=lambda canvas, _: _page_1(
-                canvas, f'/ {self.db.select(5, "doctor")} /'),
-            onLaterPages=lambda canvas, _: _page_2(canvas),
-        )
+        Doc(self.filename, self.doctor).build()

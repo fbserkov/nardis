@@ -8,7 +8,7 @@ from tkinter.messagebox import showinfo
 from database import Database
 from item import CheckException, ItemBase
 from subframe import ActsList, FormParts, Settings
-from template import create_pdf
+from template import PDF
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -78,7 +78,7 @@ class App:
             self.parts.insert()
             self.db.check()
             self.db.save_act()
-            create_pdf(self.db)
+            PDF(self.db).create()
         except CheckException as exc:
             showinfo('Проверка', exc.text)
 

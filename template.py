@@ -277,20 +277,26 @@ def _tbl(line1, line2):
     _story.append(temp)
 
 
-def create_pdf(db):
-    for i in range(19):
-        fnc_name = '_item_' + str(i)
-        globals()[fnc_name](db)
+class PDF:
+    def __init__(self, db):
+        self.db = db
 
-    filename = f'{db.select(0, "year")}_{db.select(0, "number"):04}'
-    filename += ' ' + db.select(1, 'full_name') + '.pdf'
+        year = self.db.select(0, 'year')
+        number = self.db.select(0, 'number')
+        full_name = self.db.select(1, 'full_name')
+        self.filename = f'{year}_{number:04} {full_name}.pdf'
 
-    SimpleDocTemplate(
-        join('acts', filename), leftMargin=1.5*cm, rightMargin=1*cm,
-        topMargin=1.5*cm, bottomMargin=3*cm,
-    ).build(
-        _story,
-        onFirstPage=lambda canvas, _: _page_1(  # TODO do not need lambda (5.2)
-            canvas, f'/ {db.select(5, "doctor")} /'),
-        onLaterPages=lambda canvas, _: _page_2(canvas),
-    )
+    def create(self):
+        for i in range(19):
+            fnc_name = '_item_' + str(i)
+            globals()[fnc_name](self.db)
+
+        SimpleDocTemplate(
+            join('acts', self.filename), leftMargin=1.5*cm, rightMargin=1*cm,
+            topMargin=1.5*cm, bottomMargin=3*cm,
+        ).build(
+            _story,  # TODO do not need lambda (5.2)
+            onFirstPage=lambda canvas, _: _page_1(
+                canvas, f'/ {self.db.select(5, "doctor")} /'),
+            onLaterPages=lambda canvas, _: _page_2(canvas),
+        )

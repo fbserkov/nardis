@@ -9,43 +9,46 @@ from reportlab.platypus import (
 
 from convert import date2str, datetime2str, datetime2str_time, time2str
 
-LEADING, SIZE = 14, 12
-_story = []
 
-registerFont(ttfonts.TTFont('Arial', join('fonts', 'ArialMT.ttf')))
-registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
-registerFontFamily('Arial', normal='Arial', bold='ArialBd')
-
-
-def _page_1(canvas, names):
-    canvas.setFont('Arial', SIZE)
-    canvas.drawString(2.5*cm, 1*cm + 2*LEADING, 'Подпись врача ______________')
-    canvas.drawString(14*cm, 1*cm + LEADING, 'М.П.')
-    canvas.drawRightString(A4[0] - 1*cm, 1*cm, 'Страница 1 из 2')
-    canvas.setFont('ArialBd', SIZE)
-    canvas.drawString(9.0 * cm, 1 * cm + 2*LEADING, names)
-
-
-def _page_2(canvas):
-    canvas.setFont('Arial', SIZE)
-    canvas.drawString(16.5*cm, 1*cm, 'Страница 2 из 2')
+def font_registration():
+    registerFont(ttfonts.TTFont('Arial', join('fonts', 'ArialMT.ttf')))
+    registerFont(ttfonts.TTFont('ArialBd', join('fonts', 'Arial-BoldMT.ttf')))
+    registerFontFamily('Arial', normal='Arial', bold='ArialBd')
 
 
 class Doc:
     def __init__(self, filename, doctor):
-        self.doctor, self._story = doctor, _story
+        font_registration()
         self.doc = SimpleDocTemplate(
             join('acts', filename),
-            leftMargin=1.5*cm, rightMargin=1*cm,
-            topMargin=1.5*cm, bottomMargin=3*cm,
+            leftMargin=1.5 * cm, rightMargin=1 * cm,
+            topMargin=1.5 * cm, bottomMargin=3 * cm,
         )
+        self.doctor, self._story = doctor, []
+        self.size, self.leading, self.width = 12, 14, A4[0]
+
+    def _page_1(self, canvas, _):
+        canvas.setFont('Arial', self.size)
+        canvas.drawString(
+            2.5 * cm, 1 * cm + 2 * self.leading,
+            'Подпись врача ______________',
+        )
+        canvas.drawString(14 * cm, 1 * cm + self.leading, 'М.П.')
+        canvas.drawRightString(self.width - 1 * cm, 1 * cm, 'Страница 1 из 2')
+        canvas.setFont('ArialBd', self.size)
+        canvas.drawString(
+            9.0 * cm, 1 * cm + 2 * self.leading, '/ ' + self.doctor + ' /')
+
+    def _page_2(self, canvas, _):
+        canvas.setFont('Arial', self.size)
+        canvas.drawRightString(self.width - 1 * cm, 1 * cm, 'Страница 2 из 2')
 
     def add_paragraph(
             self, text, bold='', is_centered=False, is_indented=False):
         if bold:
             text += ' ' + f'<b>{bold}</b>'
-        attributes = f'fontName=Arial fontSize={SIZE}'
-        attributes += f' leading={LEADING}'
+        attributes = f'fontName=Arial fontSize={self.size}'
+        attributes += f' leading={self.leading}'
         if is_centered:
             attributes += ' alignment=center'
         if is_indented:
@@ -55,7 +58,7 @@ class Doc:
 
     def add_spacer(self, n):
         for i in range(n):
-            self._story.append(Spacer(1, LEADING))
+            self._story.append(Spacer(1, self.leading))
 
     def add_table(self, organization, form):
         self._story.append(
@@ -64,19 +67,15 @@ class Doc:
                 style=TableStyle([
                     ('FONTNAME', (0, 0), (1, 0), 'Arial'),
                     ('ALIGN', (0, 0), (1, 0), 'CENTER'),
-                    ('SIZE', (0, 0), (1, 0), SIZE),
-                    ('LEADING', (0, 0), (1, 0), LEADING),
+                    ('SIZE', (0, 0), (1, 0), self.size),
+                    ('LEADING', (0, 0), (1, 0), self.leading),
                 ])
             )
         )
 
     def build(self):
         self.doc.build(
-            _story,  # TODO do not need lambda (5.2)
-            onFirstPage=lambda canvas, _: _page_1(
-                canvas, '/ ' + self.doctor + ' /'),
-            onLaterPages=lambda canvas, _: _page_2(canvas),
-        )
+            self._story, onFirstPage=self._page_1, onLaterPages=self._page_2)
 
 
 class PDF:

@@ -7,8 +7,8 @@ from tkinter.messagebox import showinfo
 
 from database import Database
 from item import CheckException, ItemBase
+from pdf import PDF
 from subframe import ActsList, FormParts, Settings
-from template import PDF
 
 locale.setlocale(locale.LC_ALL, '')
 
